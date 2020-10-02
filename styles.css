@@ -1,5 +1,6 @@
   body {
     background-color: lightblue;
+    text-align: center;
   }
   
   h2 {
@@ -12,9 +13,13 @@
     font-size: 20px;
     
   }
+  ti {
+    font-family: verdana;
+    font-size: 30px;
+  }
 
 
   #loginDIV {
-    text-align: center;
+    
   }
 
