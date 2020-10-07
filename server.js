@@ -21,9 +21,13 @@ const server = http.createServer(function (request, response) {
 
   if(request.method === 'GET'){
 
-    if(request.url === '/' || request.url === '/login.html'){
-      processRequest("login.html", "text/html")
+    if(request.url === '/' || request.url === '/server.html'){
+      processRequest("server.html", "text/html")
     }
+
+    else if(request.url === "/login.html"){
+			processRequest("login.html", "text/html")
+		}
 
     else if(request.url === "/loginStyle.css"){
 			processRequest("loginStyle.css", "text/css")
