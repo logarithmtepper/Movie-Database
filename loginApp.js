@@ -1,5 +1,4 @@
-funtcion createAccount(){
-  console.log("im here");
+function createAccount(){
   let request = new XMLHttpRequest();
 
   request.onreadystatechange = function(){
@@ -7,6 +6,7 @@ funtcion createAccount(){
       console.log(request.responseText);
     }
   }
+
   request.open("GET", "/signUp.html", true);
   request.setRequestHeader('Accept', 'text/html');
   request.send();
