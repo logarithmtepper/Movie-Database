@@ -6,7 +6,7 @@ const server = http.createServer(function (request, response) {
   console.log("URL: " + request.url);
 
   if(request.method === 'GET'){
-    
+
     if(request.url === '/' || request.url === '/login.html'){
       fs.readFile("login.html", function(err, data){
 				if(err){
@@ -52,7 +52,7 @@ const server = http.createServer(function (request, response) {
 			});
 		}
 
-    else if(request.url === "/signUp"){
+    else if(request.url === "/signUp.html"){
 			fs.readFile("signUp.html", function(err, data){
 				if(err){
 					response.statusCode = 500;
