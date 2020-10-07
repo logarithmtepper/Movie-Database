@@ -41,6 +41,14 @@ const server = http.createServer(function (request, response) {
 			processRequest("signUpStyle.css", "text/css")
 		}
 
+    else if(request.url === "/addMovie.html"){
+			processRequest("addMovie.html", "text/html")
+		}
+
+    else if(request.url === "/addMovieStyle.css"){
+			processRequest("addMovieStyle.css", "text/css")
+		}
+
     else if(request.url === "/serverApp.js"){
 			processRequest("serverApp.js", "application/javascript")
 		}
