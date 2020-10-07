@@ -22,7 +22,7 @@ const server = http.createServer(function (request, response) {
   if(request.method === 'GET'){
 
     if(request.url === '/' || request.url === '/server.html'){
-      processRequest("server.html", "text/html")
+      processRequest("login.html", "text/html")
     }
 
     else if(request.url === "/login.html"){
