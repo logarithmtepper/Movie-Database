@@ -22,7 +22,7 @@ const server = http.createServer(function (request, response) {
   if(request.method === 'GET'){
 
     if(request.url === '/' || request.url === '/server.html'){
-      processRequest("login.html", "text/html")
+      processRequest("server.html", "text/html")
     }
 
     else if(request.url === "/login.html"){
@@ -33,10 +33,6 @@ const server = http.createServer(function (request, response) {
 			processRequest("loginStyle.css", "text/css")
 		}
 
-    else if(request.url === "/loginApp.js"){
-			processRequest("loginApp.js", "application/javascript")
-		}
-
     else if(request.url === "/signUp.html"){
 			processRequest("signUp.html", "text/html")
 		}
@@ -45,8 +41,8 @@ const server = http.createServer(function (request, response) {
 			processRequest("signUpStyle.css", "text/css")
 		}
 
-    else if(request.url === "/signUpApp.js"){
-			processRequest("signUpApp.js", "application/javascript")
+    else if(request.url === "/serverApp.js"){
+			processRequest("serverApp.js", "application/javascript")
 		}
 
     else{
