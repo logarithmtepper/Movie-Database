@@ -1,4 +1,4 @@
-Students: Thomas Soubliere 101144900, Wenyu Zhang (student number here)
+Students: Thomas Soubliere 101144900, Wenyu Zhang 100941511
 Project: Movie Database
 
 Running instructions:
