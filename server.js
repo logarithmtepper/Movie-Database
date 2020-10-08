@@ -1,5 +1,12 @@
 const http = require('http');
 const fs = require('fs');
+const pug = require('pug');
+
+const renderLogin = pug.compileFile("./login.pug");
+const renderSignUp = pug.compileFile("./signUp.pug");
+const renderForgotPassword = pug.compileFile("./forgotPassword.html");
+const renderAddMovie = pug.compileFile("./addMovie.pug");
+const renderaddPerson = pug.compileFile("./addPerson.html");
 
 const server = http.createServer(function (request, response) {
   console.log("URL: " + request.url);
@@ -21,33 +28,43 @@ const server = http.createServer(function (request, response) {
 
   if(request.method === 'GET'){
 
-    if(request.url === '/' || request.url === '/server.html'){
-      processRequest("server.html", "text/html")
+    if(request.url === '/' || request.url === '/login.pug'){
+      //processRequest("login.html", "text/html")
+      let content = renderLogin();
+      response.statusCode = 200;
+      response.setHeader("Content-Type", "text/html");
+      response.write(content);
+      response.end();
     }
-
-    else if(request.url === "/login.html"){
-			processRequest("login.html", "text/html")
-		}
 
     else if(request.url === "/loginStyle.css"){
 			processRequest("loginStyle.css", "text/css")
 		}
 
-    else if(request.url === "/signUp.html"){
-			processRequest("signUp.html", "text/html")
+    else if(request.url === "/signUp"){
+      //processRequest("signUp.html", "text/html")
+      let content = renderSignUp({});
+      response.statusCode = 200;
+      response.setHeader("Content-Type", "text/html");
+      response.write(content);
+      response.end();
 		}
 
     else if(request.url === "/signUpStyle.css"){
 			processRequest("signUpStyle.css", "text/css")
 		}
 
-    else if(request.url === "/addMovie.html"){
-			processRequest("addMovie.html", "text/html")
-		}
+    else if(request.url === "/forgotPassword"){
+      let content = renderForgotPassword({});
+      response.statusCode = 200;
+      response.setHeader("Content-Type", "text/html");
+      response.write(content);
+      response.end();
+    }
 
-    else if(request.url === "/addMovieStyle.css"){
-			processRequest("addMovieStyle.css", "text/css")
-		}
+    else if(request.url === "/forgotPasswordStyle.css"){
+      processRequest("forgotPasswordStyle.css", "text/css")
+    }
 
     else if(request.url === "/serverApp.js"){
 			processRequest("serverApp.js", "application/javascript")
