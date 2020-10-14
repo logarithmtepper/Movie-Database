@@ -1,0 +1,28 @@
+doctype html
+link(rel='stylesheet' href='../stylesheets/loginStyle.css')
+script(src='serverApp.js')
+h2 Login Form
+#loginDIV.container
+  label(for='uname')
+    b Username
+  br
+  input#unameInput(type='text' placeholder='Enter Username' name='uname' required='')
+  br
+  label(for='psw')
+    b Password
+  br
+  input#pswInput(type='password' placeholder='Enter Password' name='psw' required='')
+  br
+  button(onclick='') Login
+  br
+  br
+  span.psw
+    a(href='/forgotPassword') Forgot your password?
+  br
+  br
+  br
+  label(for='newUser')
+    b New User?
+  br
+  a(href='/signUp') Create Account
+  br
