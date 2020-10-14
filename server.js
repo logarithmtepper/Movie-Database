@@ -20,6 +20,33 @@ app.get('/signUp', (req, res) => {
   res.render('signUp.pug')
 })
 
+app.get('/forgotPassword', (req, res) => {
+  res.render('forgotPassword.pug')
+})
+
+app.get('/addMovie', (req, res) => {
+  res.render('addMovie.pug')
+})
+
+app.get('/addPerson', (req, res) => {
+  res.render('addPerson.pug')
+})
+
+app.get('/movieView', (req, res) => {
+  res.render('movieView.pug')
+})
+
+app.get('/personView', (req, res) => {
+  res.render('personView.pug')
+})
+
+app.get('/userView', (req, res) => {
+  res.render('userView.pug')
+})
+app.get('/userProfile', (req, res) => {
+  res.render('userProfile.pug')
+})
+
 app.listen(3000, function () {
   console.log('Server running at port 3000');
 });
