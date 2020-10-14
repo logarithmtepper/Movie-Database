@@ -6,8 +6,27 @@ const passport = require('passport');
 const session = require('express-session');
 
 const app = express();
-//const expressLayouts = require('express');
+app.set('view engine', 'pug');
 
+app.get('/', (req, res) => {
+  res.render('home.pug')
+})
+
+app.get('/login', (req, res) => {
+  res.render('login.pug')
+})
+
+app.get('/signUp', (req, res) => {
+  res.render('signUp.pug')
+})
+
+app.listen(3000, function () {
+  console.log('Server running at port 3000');
+});
+
+
+//const expressLayouts = require('express');
+//OLD CODE
 /*
 const renderAddMovie = pug.compileFile("./addMovie.pug");
 const renderaddPerson = pug.compileFile("./addPerson.pug");
@@ -183,20 +202,3 @@ const server = http.createServer(function (request, response) {
 //console.log('Server running at port 3000');
 
 //app.use(expressLayouts)
-app.set('view engine', 'pug');
-
-app.get('/', (req, res) => {
-  res.render('home.pug')
-})
-
-app.get('/login', (req, res) => {
-  res.render('login.pug')
-})
-
-app.get('/signUp', (req, res) => {
-  res.render('signUp.pug')
-})
-
-app.listen(3000, function () {
-  console.log('Server running at port 3000');
-});
