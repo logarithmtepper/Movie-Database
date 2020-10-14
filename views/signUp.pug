@@ -1,0 +1,21 @@
+doctype html
+link(rel='stylesheet' href='signUpStyle.css')
+script(src='serverApp.js')
+h2 Sign Up Form
+#signUpDIV.container
+  label(for='newUname')
+    b Username
+  br
+  input#newUnameInput(type='text' placeholder='Enter Username' name='newUname' required='')
+  br
+  label(for='newPsw')
+    b Password
+  br
+  input#newPswInput(type='password' placeholder='Enter Password' name='newPsw' required='')
+  br
+  label(for='cNewPsw')
+    b Confirm Password
+  br
+  input#cPswInput(type='password' placeholder='Enter Password' name='cNewPsw' required='')
+  br
+  button(onclick='') Sign Up
