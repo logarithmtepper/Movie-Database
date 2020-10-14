@@ -1,0 +1,27 @@
+{
+  "name": "movie-database",
+  "version": "1.0.0",
+  "description": "Students: Thomas Soubliere 101144900, Wenyu Zhang 100941511\r Project: Movie Database",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "passport": "^0.4.1",
+    "pug": "^3.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maikutaison/Movie-Database.git"
+  },
+  "keywords": [],
+  "author": "Thomas Soubliere, Wenyu Zhang",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/maikutaison/Movie-Database/issues"
+  },
+  "homepage": "https://github.com/maikutaison/Movie-Database#readme"
+}
