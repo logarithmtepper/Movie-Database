@@ -1,8 +1,8 @@
-let movieData = require("./movie-data.json");
-let movies = {}; //Stores all of the movies, key=Title
+let movieData = require("./movie-data-short.json");
+let movies = {}; //Stores all of the movies, key=imdbID
 movieData.forEach(movie => {
-  movies[movie.Title] = movie;
+  movies[movie.imdbID] = movie;
 });
 
 
-//const express = 
+//const express =
