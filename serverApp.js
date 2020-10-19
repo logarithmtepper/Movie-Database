@@ -4,5 +4,5 @@ movieData.forEach(movie => {
   movies[movie.imdbID] = movie;
 });
 
-
+console.log(movies);
 //const express =
