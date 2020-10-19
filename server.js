@@ -6,6 +6,9 @@ const passport = require('passport');
 const session = require('express-session');
 
 const app = express();
+
+app.use("/static", express.static('./static/'));
+
 app.set('view engine', 'pug');
 
 app.get('/', (req, res) => {
