@@ -7,7 +7,7 @@ $ npm install pug //to install pug
 $ node server.js //should start the server on localhost port 3000
 
 
-Files: 
+Files:
 addMovie.pug - page where new movie data will be entered
 addMovieStyle.css - css style for addMovie.pug
 
@@ -31,7 +31,7 @@ personViewStyle.css - css style for personView.pug
 
 server.js - file to start node.js server
 
-serverApp.js - js for functionality of pages 
+serverApp.js - js for functionality of pages
 
 signUp.pug - page where new users will be created
 signUpStyle.css - css style for signUp.pug

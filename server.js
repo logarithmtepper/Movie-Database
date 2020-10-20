@@ -4,8 +4,25 @@ const pug = require('pug');
 const express = require('express');
 const passport = require('passport');
 const session = require('express-session');
+//const movieData = require("./movie-data-short.json");
 
 const app = express();
+
+/*const movieRoutes = (app, fs) => {
+  const dataPath = './movie-data-short.json';
+  app.get('/movies', (req, res) => {
+    fs.readFile(dataPath, 'utf8', (err, data) => {
+      if (err) {
+        throw err;
+      }
+      res.send(JSON.parse(data));
+    });
+  });
+};
+
+module.exports = movieRoutes;
+TRYING TO GET THE SERVER TO SERVE THE MOVIE JSON DATA
+*/
 
 app.use("/static", express.static('./static/'));
 
