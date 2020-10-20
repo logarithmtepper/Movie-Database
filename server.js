@@ -24,7 +24,10 @@ module.exports = movieRoutes;
 TRYING TO GET THE SERVER TO SERVE THE MOVIE JSON DATA
 */
 
-app.use("/static", express.static('./static/'));
+const model = require("./server-model.js");
+
+app.use("/", express.static('./'));
+app.use(express.json());
 
 app.set('view engine', 'pug');
 
