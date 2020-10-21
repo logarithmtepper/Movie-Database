@@ -1,0 +1,12 @@
+{"movieID":{
+    "title":"user0",
+    "year":"user0",
+    "rating":"y/n",
+    "runtime":[],
+    "plot":"",
+    "genre":[],
+    "director": ["someID"],
+    "writer": ["someID"],
+    "actors": ["someID"],
+    "reviews": ["someID"]}
+}

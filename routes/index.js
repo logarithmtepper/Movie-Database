@@ -2,14 +2,8 @@ const express = require('express');
 const router = express.Router();
 //const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 
-// Welcome Page
-router.get('/', (req, res) => res.render('welcome'));
-
-// Dashboard
-router.get('/userProfile', (req, res) =>
-  res.render('userProfile', {
-    user: req.user
-  })
-);
+router.get('/login', function(req, res, next) {
+  res.render('login', { error: false });
+});
 
 module.exports = router;

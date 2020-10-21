@@ -1,4 +1,8 @@
 let movieData = require("./movie-data-short.json");
+let userData = require("./users.json");
+let peopleData = require("./people.json");
+
+
 let movies = {}; //Stores all of the movies, key=imdbID
 movieData.forEach(movie => {
   movies[movie.imdbID] = movie;
