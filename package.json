@@ -4,9 +4,13 @@
   "description": "Students: Thomas Soubliere 101144900, Wenyu Zhang 100941511\r Project: Movie Database",
   "main": "server.js",
   "dependencies": {
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.5",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
+    "morgan": "^1.10.0",
     "passport": "^0.4.1",
+    "path": "^0.12.7",
     "pug": "^3.0.0"
   },
   "devDependencies": {},
