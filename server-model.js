@@ -3,7 +3,7 @@ let userData = require("./users.json");
 let peopleData = require("./people.json");
 
 
-let movies = {}; //Stores all of the movies, key=imdbID
+let movies = []; //Stores all of the movies, key=imdbID
 let z = 0;
 movieData.forEach(movie => {
   movies[z] = movie;
