@@ -115,6 +115,6 @@ for(x=0; x < people.length; x++){
   }
 }
 
-//yes i know this looks awful
+//yes i know this looks awful i will clean this up
 //console.log(movies);
 //console.log(people);
