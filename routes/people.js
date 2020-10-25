@@ -1,6 +1,9 @@
+const express = require('express');
+const router = express.Router();
+const passport = require('passport');
+const fs = require('fs');
 let movieData = require("./movie-data-short.json");
 let peopleData = require("./people.json");
-
 
 let movies = []; //Stores all of the movies, key=imdbID
 let z = 0;
@@ -114,6 +117,4 @@ for(x=0; x < people.length; x++){
   }
 }
 
-//yes i know this looks awful i will clean this up
-//console.log(movies);
-//console.log(people);
+module.exports = router;
