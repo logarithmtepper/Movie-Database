@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
-let users = require("../users.json");
 const fs = require('fs');
+let users = require("../users.json");
 
 
 function isValidUser(userObj){
@@ -61,7 +61,7 @@ router.post('/register', function(req, res, next){
   }else{
     let a = createUser({username: username, password: password})
 
-    fs.writeFile('./users.json', JSON.stringify(users), function(err) {  
+    fs.writeFile('./users.json', JSON.stringify(users), function(err) {
       if (err) throw err;
       //console.log('complete');
     });
@@ -70,8 +70,8 @@ router.post('/register', function(req, res, next){
       //console.log("null");
       //res.send("account is exist, Please log in!")
       res.render('register');
-      //account exist 
-    } 
+      //account exist
+    }
     else {
     //req.flash('success','You are now registered and can log in');
       res.redirect('login');

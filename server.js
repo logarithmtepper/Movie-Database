@@ -19,8 +19,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-const model = require("./server-model.js");
-
 app.get('/', (req, res) => {
   res.render('home.pug')
 })
@@ -57,6 +55,8 @@ app.get('/userProfile', (req, res) => {
 var users = require('./routes/users');
 app.use('/users', users);
 
+var movies = require('./routes/movies');
+app.use('/movies', movies);
 
 app.listen(3000, function () {
   console.log('Server running at port 3000');

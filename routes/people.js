@@ -1,5 +1,4 @@
 let movieData = require("./movie-data-short.json");
-let userData = require("./users.json");
 let peopleData = require("./people.json");
 
 
