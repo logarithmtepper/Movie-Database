@@ -12,5 +12,5 @@ form#searchForm
   input#searchText.form-control(type='text' placeholder='Enter search')
 button(onclick='') Search
 form
-  .form-group
-    #movies.row
+  //-each movie in movies
+    a #{movie.Title}

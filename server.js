@@ -5,12 +5,10 @@ const express = require('express');
 //const express = require("connect-flash");
 var path = require('path');
 var bodyParser = require('body-parser');
-
 //const movieData = require("./movie-data-short.json");
 
-
-
 const app = express();
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -51,12 +49,14 @@ app.get('/userProfile', (req, res) => {
   res.render('userProfile.pug')
 })
 
+const userRouter = require('./routes/users');
+app.use('/users', userRouter);
 
-var users = require('./routes/users');
-app.use('/users', users);
+const movieRouter = require('./routes/movies');
+app.use('/home', movieRouter);
 
-var movies = require('./routes/movies');
-app.use('/movies', movies);
+//const peopleRouter = require('./routes/people');
+//app.use('/people', peopleRouter);
 
 app.listen(3000, function () {
   console.log('Server running at port 3000');
