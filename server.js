@@ -19,26 +19,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-/*const movieRoutes = (app, fs) => {
-  const dataPath = './movie-data-short.json';
-  app.get('/movies', (req, res) => {
-    fs.readFile(dataPath, 'utf8', (err, data) => {
-      if (err) {
-        throw err;
-      }
-      res.send(JSON.parse(data));
-    });
-  });
-};
-
-module.exports = movieRoutes;
-TRYING TO GET THE SERVER TO SERVE THE MOVIE JSON DATA
-*/
-
-
 const model = require("./server-model.js");
-
-
 
 app.get('/', (req, res) => {
   res.render('home.pug')
