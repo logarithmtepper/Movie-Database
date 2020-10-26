@@ -5,12 +5,7 @@ integrity='sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZD
 script(src="client.js")
 link(rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css' 
 integrity='sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2' crossorigin='anonymous')
-span.header
-  a(href='') Home
-  a(href='') Logout
-  a(href='') My Account
-input#searchInput(type='text' placeholder='Movie, Person, Keyword...' name='search' required='')
-button(onclick='') Search
-#reviewsDIV
-#peopleFollowedDIV
-button#followUser(name='followUser' onclick='') Follow
+include ../partials/header
+form
+  //-each movie in movies
+    a #{movie.Title}
