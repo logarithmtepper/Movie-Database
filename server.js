@@ -22,12 +22,13 @@ let userRouter = require('./routes/users');
 app.use('/users', userRouter);
 
 let movieRouter = require('./routes/movies');
-app.use('/home', movieRouter);
+app.use('/movies', movieRouter);
 
 //const peopleRouter = require('./routes/people');
 //app.use('/people', peopleRouter);
 
 //Respond with right page data if requested
+
 app.get('/', (req, res, next) => {
   res.render('home.pug')
 })
