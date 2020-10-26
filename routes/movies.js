@@ -8,9 +8,16 @@ let movieData = require("../movie-data-short.json");
 router.get("/", loadMovies);
 router.get("/", respondMovies);
 
+router.get("/:imdbID", sendMovie);
+
 router.get('/', (req, res) => {
   res.render('movieList')
 })
+
+function sendMovie(req, res, next){
+  console.log(request.params.imdbID);
+  res.send(req.params.imdbID);
+}
 
 function loadMovies(req, res, next){
   let results = []; //Stores all of the movies, key=imdbID

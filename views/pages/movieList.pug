@@ -7,5 +7,8 @@ integrity='sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xX
 include ../partials/header
 form
   each movie in movies
-    img(src = '${movie.Poster}')
-    a #{movie.Title}
+    - var img = movie.Poster
+    img(src=img width="120" height="160")
+    //-img(src = '${movie.Poster}')
+    a(href="") #{movie.Title}
+    br

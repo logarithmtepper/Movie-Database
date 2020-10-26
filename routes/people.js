@@ -53,6 +53,7 @@ peopleList = removeDuplicates(peopleList);
 let people = [];
 for(i=0; i < peopleList.length-1; i++) {
   people[i] = {
+    id: [i],
 		name: peopleList[i],
 		works: [],
 		collaborators: []
