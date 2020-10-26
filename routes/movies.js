@@ -23,7 +23,11 @@ function loadMovies(req, res, next){
 }
 
 function respondMovies(req, res, next){
-  res.render("views/pages/home", {movies:res.movies});
+  res.format({
+  "text/html": () => {res.render("views/pages/home", {movies:res.movies} )},
+  "application/json": () => {res.status(200).json(res.movies)}
+  });
+  next();
 }
 
 module.exports = router;

@@ -17,38 +17,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', (req, res) => {
-  res.render('home.pug')
-})
-
-app.get('/forgotPassword', (req, res) => {
-  res.render('forgotPassword.pug')
-})
-
-app.get('/addMovie', (req, res) => {
-  res.render('addMovie.pug')
-})
-
-app.get('/addPerson', (req, res) => {
-  res.render('addPerson.pug')
-})
-
-app.get('/movieView', (req, res) => {
-  res.render('movieView.pug')
-})
-
-app.get('/personView', (req, res) => {
-  res.render('personView.pug')
-})
-
-app.get('/userView', (req, res) => {
-  res.render('userView.pug')
-})
-
-app.get('/userProfile', (req, res) => {
-  res.render('userProfile.pug')
-})
-
+//Router Setup
 let userRouter = require('./routes/users');
 app.use('/users', userRouter);
 
@@ -57,6 +26,39 @@ app.use('/home', movieRouter);
 
 //const peopleRouter = require('./routes/people');
 //app.use('/people', peopleRouter);
+
+//Respond with right page data if requested
+app.get('/', (req, res, next) => {
+  res.render('home.pug')
+})
+
+app.get('/forgotPassword', (req, res, next) => {
+  res.render('forgotPassword.pug')
+})
+
+app.get('/addMovie', (req, res, next) => {
+  res.render('addMovie.pug')
+})
+
+app.get('/addPerson', (req, res, next) => {
+  res.render('addPerson.pug')
+})
+
+app.get('/movieView', (req, res, next) => {
+  res.render('movieView.pug')
+})
+
+app.get('/personView', (req, res, next) => {
+  res.render('personView.pug')
+})
+
+app.get('/userView', (req, res, next) => {
+  res.render('userView.pug')
+})
+
+app.get('/userProfile', (req, res, next) => {
+  res.render('userProfile.pug')
+})
 
 app.listen(3000, function () {
   console.log('Server running at port 3000');

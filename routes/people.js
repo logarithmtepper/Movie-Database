@@ -117,4 +117,10 @@ for(x=0; x < people.length; x++){
   }
 }
 
+//function loadPeople(req, res, next){
+//}
+
+//function respondPeople(req, res, next){
+//}
+
 module.exports = router;
