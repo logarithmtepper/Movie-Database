@@ -49,10 +49,10 @@ app.get('/userProfile', (req, res) => {
   res.render('userProfile.pug')
 })
 
-const userRouter = require('./routes/users');
+let userRouter = require('./routes/users');
 app.use('/users', userRouter);
 
-const movieRouter = require('./routes/movies');
+let movieRouter = require('./routes/movies');
 app.use('/home', movieRouter);
 
 //const peopleRouter = require('./routes/people');

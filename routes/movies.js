@@ -5,7 +5,8 @@ const fs = require('fs');
 let movies = require("../movie-data-short.json");
 
 //for GET /home
-router.get("/", [loadMovies, respondMovies]);
+router.get("/", loadMovies);
+router.get("/", respondMovies);
 
 function loadMovies(req, res, next){
   let result = []; //Stores all of the movies, key=imdbID
@@ -16,12 +17,13 @@ function loadMovies(req, res, next){
     z++;
     res.movies.push(movie);
     count++;
+    console.log(movie);
   });
   next();
 }
 
 function respondMovies(req, res, next){
-  res.render("views/home", {movies:res.movies});
+  res.render("views/pages/home", {movies:res.movies});
 }
 
 module.exports = router;
