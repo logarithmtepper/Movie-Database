@@ -8,24 +8,43 @@ let movieData = require("../movie-data-short.json");
 router.get("/", loadMovies);
 router.get("/", respondMovies);
 
-router.get("/:imdbID", sendMovie);
+router.get("/:id", getMovie);
+router.get("/:id", sendMovie);
 
-router.get('/', (req, res) => {
-  res.render('movieList')
-})
+function getMovie(req, res, next){
+  let id = req.params.id;
+  let results = []; //Stores all of the movies, key=imdbID
+  let z = 0;
+  movieData.forEach(movie => {
+    movie.id = z;
+    results[z] = movie;
+    z++;
+  });
+	if(results[id] === 'undefined'){
+    res.status(404).send("Could not find movie");
+	}else{
+    req.movie = results[id];
+		next();
+	}
+}
 
 function sendMovie(req, res, next){
-  console.log(request.params.imdbID);
-  res.send(req.params.imdbID);
+  res.format({
+		"application/json": function(){
+			res.status(200).json(req.movie);
+		},
+		"text/html": () => { res.render("movieView", {movie: req.movie}); }
+	});
+	next();
 }
 
 function loadMovies(req, res, next){
   let results = []; //Stores all of the movies, key=imdbID
   let z = 0;
   movieData.forEach(movie => {
+    movie.id = z;
     results[z] = movie;
     z++;
-    console.log(movie);
   });
   res.movies = results
   next();

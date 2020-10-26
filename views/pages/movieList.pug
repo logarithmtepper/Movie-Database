@@ -8,7 +8,7 @@ include ../partials/header
 form
   each movie in movies
     - var img = movie.Poster
+    - var id = movie.id
     img(src=img width="120" height="160")
-    //-img(src = '${movie.Poster}')
-    a(href="") #{movie.Title}
+    a(href="http://localhost:3000/movies/" + id) #{movie.Title}
     br
