@@ -1,11 +1,10 @@
 const http = require('http');
-const fs = require('fs');
 const pug = require('pug');
 const express = require('express');
 //const express = require("connect-flash");
 var path = require('path');
 var bodyParser = require('body-parser');
-//const movieData = require("./movie-data-short.json");
+const mongoose = require("mongoose");
 
 const app = express();
 
