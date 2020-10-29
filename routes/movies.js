@@ -1,9 +1,12 @@
 const express = require('express');
 const router = express.Router();
+const Movie = require("../movieModel");
+const ObjectId= require('mongoose').Types.ObjectId
 let movieData = require("../movie-data-short.json");
 
 //for GET /home
 router.get("/", loadMovies);
+console.log("done");
 router.get("/", respondMovies);
 
 router.get("/:id", getMovie);
@@ -37,6 +40,19 @@ function sendMovie(req, res, next){
 }
 
 function loadMovies(req, res, next){
+  Movie.find()
+  .exec(function(err, results){
+		if(err){
+			res.status(500).send("Error reading products.");
+			console.log(err);
+			return;
+		}
+		console.log("Found " + results.length + " movies");
+		res.movies = results;
+		next();
+		return;
+	})
+/* old code
   let results = []; //Stores all of the movies, key=imdbID
   let z = 0;
   movieData.forEach(movie => {
@@ -46,6 +62,7 @@ function loadMovies(req, res, next){
   });
   res.movies = results
   next();
+*/
 }
 
 function respondMovies(req, res, next){

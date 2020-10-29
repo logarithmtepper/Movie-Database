@@ -23,13 +23,13 @@ let movieSchema = Schema({
 		type: String,
 	},
   director: {
-		type: [{type: String}],
+		type: String,
 	},
   writer: {
-		type: [{type: String}],
+		type: String,
 	},
   actors: {
-		type: [{type: String}],
+		type: String,
 	},
   plot: {
 		type: String,

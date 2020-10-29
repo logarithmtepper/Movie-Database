@@ -1,11 +1,10 @@
 const mongoose = require("mongoose");
 const Movie = require("./movieModel");
 const User = require("./userModel");
-const Person = require("./peronModel");
+const Person = require("./personModel");
 
 //create and save movies and people
 let movieData = require("./movie-data-short.json");
-let peopleData = require("./people.json");
 
 let movies = []; //Stores all of the movies, key=z
 let z = 0;
@@ -119,3 +118,70 @@ for(x=0; x < people.length; x++){
     if (seenCollaborators[collaborator] === 2) people[x].collaborators.push(collaborator);
   }
 }
+
+let schemaMovies = [];
+let schemaPeople = [];
+for(let i = 0; i < movies.length; i++){
+	let m = new Movie();
+  m.id = i;
+	m.title = movies[i].Title;
+  m.rated = movies[i].Rated;
+  m.released = movies[i].Released;
+  m.runtime = movies[i].Runtime;
+  m.genre = movies[i].Genre;
+  m.director = movies[i].Director;
+  m.writer = movies[i].Writer;
+  m.actors = movies[i].Actors;
+  m.plot = movies[i].Plot;
+  m.language = movies[i].Language;
+  m.poster = movies[i].Poster;
+  m.ratings = movies[i].Ratings
+  m.similar = [];
+	schemaMovies.push(m);
+}
+for(let i = 0; i < people.length; i++){
+	let p = new Person();
+  p.id = i;
+  p.name = people[i].name;
+  p.works = people[i].works;
+  p.collaborators = people[i].collaborators;
+	schemaPeople.push(p);
+}
+
+mongoose.connect('mongodb://localhost/database', {useNewUrlParser: true});
+let db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+	mongoose.connection.db.dropDatabase(function(err, result){
+		if(err){
+			console.log("Error dropping database:");
+			console.log(err);
+			return;
+		}
+
+		console.log("Dropped database. Starting re-creation.");
+
+		let completedMovies = 0;
+		schemaMovies.forEach(movie => {
+			movie.save(function(err,result){
+				if(err) throw err;
+				completedMovies++;
+				if(completedMovies >= movies.length){
+					console.log(completedMovies + " movies saved");
+				}
+			})
+		});
+
+    let completedPeople = 0;
+		schemaPeople.forEach(person => {
+			person.save(function(err,result){
+				if(err) throw err;
+				completedPeople++;
+				if(completedPeople >= people.length){
+					console.log(completedPeople + " people saved");
+				}
+			})
+		});
+
+	});
+});

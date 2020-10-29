@@ -9,9 +9,9 @@ form
   .form-group.row.mx-sm-5.text-center
       each movie in movies
         .col-sm-2
-          - var img = movie.Poster
+          - var img = movie.poster
           - var id = movie.id
-          a(href="http://localhost:3000/movies/" + id) #{movie.Title}
+          a(href="http://localhost:3000/movies/" + id) #{movie.title}
             br
             br
             img(src=img width="150" height="200")

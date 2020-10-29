@@ -16,7 +16,6 @@ let personSchema = Schema({
 	},
   collaborators: {
 		type: [{type: String}],
-		required: true
 	}
   //works: [Schema.Types.ObjectId],
   //collaborators: [Schema.Types.ObjectId],

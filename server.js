@@ -60,6 +60,11 @@ app.get('/userProfile', (req, res, next) => {
   res.render('userProfile.pug')
 })
 
-app.listen(3000, function () {
-  console.log('Server running at port 3000');
+mongoose.connect('mongodb://localhost/database', {useNewUrlParser: true});
+
+let db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  app.listen(3000);
+  console.log("Server listening on port 3000");
 });
