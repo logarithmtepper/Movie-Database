@@ -60,7 +60,7 @@ app.get('/userProfile', (req, res, next) => {
   res.render('userProfile.pug')
 })
 
-mongoose.connect('mongodb://localhost/database', {useNewUrlParser: true});
+mongoose.connect('mongodb://localhost/database', {useNewUrlParser: true, useUnifiedTopology: true});
 
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
