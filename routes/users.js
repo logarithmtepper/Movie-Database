@@ -3,6 +3,9 @@ const router = express.Router();
 const passport = require('passport');
 const fs = require('fs');
 let users = require("../users.json");
+const User = require("../userModel");
+const ObjectId= require('mongoose').Types.ObjectId
+
 
 
 function isValidUser(userObj){
@@ -33,18 +36,29 @@ function createUser(newUser){
 }
 
 
-var login =function(user,password){
+
+
+ function login(user,password){
   for(u in users){
     let theUser = users[u];
     //console.log(theUser.username);
     if (theUser.username === user && password===theUser.password){
-      return true;
+      return theUser;
     }
   }
-  return false;
+  return null;
 }
 
 
+function changeContributing(user){
+  for(u in users){
+    let theUser = users[u];
+    //console.log(theUser.username);
+    if (theUser.username === user){
+      theUser.contributing = 'y';
+    }
+  }
+}
 
 // Register Form
 router.get('/register', function(req, res){
@@ -83,21 +97,47 @@ router.post('/register', function(req, res, next){
 router.get('/login', function(req, res){
   res.render('login');
 });
+
+router.get('/profile', function(req, res, next){
+  res.render('userProfile', {
+    username: req.username,
+    contributing: req.contributing
+  });
+});
+
 /* GET users listing. */
 router.post('/login', function (req, res, next) {
 
   const username = req.body.uname;
   //console.log(username);
   let loginResult = login(username, req.body.psw);
+  let contributing = '';
+  if (loginResult !== null) {
+    
+    if (loginResult.contributing === 'n') {
+      contributing = "Become a contributing user";
+    }else{
+      contributing = "Become a regular user";
+    }
+    //return contributing, username;
+    
+    res.render('userProfile', {
+      username: username,
+      contributing: contributing
+    });
 
-  if (loginResult) {
-      res.render('userProfile', {username: username});
   }
   else {
-      res.render('login', {error: true});
+    res.render('login', {error: true});
   }
+  (req,res,next)
 });
 
+router.post('/profile', function (req, res, next) {
+  //console.log(req.body.username);
+  changeContributing(req.username);
+  res.render('userProfile');
+});
 
 //log out
 router.get('/logout', function(req, res){
