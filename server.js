@@ -48,6 +48,10 @@ app.get('/movieView', (req, res, next) => {
   res.render('movieView.pug')
 })
 
+app.get('/personList', (req, res, next) => {
+  res.render('personList.pug')
+})
+
 app.get('/personView', (req, res, next) => {
   res.render('personView.pug')
 })
@@ -56,7 +60,7 @@ app.get('/userView', (req, res, next) => {
   res.render('userView.pug')
 })
 
-app.get('/userProfile', (req, res, next) => {
+app.get('/user/profile', (req, res, next) => {
   res.render('userProfile.pug')
 })
 
