@@ -1,9 +1,3 @@
-doctype html
-script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js")
-script(src='https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js' 
-integrity='sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx' crossorigin='anonymous')
-link(rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css' 
-integrity='sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2' crossorigin='anonymous')
 include ../partials/header
 div.text-center
   h2 Welcome #{username}!
@@ -14,15 +8,17 @@ div.text-center
 br
 #peopleFollowedDIV
 div.text-center
-  p Followed People 
+  a Followed People 
 br
 #usersFollowedDIV
 div.text-center
-  p Followed Users 
+  a.form-text(href='/personList') Followed Users 
   br
 #recommendedDIV
 div.text-center
   p Recommended for you
   br
-button#contributer(name='contributer' onclick='') Become a contributer
-button#regular(name='regular' onclick='') Become a regular
+
+form(method='POST', action='/users/profile')
+div.text-center
+  button#contributer(name='contributer' onclick='') #{contributing}

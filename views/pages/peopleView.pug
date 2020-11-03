@@ -1,8 +1,6 @@
 include ../partials/header
-br
-- var img = movie.Poster
-img(src=img width="270" height="360")
-br
+
+
 b
   |Title: 
 |#{movie.Title}
@@ -29,7 +27,7 @@ b
 br
 b
   |Director: 
-a(href="http://localhost:3000/people/" +movie.Director) #{movie.Director}
+ #{movie.Director}
 br
 b
   |Writer: 
