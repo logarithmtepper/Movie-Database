@@ -27,7 +27,6 @@ peopleList = peopleList.map(function(d) { return d.replace(' (screenplay by)', '
 peopleList = peopleList.map(function(d) { return d.replace(' (screen story by)', ''); });
 peopleList = peopleList.map(function(d) { return d.replace(' (screenplay)', ''); });
 peopleList = peopleList.map(function(d) { return d.replace(' (story)', ''); });
-peopleList = peopleList.map(function(d) { return d.replace(' (story)', ''); });
 peopleList = peopleList.map(function(d) { return d.replace(' (based on the book by)', ''); });
 peopleList = peopleList.map(function(d) { return d.replace(' (characters)', ''); });
 peopleList = peopleList.map(function(d) { return d.replace(' (novel)', ''); });
@@ -50,6 +49,8 @@ for(i=0; i < peopleList.length; i++) {
 }
 
 peopleList = removeDuplicates(peopleList);
+
+console.log(peopleList);
 
 let people = [];
 for(i=0; i < peopleList.length-1; i++) {

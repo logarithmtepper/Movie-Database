@@ -1,20 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const Movie = require("../movieModel");
-const ObjectId= require('mongoose').Types.ObjectId
-let movieData = require("../movie-data-short.json");
 
 //for GET /home
 router.get("/", queryParser);
 router.get("/", loadMovies);
-console.log("done");
 router.get("/", respondMovies);
 
 router.get("/:id", getMovie);
 router.get("/:id", sendMovie);
 
 function queryParser(req, res, next){
-	const MAX_MOVIES = 24;
+	const MAX_MOVIES = 18;
 
 	let params = [];
 	for(prop in req.query){
@@ -26,13 +23,13 @@ function queryParser(req, res, next){
 	req.qstring = params.join("&");
 
 	try{
-		req.query.limit = req.query.limit || 10;
+		req.query.limit = req.query.limit || 18;
 		req.query.limit = Number(req.query.limit);
 		if(req.query.limit > MAX_MOVIES){
 			req.query.limit = MAX_MOVIES;
 		}
 	}catch{
-		req.query.limit = 10;
+		req.query.limit = 18;
 	}
 
 	try{
@@ -86,7 +83,7 @@ function loadMovies(req, res, next){
   .skip(startIndex)
   .exec(function(err, results){
 		if(err){
-			res.status(500).send("Error reading products.");
+			res.status(500).send("Error reading movies.");
 			console.log(err);
 			return;
 		}

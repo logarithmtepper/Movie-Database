@@ -1,9 +1,13 @@
 const express = require('express');
 const router = express.Router();
-let movieData = require("./movie-data-short.json");
-let peopleData = require("./people.json");
+const Person = require("../personModel");
 
+router.get("/", queryParser);
+router.get("/", loadPeople);
+router.get("/", respondPeople);
 
+router.get("/:id", getPerson);
+router.get("/:id", sendPerson);
 
 //function loadPeople(req, res, next){
 //}
