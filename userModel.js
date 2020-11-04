@@ -15,13 +15,13 @@ let userSchema = Schema({
 		required: true
 	},
   followedUsers: {
-		type: [{type: String}],
+		type: [],
 	},
   followedPeople: {
-		type: [{type: String}],
+		type: [],
 	},
   reviews: {
-		type: [{type: String}],
+		type: [],
 	}
   //followedUsers: [Schema.Types.ObjectId],
   //followedPeople: [Schema.Types.ObjectId],

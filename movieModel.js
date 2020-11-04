@@ -41,13 +41,10 @@ let movieSchema = Schema({
 		type: String,
 	},
   ratings: {
-		type: [{
-      source: {type: String},
-      value: {type: String}
-    }],
+		type: [],
 	},
   similar: {
-		type: [{type: String}],
+		type: [],
 	}
   //directors: [Schema.Types.ObjectId],
   //writers: [Schema.Types.ObjectId],

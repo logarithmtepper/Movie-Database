@@ -11,11 +11,11 @@ let personSchema = Schema({
 		required: true
 	},
   works: {
-		type: [{type: String}],
+		type: [],
 		required: true
 	},
   collaborators: {
-		type: [{type: String}],
+		type: [],
 	}
   //works: [Schema.Types.ObjectId],
   //collaborators: [Schema.Types.ObjectId],

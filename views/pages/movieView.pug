@@ -1,61 +1,57 @@
 include ../partials/header
 br
-- var img = movie.Poster
+- var img = movie.poster
 img(src=img width="270" height="360")
 br
 b
   |Title: 
-|#{movie.Title}
-br
-b
-  |Year: 
-|#{movie.Year}
+|#{movie.title}
 br
 b
   |Rated: 
-|#{movie.Rated}
+|#{movie.rated}
 br
 b
   |Released: 
-|#{movie.Released}
+|#{movie.released}
 br
 b
   |Runtime: 
-|#{movie.Runtime}
+|#{movie.runtime}
 br
 b
   |Genre: 
-|#{movie.Genre}
+|#{movie.genre}
 br
 b
   |Director: 
-a(href="http://localhost:3000/people/" +movie.Director) #{movie.Director}
+a(href="http://localhost:3000/people/" +movie.Director) #{movie.director}
 br
 b
   |Writer: 
-|#{movie.Writer}
+|#{movie.writer}
 br
 b
   |Actors: 
-|#{movie.Actors}
+|#{movie.actors}
 br
 b
   |Plot: 
-|#{movie.Plot}
+|#{movie.plot}
 br
 b
   |Language: 
-|#{movie.Language}
+|#{movie.language}
 br
 b
   |Similar Movies: 
 br
 br
-if movie.Ratings.length > 0
+if movie.ratings.length > 0
 b
   |Reviews:
 br
-each review in movie.Ratings
+each review in movie.ratings
   b
     |Source: 
   |#{review.Source} 
