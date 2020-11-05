@@ -1,17 +1,24 @@
 include ../partials/header
 h2 Add Movies
 #addMovieDIV.container
-  label(for='mname')
-    b Movie Name
-  input#mnameInput(type='text' placeholder='Enter Movie Name' name='mname' required='')
-  label(for='wname')
-    b Writer Name(s) (seperate by comma)
-  input#wnameInput(type='text' placeholder='Enter Writer Name(s)' name='wname' required='')
-  label(for='dname')
-    b Director Name(s) (seperate by comma)
-  input#dnameInput(type='text' placeholder='Enter Director Name(s)' name='dname' required='')
-  label(for='aname')
-    b Actor Name(s) (seperate by comma)
-  input#anameInput(type='text' placeholder='Enter Actor Name(s)' name='aname' required='')
-  button(onclick='') Add Movie
+form(method='POST', action='/movies/add')
+  #form-group
+    label(for='mname')
+      b Movie Name:   
+    input#mnameInput(type='text' placeholder='Enter Movie Name' name='mname' required='')
+  #form-group
+    label(for='wname')
+      b Writer Name(s) (seperate by comma): 
+    input#wnameInput(type='text' placeholder='Enter Writer Name(s)' name='wname' required='')
+  #form-group
+    label(for='dname')
+      b Director Name(s) (seperate by comma): 
+    input#dnameInput(type='text' placeholder='Enter Director Name(s)' name='dname' required='')
+
+  #form-group
+    label(for='aname')
+      b Actor Name(s) (seperate by comma):  
+    input#anameInput(type='text' placeholder='Enter Actor Name(s)' name='aname' required='')
+
+  button.btn.btn-primary(type='submit') Add Movie
 |   This is incomplete

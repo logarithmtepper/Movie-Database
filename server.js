@@ -1,10 +1,12 @@
 const http = require('http');
 const pug = require('pug');
 const express = require('express');
-//const express = require("connect-flash");
+const session = require('express-session');
+const flash = require('connect-flash');
 var path = require('path');
 var bodyParser = require('body-parser');
 const mongoose = require("mongoose");
+const passport = require('passport');
 
 const app = express();
 
@@ -15,6 +17,30 @@ app.set('view engine', 'pug');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
+
+
+// Express Session Middleware
+app.use(session({
+  secret: 'keyboard cat',
+  resave: true,
+  saveUninitialized: true
+}));
+
+// Express Messages Middleware
+app.use(require('connect-flash')());
+app.use(function (req, res, next) {
+  res.locals.messages = require('express-messages')(req, res);
+  next();
+});
+
+
+// Passport Config
+require('./config/passport.js')(passport);
+// Passport Middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 
 //Router Setup
 let userRouter = require('./routes/users');
@@ -36,17 +62,6 @@ app.get('/forgotPassword', (req, res, next) => {
   res.render('forgotPassword.pug')
 })
 
-app.get('/addMovie', (req, res, next) => {
-  res.render('addMovie.pug')
-})
-
-app.get('/addPerson', (req, res, next) => {
-  res.render('addPerson.pug')
-})
-
-app.get('/movieView', (req, res, next) => {
-  res.render('movieView.pug')
-})
 
 app.get('/personList', (req, res, next) => {
   res.render('personList.pug')
@@ -60,15 +75,15 @@ app.get('/userView', (req, res, next) => {
   res.render('userView.pug')
 })
 
-app.get('/user/profile', (req, res, next) => {
-  res.render('userProfile.pug')
-})
 
 mongoose.connect('mongodb://localhost/database', {useNewUrlParser: true, useUnifiedTopology: true});
 
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
-  app.listen(3000);
-  console.log("Server listening on port 3000");
+
+  console.log("database is connected");
+});
+app.listen(3000, function(){
+  console.log('Server started on port 3000...');
 });

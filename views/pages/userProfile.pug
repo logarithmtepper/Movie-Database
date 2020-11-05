@@ -1,24 +1,37 @@
 include ../partials/header
 div.text-center
-  h2 Welcome #{username}!
+  h2 Welcome #{user.username}!
 br
 #reviewsDIV
 div.text-center
-  p My Reviews 
+  p My Reviews
+  li #{user.reviews} 
 br
 #peopleFollowedDIV
 div.text-center
   a Followed People 
+  li #{user.followedPeople}
 br
 #usersFollowedDIV
 div.text-center
-  a.form-text(href='/followedView') Followed Users 
-  br
+  a Followed Users 
+  li #{user.followedUsers}
+br
+
 #recommendedDIV
 div.text-center
   p Recommended for you
   br
 
-form(method='POST', action='/users/profile')
 div.text-center
-  button#contributer(name='contributer' onclick='') #{contributing}
+  a(href='/users/userlist') see all users
+br
+
+
+form(method='POST', action='/users/profile')
+  div.text-center
+    if user.contributing==="n"
+      input.btn.btn-primary(type='submit', value='Become a contributing user') 
+    else
+      input.btn.btn-primary(type='submit',value='Become a regular user') 
+

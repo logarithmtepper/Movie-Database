@@ -6,6 +6,10 @@ router.get("/", queryParser);
 router.get("/", loadPeople);
 router.get("/", respondPeople);
 
+router.get('/add/person', function(req, res){
+	res.render('addPerson.pug');
+});
+
 router.get("/:id", getPerson);
 router.get("/:id", sendPerson);
 

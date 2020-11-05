@@ -2,13 +2,23 @@ const express = require('express');
 const router = express.Router();
 const Movie = require("../movieModel");
 
+
+
 //for GET /home
 router.get("/", queryParser);
 router.get("/", loadMovies);
 router.get("/", respondMovies);
 
+router.get('/add/movie', function(req, res){
+	res.render('addMovie.pug');
+});
+
+
+
 router.get("/:id", getMovie);
 router.get("/:id", sendMovie);
+
+
 
 function queryParser(req, res, next){
 	const MAX_MOVIES = 18;

@@ -3,60 +3,25 @@ const router = express.Router();
 const passport = require('passport');
 const fs = require('fs');
 let users = require("../users.json");
-const User = require("../userModel");
+let User = require("../userModel");
 const ObjectId= require('mongoose').Types.ObjectId
 
 
-
-function isValidUser(userObj){
-  if(!userObj){
-    return false;
-  }
-  if(!userObj.username || !users.hasOwnProperty(userObj.username)){
-    return false;
-  }
-  return true;
-}
+/*
+//for GET /home
+router.get("/", queryParser);
 
 
-function createUser(newUser){
-  if(!newUser.username || !newUser.password){
-    return null;
-  }
-  if(users.hasOwnProperty(newUser.username)){
-    return null;
-  }
-  newUser.contributing = 'n';
-  newUser.followedUser = [];
-  newUser.followedPeople = [];
-  newUser.reviews = [];
-
-  users[newUser.username] = newUser;
-  return users[newUser.username];
-}
-
-
-
-
- function login(user,password){
-  for(u in users){
-    let theUser = users[u];
-    //console.log(theUser.username);
-    if (theUser.username === user && password===theUser.password){
-      return theUser;
-    }
-  }
-  return null;
-}
+router.get("/:id", getUser);
+router.get("/:id", sendUser);
+*/
 
 
 function changeContributing(user){
-  for(u in users){
-    let theUser = users[u];
-    //console.log(theUser.username);
-    if (theUser.username === user){
-      theUser.contributing = 'y';
-    }
+  if (user.contributing === 'y'){
+    user.contributing = 'n';
+  }else {
+    user.contributing = 'y';
   }
 }
 
@@ -67,29 +32,28 @@ router.get('/register', function(req, res){
 
 router.post('/register', function(req, res, next){
   const username = req.body.username;
-  //const email = req.body.email;
   const password = req.body.password;
   const password2 = req.body.password2;
   if (password!==password2){
     res.send("Password does not match");
   }else{
-    let a = createUser({username: username, password: password})
-
-    fs.writeFile('./users.json', JSON.stringify(users), function(err) {
-      if (err) throw err;
-      //console.log('complete');
-    });
-
-    if(a == null){
-      //console.log("null");
-      //res.send("account is exist, Please log in!")
-      res.render('register');
-      //account exist
-    }
-    else {
-    //req.flash('success','You are now registered and can log in');
+    let newUser = new User({
+      username:username,
+      password:password,
+      contributing:"n",
+      followedUsers: [],
+      followedPeople: [],
+      reviews: []
+    })
+    newUser.save(function(err){
+      if(err){
+        console.log(err);
+        return;
+      }else{
       res.redirect('login');
-    }
+      }
+  
+    });
   }
 });
 
@@ -98,52 +62,62 @@ router.get('/login', function(req, res){
   res.render('login');
 });
 
-router.get('/profile', function(req, res, next){
-  res.render('userProfile', {
-    username: req.username,
-    contributing: req.contributing
-  });
-});
 
 /* GET users listing. */
 router.post('/login', function (req, res, next) {
-
-  const username = req.body.uname;
-  //console.log(username);
-  let loginResult = login(username, req.body.psw);
-  let contributing = '';
-  if (loginResult !== null) {
-    
-    if (loginResult.contributing === 'n') {
-      contributing = "Become a contributing user";
-    }else{
-      contributing = "Become a regular user";
-    }
-    //return contributing, username;
-    
-    res.render('userProfile', {
-      username: username,
-      contributing: contributing
-    });
-
-  }
-  else {
-    res.render('login', {error: true});
-  }
-  (req,res,next)
+  passport.authenticate('local', {
+    successRedirect:'/users/profile',
+    failureRedirect:'/users/login',
+    failureFlash: false 
+  })(req, res, next);
 });
 
-router.post('/profile', function (req, res, next) {
-  //console.log(req.body.username);
-  changeContributing(req.username);
-  res.render('userProfile');
+router.get('/profile', ensureAuthenticated, function(req, res){
+  res.render('userProfile', {
+    user: req.user
+  })
+});
+
+router.post('/profile', ensureAuthenticated, function(req, res){
+  let user = req.user
+  changeContributing(user);
+  let query ={_id:req.user._id}
+  User.updateOne(query, user, function(err){
+    if(err){
+      console.log(err);
+      return;
+    } else {
+      res.redirect('/users/profile');
+    }
+  });
+});
+
+
+router.get('/userlist', ensureAuthenticated, function(req, res){
+  res.render('userList', {
+    user: User
+  })
 });
 
 //log out
 router.get('/logout', function(req, res){
-  //req.logout();
+  req.logout();
   //req.flash('success', 'You are logged out');
-  res.redirect('/');
+  res.redirect('/users/login');
 });
+
+
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+      return next();
+  }
+  res.redirect('/users/login');
+}
+function forwardAuthenticated(req, res, next) {
+  if (!req.isAuthenticated()) {
+      return next();
+  }
+  res.redirect('/profile');
+}
 
 module.exports = router;
