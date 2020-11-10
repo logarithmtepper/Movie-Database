@@ -59,7 +59,7 @@ genreList = removeDuplicates(genreList);
 let genres = [];
 for(i=0; i < genreList.length-1; i++) {
   genres[i] = {
-    id: [i],
+    id: i,
 		name: genreList[i],
 		movies: []
 	}
@@ -68,68 +68,90 @@ for(i=0; i < genreList.length-1; i++) {
 let people = [];
 for(i=0; i < peopleList.length-1; i++) {
   people[i] = {
-    id: [i],
+    id: i,
 		name: peopleList[i],
 		works: [],
 		collaborators: []
 	}
 }
 
-movieData.forEach(movie => {
-  for(i=0; i < people.length; i++) {
-    if(movie.Director.includes(people[i].name) || movie.Writer.includes(people[i].name) || movie.Actors.includes(people[i].name)){
-      if(!people[i].works.includes(movie.Title)){
-        people[i].works.push(movie);
-      }
-    }
-  }
-});
-
-movieData.forEach(movie => {
+movies.forEach(movie => {
   for(i=0; i < genres.length; i++) {
     if(movie.Genre.includes(genres[i].name)){
-      if(!genres[i].movies.includes(movie)){
-        genres[i].movies.push(movie);
+      if(!genres[i].movies.includes(movie.id)){
+        genres[i].movies.push(movie.id);
+      }
+    }
+  }
+  for(i=0; i < people.length; i++) {
+    if(movie.Director.includes(people[i].name) || movie.Writer.includes(people[i].name) || movie.Actors.includes(people[i].name)){
+      if(!people[i].works.includes(movie.id)){
+        people[i].works.push(movie.id);
       }
     }
   }
 });
 
-/*
-let collaboratorsString = '';
-let collaboratorsList = [];
-let seenCollaborators = {};
-let tempList = [];
-
-for(x=0; x < people.length; x++){
-  collaboratorsList = [];
-  collaboratorsString = '';
-  seenCollaborators = {};
-
-  for(i=0; i < movies.length; i++) {
-    tempList = [];
-    collaboratorsString = '';
-    if(people[x].works.includes(movies[i].Title)){
-      collaboratorsString += [movies[i].Director + ","];
-      collaboratorsString += [movies[i].Writer + ","];
-      collaboratorsString += [movies[i].Actors + ","];
-      tempList = collaboratorsString.split(',');
-
-      tempList = stringCleaner(tempList);
-      tempList = removeDuplicates(tempList);
-      tempList = tempList.map(function(d) { return d.replace(people[x].name, ''); });
-
-      collaboratorsList.push(...tempList);
+function commonItems(arr1, arr2){
+  var count = 0;
+  for(var movie1 in arr1){
+    for(var movie2 in arr2){
+      if(movie1 == movie2){
+        count+=1;
+      }
     }
   }
+  return count;
+}
 
-  for (i=0; i < collaboratorsList.length; i++) {
-    const collaborator = collaboratorsList[i];
-    seenCollaborators[collaborator] = 1 + (seenCollaborators[collaborator] || 0);
-    if (seenCollaborators[collaborator] === 2) people[x].collaborators.push(collaborator);
+function collabMaker(list1){
+  var collabs = [];
+  for(i=0; i < list1.length; i++){
+    //console.log(list1[i])
+    for(x=i; x < list1.length; x++){
+      if(list1[i].id !== list1[x].id){
+        var commonWorks = commonItems(list1[i].works, list1[x].works);
+        if(commonWorks >= 2){
+          var commonIds = `${list1[i].id}-${list1[x].id}`;
+          var dict = {};
+          dict = {
+            id: commonIds,
+            commonIds: commonWorks
+          };
+          collabs.push(dict);
+        }
+      }
+    }
+  }
+  return collabs;
+}
+
+//console.log(collabMaker(people));
+//console.log(people);
+var collabs = [];
+collabs = collabMaker(people);
+collabs.sort((a, b) => a.commonIds.localeCompare(b.commonIds))
+
+function containsObject(obj, list) {
+    for (i = 0; i < list.length; i++) {
+        if (list[i] === obj) {
+            return true;
+        }
+    }
+    return false;
+}
+
+
+for(i=0; i < collabs.length; i++) {
+  var indexes = collabs[i].id.split('-');
+  var p1 = indexes[0];
+  var p2 = indexes[1];
+
+  if(!containsObject(people[p1].collaborators, people[p2]) && !containsObject(people[p2].collaborators, people[p1])){
+    people[p1].collaborators.push(people[p2].id);
+    people[p2].collaborators.push(people[p1].id);
   }
 }
-*/
 
 let schemaMovies = [];
 let schemaPeople = [];
@@ -142,24 +164,27 @@ for(let i = 0; i < movies.length; i++){
   m.runtime = movies[i].Runtime;
   for(x = 0; x < genres.length; x++){
     if(movies[i].Genre.includes(genres[x].name)){
-      m.similar.push(...genres[x].movies);
-      m.genre.push(genres[x]);
+      let temp = genres[x].movies
+      temp.forEach(movie => {
+        m.similar.push(movie);
+      });
+      m.genre.push(genres[x].name);
     }
   }
   m.similar = removeDuplicates(m.similar);
   for(x = 0; x < people.length; x++){
     if(movies[i].Director.includes(people[x].name)){
-      m.director.push(people[x]);
+      m.director.push(people[x].id);
     }
   }
   for(x = 0; x < people.length; x++){
     if(movies[i].Writer.includes(people[x].name)){
-      m.writer.push(people[x]);
+      m.writer.push(people[x].id);
     }
   }
   for(x = 0; x < people.length; x++){
     if(movies[i].Actors.includes(people[x].name)){
-      m.actors.push(people[x]);
+      m.actors.push(people[x].id);
     }
   }
   m.plot = movies[i].Plot;
@@ -218,3 +243,8 @@ db.once('open', function() {
 
 	});
 });
+
+console.log(schemaMovies);
+console.log(schemaPeople);
+
+//memory problem: change the ammount of data stored in the objects within objects

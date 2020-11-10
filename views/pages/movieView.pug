@@ -24,25 +24,25 @@ b
   |Genres: 
 each obj in movie.genre
   -//a(href="http://localhost:3000/movies/?name=" + obj.id) #{obj.name}, 
-  |#{obj.name}, 
+  |#{obj}, 
 br
 if movie.director.length > 0
 b
   |Director(s): 
 each obj in movie.director
-  a(href="http://localhost:3000/people/" + obj.id) #{obj.name}, 
+  a(href="http://localhost:3000/people/" + obj) #{obj}, 
 br
 if movie.writer.length > 0
 b
   |Writer(s): 
 each obj in movie.writer
-  a(href="http://localhost:3000/people/" + obj.id) #{obj.name}, 
+  a(href="http://localhost:3000/people/" + obj) #{obj}, 
 br
 if movie.actors.length > 0
 b
   |Actors: 
 each obj in movie.actors
-  a(href="http://localhost:3000/people/" + obj.id) #{obj.name}, 
+  a(href="http://localhost:3000/people/" + obj) #{obj}, 
 br
 b
   |Plot: 
@@ -56,7 +56,7 @@ if movie.similar.length > 0
 b
   |Similar Movies: 
 each obj in movie.similar
-  a(href="http://localhost:3000/movies/" + obj.id) #{obj.Title}, 
+  a(href="http://localhost:3000/movies/" + obj) #{obj}, 
 br
 if movie.ratings.length > 0
 b
