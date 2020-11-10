@@ -19,21 +19,30 @@ b
   |Runtime: 
 |#{movie.runtime}
 br
+if movie.genre.length > 0
 b
-  |Genre: 
-|#{movie.genre}
+  |Genres: 
+each obj in movie.genre
+  -//a(href="http://localhost:3000/movies/?name=" + obj.id) #{obj.name}, 
+  |#{obj.name}, 
 br
+if movie.director.length > 0
 b
-  |Director: 
-a(href="http://localhost:3000/people/" +movie.Director) #{movie.director}
+  |Director(s): 
+each obj in movie.director
+  a(href="http://localhost:3000/people/" + obj.id) #{obj.name}, 
 br
+if movie.writer.length > 0
 b
-  |Writer: 
-|#{movie.writer}
+  |Writer(s): 
+each obj in movie.writer
+  a(href="http://localhost:3000/people/" + obj.id) #{obj.name}, 
 br
+if movie.actors.length > 0
 b
   |Actors: 
-|#{movie.actors}
+each obj in movie.actors
+  a(href="http://localhost:3000/people/" + obj.id) #{obj.name}, 
 br
 b
   |Plot: 
@@ -43,9 +52,11 @@ b
   |Language: 
 |#{movie.language}
 br
+if movie.similar.length > 0
 b
   |Similar Movies: 
-br
+each obj in movie.similar
+  a(href="http://localhost:3000/movies/" + obj.id) #{obj.Title}, 
 br
 if movie.ratings.length > 0
 b

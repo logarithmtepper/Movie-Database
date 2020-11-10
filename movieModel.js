@@ -20,16 +20,16 @@ let movieSchema = Schema({
 		type: String,
 	},
   genre: {
-		type: String,
+		type: [],
 	},
   director: {
-		type: String,
+		type: [],
 	},
   writer: {
-		type: String,
+		type: [],
 	},
   actors: {
-		type: String,
+		type: [],
 	},
   plot: {
 		type: String,

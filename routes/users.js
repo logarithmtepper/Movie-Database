@@ -52,7 +52,7 @@ router.post('/register', function(req, res, next){
       }else{
       res.redirect('login');
       }
-  
+
     });
   }
 });
@@ -68,7 +68,7 @@ router.post('/login', function (req, res, next) {
   passport.authenticate('local', {
     successRedirect:'/users/profile',
     failureRedirect:'/users/login',
-    failureFlash: false 
+    failureFlash: false
   })(req, res, next);
 });
 

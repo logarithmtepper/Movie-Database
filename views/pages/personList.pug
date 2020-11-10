@@ -1,1 +1,20 @@
 include ../partials/header
+form
+  .form-group.row.mx-sm-5.text-center
+      each person in people
+        .col-sm-2
+          - var id = person.id
+          a(style="font-style:italic;color:black" href="http://localhost:3000/people/" + id) #{person.name}
+          br
+          br
+          br
+      - var length = qstring.length
+      if current > 1
+        - let url = "/people?page=" + (current-1)
+        - if(length > 0){ url += "&" + qstring; }
+        .col-sm-2
+          a(style="font-weight:bold;" href=url) Previous
+      - url = "/people?page=" + (current+1)
+      - if(length > 0){ url += "&" + qstring; }
+      .col-sm-2
+        a(style="font-weight:bold;" href=url) Next

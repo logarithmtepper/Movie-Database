@@ -49,8 +49,8 @@ app.use('/users', userRouter);
 let movieRouter = require('./routes/movies');
 app.use('/movies', movieRouter);
 
-//const peopleRouter = require('./routes/people');
-//app.use('/people', peopleRouter);
+const peopleRouter = require('./routes/people');
+app.use('/people', peopleRouter);
 
 //Respond with right page data if requested
 
@@ -61,7 +61,6 @@ app.get('/', (req, res, next) => {
 app.get('/forgotPassword', (req, res, next) => {
   res.render('forgotPassword.pug')
 })
-
 
 app.get('/personList', (req, res, next) => {
   res.render('personList.pug')

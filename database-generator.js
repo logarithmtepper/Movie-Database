@@ -10,47 +10,60 @@ let movies = []; //Stores all of the movies, key=z
 let z = 0;
 movieData.forEach(movie => {
   movies[z] = movie;
+  movies[z].id = z;
   z++;
 });
 
 let peopleString = "";
+let genreString = "";
 movieData.forEach(movie => {
   peopleString += [movie.Director + ","];
   peopleString += [movie.Writer + ","];
   peopleString += [movie.Actors + ","];
+  genreString += [movie.Genre + ","];
 });
 
 let peopleList = peopleString.split(',');
-
-peopleList = peopleList.map(function(d) { return d.replace(' (original story by)', ''); });
-peopleList = peopleList.map(function(d) { return d.replace(' (screenplay by)', ''); });
-peopleList = peopleList.map(function(d) { return d.replace(' (screen story by)', ''); });
-peopleList = peopleList.map(function(d) { return d.replace(' (screenplay)', ''); });
-peopleList = peopleList.map(function(d) { return d.replace(' (story)', ''); });
-peopleList = peopleList.map(function(d) { return d.replace(' (based on the book by)', ''); });
-peopleList = peopleList.map(function(d) { return d.replace(' (characters)', ''); });
-peopleList = peopleList.map(function(d) { return d.replace(' (novel)', ''); });
-peopleList = peopleList.map(function(d) { return d.replace(' (screenplay \"Father\'s Little Dividend\")', ''); });
-peopleList = peopleList.map(function(d) { return d.replace(' (play)', ''); });
-peopleList = peopleList.map(function(d) { return d.replace(' (earlier screenplay)', ''); });
+let genreList = genreString.split(',');
 
 function setCharAt(str,index,chr) {
 	return str.substr(0,index) + chr + str.substr(index+1);
 }
 
-function removeDuplicates(array) {
-  return array.filter((a, b) => array.indexOf(a) === b)
-};
-
-for(i=0; i < peopleList.length; i++) {
-  if(peopleList[i].charAt(0) === " "){
-    peopleList[i] = setCharAt(peopleList[i],0,'');
-  }
+function removeDuplicates(arr) {
+    return arr.filter((a, b) => arr.indexOf(a) === b)
 }
 
+function stringCleaner(arr) {
+  let newArr = [];
+  for (var s of arr){
+    var temp = "";
+    for (var c of s){
+      if(c == '('){
+        break;
+      }
+      temp += c;
+    }
+    temp = temp.replace(/^\s+|\s+$|\s+(?=\s)/g, "");
+    newArr.push(temp);
+  }
+  return newArr;
+}
+
+peopleList = stringCleaner(peopleList);
 peopleList = removeDuplicates(peopleList);
 
-console.log(peopleList);
+genreList = stringCleaner(genreList);
+genreList = removeDuplicates(genreList);
+
+let genres = [];
+for(i=0; i < genreList.length-1; i++) {
+  genres[i] = {
+    id: [i],
+		name: genreList[i],
+		movies: []
+	}
+}
 
 let people = [];
 for(i=0; i < peopleList.length-1; i++) {
@@ -66,12 +79,23 @@ movieData.forEach(movie => {
   for(i=0; i < people.length; i++) {
     if(movie.Director.includes(people[i].name) || movie.Writer.includes(people[i].name) || movie.Actors.includes(people[i].name)){
       if(!people[i].works.includes(movie.Title)){
-        people[i].works.push(movie.Title);
+        people[i].works.push(movie);
       }
     }
   }
 });
 
+movieData.forEach(movie => {
+  for(i=0; i < genres.length; i++) {
+    if(movie.Genre.includes(genres[i].name)){
+      if(!genres[i].movies.includes(movie)){
+        genres[i].movies.push(movie);
+      }
+    }
+  }
+});
+
+/*
 let collaboratorsString = '';
 let collaboratorsList = [];
 let seenCollaborators = {};
@@ -90,25 +114,11 @@ for(x=0; x < people.length; x++){
       collaboratorsString += [movies[i].Writer + ","];
       collaboratorsString += [movies[i].Actors + ","];
       tempList = collaboratorsString.split(',');
-      tempList = tempList.map(function(d) { return d.replace(' (original story by)', ''); });
-      tempList = tempList.map(function(d) { return d.replace(' (screenplay by)', ''); });
-      tempList = tempList.map(function(d) { return d.replace(' (screen story by)', ''); });
-      tempList = tempList.map(function(d) { return d.replace(' (screenplay)', ''); });
-      tempList = tempList.map(function(d) { return d.replace(' (story)', ''); });
-      tempList = tempList.map(function(d) { return d.replace(' (story)', ''); });
-      tempList = tempList.map(function(d) { return d.replace(' (based on the book by)', ''); });
-      tempList = tempList.map(function(d) { return d.replace(' (characters)', ''); });
-      tempList = tempList.map(function(d) { return d.replace(' (novel)', ''); });
-      tempList = tempList.map(function(d) { return d.replace(' (screenplay \"Father\'s Little Dividend\")', ''); });
-      tempList = tempList.map(function(d) { return d.replace(' (play)', ''); });
-      tempList = tempList.map(function(d) { return d.replace(' (earlier screenplay)', ''); });
-      for(y=0; y < tempList.length; y++) {
-        if(tempList[y].charAt(0) === " "){
-          tempList[y] = setCharAt(tempList[y],0,'');
-        }
-      }
+
+      tempList = stringCleaner(tempList);
       tempList = removeDuplicates(tempList);
       tempList = tempList.map(function(d) { return d.replace(people[x].name, ''); });
+
       collaboratorsList.push(...tempList);
     }
   }
@@ -119,6 +129,7 @@ for(x=0; x < people.length; x++){
     if (seenCollaborators[collaborator] === 2) people[x].collaborators.push(collaborator);
   }
 }
+*/
 
 let schemaMovies = [];
 let schemaPeople = [];
@@ -129,17 +140,35 @@ for(let i = 0; i < movies.length; i++){
   m.rated = movies[i].Rated;
   m.released = movies[i].Released;
   m.runtime = movies[i].Runtime;
-  m.genre = movies[i].Genre;
-  m.director = movies[i].Director;
-  m.writer = movies[i].Writer;
-  m.actors = movies[i].Actors;
+  for(x = 0; x < genres.length; x++){
+    if(movies[i].Genre.includes(genres[x].name)){
+      m.similar.push(...genres[x].movies);
+      m.genre.push(genres[x]);
+    }
+  }
+  m.similar = removeDuplicates(m.similar);
+  for(x = 0; x < people.length; x++){
+    if(movies[i].Director.includes(people[x].name)){
+      m.director.push(people[x]);
+    }
+  }
+  for(x = 0; x < people.length; x++){
+    if(movies[i].Writer.includes(people[x].name)){
+      m.writer.push(people[x]);
+    }
+  }
+  for(x = 0; x < people.length; x++){
+    if(movies[i].Actors.includes(people[x].name)){
+      m.actors.push(people[x]);
+    }
+  }
   m.plot = movies[i].Plot;
   m.language = movies[i].Language;
   m.poster = movies[i].Poster;
   m.ratings = movies[i].Ratings
-  m.similar = [];
 	schemaMovies.push(m);
 }
+
 for(let i = 0; i < people.length; i++){
 	let p = new Person();
   p.id = i;
@@ -148,6 +177,9 @@ for(let i = 0; i < people.length; i++){
   p.collaborators = people[i].collaborators;
 	schemaPeople.push(p);
 }
+
+schemaPeople.sort((a, b) => a.name.localeCompare(b.name))
+schemaMovies.sort((a, b) => a.title.localeCompare(b.title))
 
 mongoose.connect('mongodb://localhost/database', {useNewUrlParser: true});
 let db = mongoose.connection;

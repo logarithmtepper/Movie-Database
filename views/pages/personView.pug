@@ -1,4 +1,21 @@
 include ../partials/header
+br
+b
+  |Name: 
+|#{person.name}
+br
+if person.works.length > 0
+b
+  |Works: 
+each work in person.works
+  a(href="http://localhost:3000/movies/" + work.id) #{work.Title}, 
+br
+if person.collaborators.length > 0
+b
+  |Collaborators: 
+each collab in person.collaborators
+  a(href="http://localhost:3000/people/" + collab.id) #{collab.name}, 
+
 //-
   When viewing the page for a particular person, the user must be able to:
   1. See a history of all of this person’s work. Each movie entry should allow the
@@ -8,4 +25,3 @@ include ../partials/header
   3. Choose to follow this person. If a user follows a person, the user should
   receive a notification any time a new movie is added to the database that
   involves this person, or any time this person is added to an existing movie.
-
