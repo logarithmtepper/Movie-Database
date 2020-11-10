@@ -16,7 +16,8 @@ movieData.forEach(movie => {
 
 let peopleString = "";
 let genreString = "";
-movieData.forEach(movie => {
+
+movies.forEach(movie => {
   peopleString += [movie.Director + ","];
   peopleString += [movie.Writer + ","];
   peopleString += [movie.Actors + ","];
@@ -25,30 +26,6 @@ movieData.forEach(movie => {
 
 let peopleList = peopleString.split(',');
 let genreList = genreString.split(',');
-
-function setCharAt(str,index,chr) {
-	return str.substr(0,index) + chr + str.substr(index+1);
-}
-
-function removeDuplicates(arr) {
-    return arr.filter((a, b) => arr.indexOf(a) === b)
-}
-
-function stringCleaner(arr) {
-  let newArr = [];
-  for (var s of arr){
-    var temp = "";
-    for (var c of s){
-      if(c == '('){
-        break;
-      }
-      temp += c;
-    }
-    temp = temp.replace(/^\s+|\s+$|\s+(?=\s)/g, "");
-    newArr.push(temp);
-  }
-  return newArr;
-}
 
 peopleList = stringCleaner(peopleList);
 peopleList = removeDuplicates(peopleList);
@@ -92,55 +69,9 @@ movies.forEach(movie => {
   }
 });
 
-function commonItems(arr1, arr2){
-  var count = 0;
-  for(var movie1 in arr1){
-    for(var movie2 in arr2){
-      if(movie1 == movie2){
-        count+=1;
-      }
-    }
-  }
-  return count;
-}
-
-function collabMaker(list1){
-  var collabs = [];
-  for(i=0; i < list1.length; i++){
-    //console.log(list1[i])
-    for(x=i; x < list1.length; x++){
-      if(list1[i].id !== list1[x].id){
-        var commonWorks = commonItems(list1[i].works, list1[x].works);
-        if(commonWorks >= 2){
-          var commonIds = `${list1[i].id}-${list1[x].id}`;
-          var dict = {};
-          dict = {
-            id: commonIds,
-            commonIds: commonWorks
-          };
-          collabs.push(dict);
-        }
-      }
-    }
-  }
-  return collabs;
-}
-
-//console.log(collabMaker(people));
-//console.log(people);
 var collabs = [];
 collabs = collabMaker(people);
 collabs.sort((a, b) => a.commonIds.localeCompare(b.commonIds))
-
-function containsObject(obj, list) {
-    for (i = 0; i < list.length; i++) {
-        if (list[i] === obj) {
-            return true;
-        }
-    }
-    return false;
-}
-
 
 for(i=0; i < collabs.length; i++) {
   var indexes = collabs[i].id.split('-');
@@ -244,5 +175,70 @@ db.once('open', function() {
 	});
 });
 
+function setCharAt(str,index,chr) {
+	return str.substr(0,index) + chr + str.substr(index+1);
+}
+
+function removeDuplicates(arr) {
+    return arr.filter((a, b) => arr.indexOf(a) === b)
+}
+
+function stringCleaner(arr) {
+  let newArr = [];
+  for (var s of arr){
+    var temp = "";
+    for (var c of s){
+      if(c == '('){
+        break;
+      }
+      temp += c;
+    }
+    temp = temp.replace(/^\s+|\s+$|\s+(?=\s)/g, "");
+    newArr.push(temp);
+  }
+  return newArr;
+}
+
+function commonItems(arr1, arr2){
+  var count = 0;
+  for(var movie1 in arr1){
+    for(var movie2 in arr2){
+      if(movie1 == movie2){
+        count+=1;
+      }
+    }
+  }
+  return count;
+}
+
+function containsObject(obj, list) {
+    for (i = 0; i < list.length; i++) {
+        if (list[i] === obj) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function collabMaker(list1){
+  var collabs = [];
+  for(i=0; i < list1.length; i++){
+    for(x=i; x < list1.length; x++){
+      if(list1[i].id !== list1[x].id){
+        var commonWorks = commonItems(list1[i].works, list1[x].works);
+        if(commonWorks >= 2){
+          var commonIds = `${list1[i].id}-${list1[x].id}`;
+          var dict = {};
+          dict = {
+            id: commonIds,
+            commonIds: commonWorks
+          };
+          collabs.push(dict);
+        }
+      }
+    }
+  }
+  return collabs;
+}
 //When running with large movie data
 //memory problem: heap seems to grow exponetially before running out of room and crashing
