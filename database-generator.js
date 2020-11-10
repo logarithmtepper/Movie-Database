@@ -244,7 +244,5 @@ db.once('open', function() {
 	});
 });
 
-console.log(schemaMovies);
-console.log(schemaPeople);
-
-//memory problem: change the ammount of data stored in the objects within objects
+//When running with large movie data
+//memory problem: heap seems to grow exponetially before running out of room and crashing
