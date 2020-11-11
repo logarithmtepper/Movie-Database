@@ -4,13 +4,19 @@ const User = require("./userModel");
 const Person = require("./personModel");
 
 //create and save movies and people
-let movieData = require("./movie-data-short.json");
+let movieData = require("./movie-data.json");
+//let movieData = require("./movie-data-short.json");
 
 let movies = []; //Stores all of the movies, key=z
 let z = 0;
 movieData.forEach(movie => {
   movies[z] = movie;
   movies[z].id = z;
+  movies[z].directorObj = [];
+  movies[z].writerObj = [];
+  movies[z].actorsObj = [];
+  movies[z].similarObj = [];
+  movies[z].genreObj = [];
   z++;
 });
 
@@ -58,17 +64,39 @@ movies.forEach(movie => {
       if(!genres[i].movies.includes(movie.id)){
         genres[i].movies.push(movie.id);
       }
+      //let temp = genres[i].movies
+      //for (x=0; x < 5; x++){
+      //maybe use Math.random(); here for dif similar movies
+        //movie.similarObj.push(temp[x]);
+      //}
+      movie.genreObj.push(genres[i].name);
     }
+    //movie.similarObj = removeDuplicates(movie.similarObj);
+    //console.log(movie.similarObj);
   }
   for(i=0; i < people.length; i++) {
-    if(movie.Director.includes(people[i].name) || movie.Writer.includes(people[i].name) || movie.Actors.includes(people[i].name)){
+    if(movie.Director.includes(people[i].name)){
       if(!people[i].works.includes(movie.id)){
         people[i].works.push(movie.id);
       }
+      movie.directorObj.push(people[i].id);
+    }
+    if(movie.Writer.includes(people[i].name)){
+      if(!people[i].works.includes(movie.id)){
+        people[i].works.push(movie.id);
+      }
+      movie.writerObj.push(people[i].id);
+    }
+    if(movie.Actors.includes(people[i].name)){
+      if(!people[i].works.includes(movie.id)){
+        people[i].works.push(movie.id);
+      }
+      movie.actorsObj.push(people[i].id);
     }
   }
 });
 
+/*
 var collabs = [];
 collabs = collabMaker(people);
 collabs.sort((a, b) => a.commonIds.localeCompare(b.commonIds))
@@ -83,6 +111,7 @@ for(i=0; i < collabs.length; i++) {
     people[p2].collaborators.push(people[p1].id);
   }
 }
+*/
 
 let schemaMovies = [];
 let schemaPeople = [];
@@ -93,31 +122,11 @@ for(let i = 0; i < movies.length; i++){
   m.rated = movies[i].Rated;
   m.released = movies[i].Released;
   m.runtime = movies[i].Runtime;
-  for(x = 0; x < genres.length; x++){
-    if(movies[i].Genre.includes(genres[x].name)){
-      let temp = genres[x].movies
-      temp.forEach(movie => {
-        m.similar.push(movie);
-      });
-      m.genre.push(genres[x].name);
-    }
-  }
-  m.similar = removeDuplicates(m.similar);
-  for(x = 0; x < people.length; x++){
-    if(movies[i].Director.includes(people[x].name)){
-      m.director.push(people[x].id);
-    }
-  }
-  for(x = 0; x < people.length; x++){
-    if(movies[i].Writer.includes(people[x].name)){
-      m.writer.push(people[x].id);
-    }
-  }
-  for(x = 0; x < people.length; x++){
-    if(movies[i].Actors.includes(people[x].name)){
-      m.actors.push(people[x].id);
-    }
-  }
+  //m.similar = movies[i].similarObj;
+  m.genre = movies[i].genreObj;
+  m.director = movies[i].directorObj;
+  m.writer = movies[i].writerObj;
+  m.actors = movies[i].actorsObj;
   m.plot = movies[i].Plot;
   m.language = movies[i].Language;
   m.poster = movies[i].Poster;
@@ -130,7 +139,7 @@ for(let i = 0; i < people.length; i++){
   p.id = i;
   p.name = people[i].name;
   p.works = people[i].works;
-  p.collaborators = people[i].collaborators;
+  //p.collaborators = people[i].collaborators;
 	schemaPeople.push(p);
 }
 
@@ -199,6 +208,15 @@ function stringCleaner(arr) {
   return newArr;
 }
 
+function containsObject(obj, list) {
+    for (i = 0; i < list.length; i++) {
+        if (list[i] === obj) {
+            return true;
+        }
+    }
+    return false;
+}
+
 function commonItems(arr1, arr2){
   var count = 0;
   for(var movie1 in arr1){
@@ -209,15 +227,6 @@ function commonItems(arr1, arr2){
     }
   }
   return count;
-}
-
-function containsObject(obj, list) {
-    for (i = 0; i < list.length; i++) {
-        if (list[i] === obj) {
-            return true;
-        }
-    }
-    return false;
 }
 
 function collabMaker(list1){
@@ -240,5 +249,3 @@ function collabMaker(list1){
   }
   return collabs;
 }
-//When running with large movie data
-//memory problem: heap seems to grow exponetially before running out of room and crashing
