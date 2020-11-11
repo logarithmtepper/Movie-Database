@@ -1,0 +1,18 @@
+MISSING FEATURES I PLAN TO ADD:
+similar movie list 4 each movie (this is done but current solution causes heap to run out of space)
+frequent collaborator list 4 each collaborator ^
+search movies by genre
+
+addMovie function (will add this once I finish the database generator and I know it works properly with large data) -> (contents of movie and person model still subject to change)
+addReview function ^
+addPerson function ^
+editMovie functionality ^
+
+user Route with similar functionality to movie and people routes (once they're done) 
+
+DONE:
+search movies by name (in query ?name=moviename search bar still needs to add text to query somehow)
+list of people with links on movie page
+list of movies with links on people page
+movies sorted alphabetically
+people sorted alphabetically
