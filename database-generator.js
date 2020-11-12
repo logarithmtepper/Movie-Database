@@ -4,8 +4,8 @@ const User = require("./userModel");
 const Person = require("./personModel");
 
 //create and save movies and people
-//let movieData = require("./movie-data.json");
-let movieData = require("./movie-data-short.json");
+let movieData = require("./movie-data.json");
+//let movieData = require("./movie-data-short.json");
 
 let movies = []; //Stores all of the movies, key=z
 let z = 0;
