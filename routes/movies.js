@@ -45,7 +45,7 @@ router.post('/add', function(req, res, next){
 	  	ratings:  [],
 	  	similar: [],
 	})
-	
+
 	newMovie.save(function(err){
 		if(err){
 		  	console.log(err);
@@ -56,6 +56,10 @@ router.post('/add', function(req, res, next){
 	});
 });
 
+router.post('/search', function(req, res, next){
+	const searchText = req.body.searchText;
+	res.redirect('/movies?name=' + searchText);
+});
 
 router.get("/:id", getMovie);
 router.get("/:id", sendMovie);
@@ -128,6 +132,7 @@ function loadMovies(req, res, next){
 
   Movie.find()
   .where("title").regex(new RegExp(".*" + req.query.name + ".*", "i"))
+	//.where("genre").regex(new RegExp(".*" + req.query.genre + ".*", "i"))
   .limit(amount)
   .skip(startIndex)
   .exec(function(err, results){
