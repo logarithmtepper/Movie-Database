@@ -54,7 +54,7 @@ function queryParser(req, res, next){
 
 function getMovie(req, res, next){
   let id = req.params.id;
-  Movie.findOne({ id:id}, function (err, result) {
+  Movie.findOne({id:id}, function (err, result) {
 		if(err){
 			res.status(500).send("Error reading movies.");
 			console.log(err);
