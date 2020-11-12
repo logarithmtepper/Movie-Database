@@ -1,11 +1,28 @@
 include ../partials/header
 h2 Add Movies
 #addMovieDIV.container
+
 form(method='POST', action='/movies/add')
   #form-group
     label(for='mname')
       b Movie Name:   
     input#mnameInput(type='text' placeholder='Enter Movie Name' name='mname' required='')
+
+  #form-group
+    label(for='rated')
+      b Rated: 
+    input#dnameInput(type='text' placeholder='Enter Rated' name='rated' required='')  
+
+  #form-group
+    label(for='released')
+      b Released Year:  
+    input#dnameInput(type='text' placeholder='Enter The Released Year' name='released' required='') 
+
+  #form-group
+    label(for='language')
+      b Language:  
+    input#dnameInput(type='text' placeholder='Enter The Language' name='language' required='')  
+
   #form-group
     label(for='wname')
       b Writer Name(s) (seperate by comma): 
@@ -13,12 +30,21 @@ form(method='POST', action='/movies/add')
   #form-group
     label(for='dname')
       b Director Name(s) (seperate by comma): 
-    input#dnameInput(type='text' placeholder='Enter Director Name(s)' name='dname' required='')
+    input#dnameInput(type='text' placeholder='Enter Director Name(s)' name='dname' required='') 
 
   #form-group
     label(for='aname')
       b Actor Name(s) (seperate by comma):  
-    input#anameInput(type='text' placeholder='Enter Actor Name(s)' name='aname' required='')
+    input#anameInput(type='text' placeholder='Enter Actor Name(s)' name='aname' required='')  
+
+  #form-group
+    label(for='genre')
+      b Genre(s) (seperate by comma):  
+    input#anameInput(type='text' placeholder='Enter Actor Name(s)' name='genre' required='')  
+
+  #form-group
+    label(for='runtime')
+      b Run Time:  
+    input#anameInput(type='text' placeholder='Enter Actor Name(s)' name='runtime' required='')  
 
   button.btn.btn-primary(type='submit') Add Movie
-|   This is incomplete

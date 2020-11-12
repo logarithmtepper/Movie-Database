@@ -2,14 +2,60 @@ const express = require('express');
 const router = express.Router();
 const Movie = require("../movieModel");
 
+start = 10000;
 //for GET /home
 router.get("/", queryParser);
 router.get("/", loadMovies);
 router.get("/", respondMovies);
 
-router.get('/add/movie', function(req, res){
+router.get('/add', function(req, res){
 	res.render('addMovie.pug');
 });
+
+router.post('/add', function(req, res, next){
+	const moviename = req.body.mname;
+	const rated = req.body.rated;
+	const released = req.body.year;
+	const runtime = req.body.runtime;
+	var genre = req.body.genre;
+	var writername = req.body.wname;
+	var directorname = req.body.dname;
+	var actorname = req.body.aname;
+	const language = req.body.language;
+
+	const genreList = genre.split(";");
+	const directorList = writername.split(";");
+	const writerList = directorname.split(";");
+	const actorList = actorname.split(";");
+	const id = start++;
+
+	//need to check if this movie is exist
+	let newMovie = new Movie({
+		id: id,
+		title:moviename,
+		rated: rated,
+	  	released: released,
+	  	runtime: runtime,
+	  	genre: genreList,
+	 	director: directorList,
+	  	writer: writerList,
+	  	actors: actorList,
+	  	plot: '',
+	  	language: language,
+	  	ratings:  [],
+	  	similar: [],
+	})
+	
+	newMovie.save(function(err){
+		if(err){
+		  	console.log(err);
+		  	return;
+		}else{
+			res.redirect('/movies/add');
+		}
+	});
+});
+
 
 router.get("/:id", getMovie);
 router.get("/:id", sendMovie);
