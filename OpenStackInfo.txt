@@ -1,0 +1,3 @@
+IP: 134.117.134.114
+VM_USERNAME: student
+VM_PASSWORD: student
