@@ -100,10 +100,8 @@ router.post('/edit/:id', function(req, res){
 	});
   });
 
-
-
 router.post('/search', function(req, res, next){
-	const searchGenre = "";
+	const searchGenre = req.body.searchGenre;
 	const searchText = req.body.searchText;
 	res.redirect('/movies?name=' + searchText + "&genre=" + searchGenre);
 });
