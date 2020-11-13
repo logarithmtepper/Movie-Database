@@ -2,11 +2,13 @@ const express = require('express');
 const router = express.Router();
 const Movie = require("../movieModel");
 const User = require("../userModel");
+const Genre = require("../genreModel");
 
 start = 10000;
 //for GET /home
 router.get("/", queryParser);
 router.get("/", loadMovies);
+router.get("/", loadGenres);
 router.get("/", respondMovies);
 
 router.get('/add', function(req, res){
@@ -58,10 +60,12 @@ router.post('/add', function(req, res, next){
 });
 
 router.post('/search', function(req, res, next){
+	const searchGenre = "";
 	const searchText = req.body.searchText;
-	res.redirect('/movies?name=' + searchText + "&genre=" + searchText);
+	res.redirect('/movies?name=' + searchText + "&genre=" + searchGenre);
 });
 
+router.get("/:id", loadGenres);
 router.get("/:id", getMovie);
 router.get("/:id", sendMovie);
 
@@ -126,7 +130,7 @@ function sendMovie(req, res, next){
 		"application/json": function(){
 			res.status(200).json(req.movie);
 		},
-		"text/html": () => { res.render("movieView", {movie: req.movie}); }
+		"text/html": () => { res.render("movieView", {genres:res.genres, movie:req.movie}); }
 	});
 	next();
 }
@@ -134,12 +138,10 @@ function sendMovie(req, res, next){
 function loadMovies(req, res, next){
   let startIndex = ((req.query.page-1) * req.query.limit);
   let amount = req.query.limit;
-	//let filter = choice to search by genre or name etc.
-
+	
   Movie.find()
 	.where("title").regex(new RegExp(".*" + req.query.name + ".*", "i"))
-	//if statement here
-	//.where("genre").regex(new RegExp(".*" + req.query.genre + ".*", "i"))
+	.where("genre").regex(new RegExp(".*" + req.query.genre + ".*", "i"))
   .limit(amount)
   .skip(startIndex)
   .exec(function(err, results){
@@ -155,9 +157,24 @@ function loadMovies(req, res, next){
 	})
 }
 
+function loadGenres(req, res, next){
+	Genre.find()
+	.exec(function(err, results){
+		if(err){
+			res.status(500).send("Error reading movies.");
+			console.log(err);
+			return;
+		}
+		console.log("Found " + results.length + " genres");
+		res.genres = results;
+		next();
+		return;
+	})
+}
+
 function respondMovies(req, res, next){
   res.format({
-  "text/html": () => {res.render("movieList", {movies:res.movies, qstring: req.qstring, current: req.query.page} )},
+  "text/html": () => {res.render("movieList", {movies:res.movies, genres:res.genres, qstring: req.qstring, current: req.query.page} )},
   "application/json": () => {res.status(200).json(res.movies)}
   });
   next();

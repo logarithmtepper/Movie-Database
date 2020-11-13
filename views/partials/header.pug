@@ -24,6 +24,14 @@ form(method='POST', action='/movies/search')
         a(style='font-size:18px;font-weight:bold' href='/users/login') Log In
         | &nbsp; 
     .col-sm-5
+      if genres
+        .input-group
+          .btn-group
+            button.btn.btn-secondary.dropdown-toggle(type='submit' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
+              | Filter by Genre
+              .dropdown-menu(aria-labelledby='btnGroupDrop1')
+                each genre in genres
+                  a.dropdown-item(href='#') #{genre.name}
       .input-group
         input#searchText.form-control(name="searchText" style="margin:25px" type='text' placeholder='Enter search')
         button.btn.btn-primary(style="margin:25px" type='submit') Search

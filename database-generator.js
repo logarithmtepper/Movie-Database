@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Movie = require("./movieModel");
 const User = require("./userModel");
 const Person = require("./personModel");
+const Genre = require("./genreModel");
 
 //create and save movies and people
 //let movieData = require("./movie-data.json");
@@ -115,6 +116,7 @@ for(i=0; i < collabs.length; i++) {
 
 let schemaMovies = [];
 let schemaPeople = [];
+let schemaGenres = [];
 for(let i = 0; i < movies.length; i++){
 	let m = new Movie();
   m.id = i;
@@ -143,8 +145,17 @@ for(let i = 0; i < people.length; i++){
 	schemaPeople.push(p);
 }
 
-schemaPeople.sort((a, b) => a.name.localeCompare(b.name))
+for(let i = 0; i < genres.length; i++){
+	let g = new Genre();
+  g.id = i;
+  g.name = genres[i].name;
+  g.movies = genres[i].movies;
+	schemaGenres.push(g);
+}
+
 schemaMovies.sort((a, b) => a.title.localeCompare(b.title))
+schemaPeople.sort((a, b) => a.name.localeCompare(b.name))
+schemaGenres.sort((a, b) => a.name.localeCompare(b.name))
 
 mongoose.connect('mongodb://localhost/database', {useNewUrlParser: true});
 let db = mongoose.connection;
@@ -177,6 +188,17 @@ db.once('open', function() {
 				completedPeople++;
 				if(completedPeople >= people.length){
 					console.log(completedPeople + " people saved");
+				}
+			})
+		});
+
+    let completedGenres = 0;
+		schemaGenres.forEach(genre => {
+			genre.save(function(err,result){
+				if(err) throw err;
+				completedGenres++;
+				if(completedGenres >= genres.length){
+					console.log(completedGenres + " genres saved");
 				}
 			})
 		});
