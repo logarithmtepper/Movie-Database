@@ -1,0 +1,24 @@
+include ../partials/header
+h2 #{title}
+#addMovieDIV.container
+
+form(method='POST', action='/movies/edit'+movie.id)
+
+
+  #form-group
+    label(for='wname')
+      b Writer Name(s) (seperate by comma): 
+    input#wnameInput(type='text' placeholder='Edit Writer Name(s)' name='wname' required='')
+  #form-group
+    label(for='dname')
+      b Director Name(s) (seperate by comma): 
+    input#dnameInput(type='text' placeholder='Edit Director Name(s)' name='dname' required='') 
+
+  #form-group
+    label(for='aname')
+      b Actor Name(s) (seperate by comma):  
+    input#anameInput(type='text' placeholder='Edit Actor Name(s)' name='aname' required='')  
+
+
+  button.btn.btn-primary(type='submit') Submit
+

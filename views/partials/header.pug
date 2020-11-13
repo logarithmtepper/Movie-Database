@@ -10,9 +10,10 @@ form(method='POST', action='/movies/search')
       br
       a(style='font-size:18px;font-weight:bold' href='/') Home
       | &nbsp; 
+      a(style='font-size:18px;font-weight:bold' href='/users/profile') My Account
+      | &nbsp; 
       if user
-        a(style='font-size:18px;font-weight:bold' href='/users/profile') My Account
-        | &nbsp; 
+
         a(style='font-size:18px;font-weight:bold' href='/users/logout') Logout
         | &nbsp; 
         if user.contributing === 'y'

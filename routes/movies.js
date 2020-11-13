@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const Movie = require("../movieModel");
-const User = require("../userModel");
-const Genre = require("../genreModel");
+
+const Movie = require("../models/movieModel");
+const User = require("../models/userModel");
+const Genre = require("../models/genreModel");
 
 start = 10000;
 //for GET /home
@@ -58,6 +59,48 @@ router.post('/add', function(req, res, next){
 		}
 	});
 });
+
+
+router.get('/edit/:id', ensureAuthenticated, function(req, res){
+	Movie.findOne({id:req.params.id}, function(err, movie){
+	  	res.render('editMovie', {
+			title:'Edit Movie',
+			movie:movie
+	  	});
+	});
+});
+
+  // Update Submit POST Route
+router.post('/edit/:id', function(req, res){
+
+	var writername = req.body.wname;
+	var directorname = req.body.dname;
+	var actorname = req.body.aname;
+
+	const directorList = writername.split(";");
+	const writerList = directorname.split(";");
+	const actorList = actorname.split(";");
+
+	let movie = {};
+
+	movie.writer = writerList;
+	movie.actor = actorList;
+	movie.director = directorList;
+
+	let query = {id:req.params.id}
+
+	Article.updateOne(query, movie, function(err){
+	  if(err){
+		console.log(err);
+		return;
+	  } else {
+		req.flash('success', 'Article Updated');
+		res.redirect('/movies');
+	  }
+	});
+  });
+
+
 
 router.post('/search', function(req, res, next){
 	const searchGenre = "";
@@ -138,7 +181,7 @@ function sendMovie(req, res, next){
 function loadMovies(req, res, next){
   let startIndex = ((req.query.page-1) * req.query.limit);
   let amount = req.query.limit;
-	
+
   Movie.find()
 	.where("title").regex(new RegExp(".*" + req.query.name + ".*", "i"))
 	.where("genre").regex(new RegExp(".*" + req.query.genre + ".*", "i"))
@@ -179,5 +222,16 @@ function respondMovies(req, res, next){
   });
   next();
 }
+
+
+function ensureAuthenticated(req, res, next){
+	if(req.isAuthenticated()){
+	  return next();
+	} else {
+	  req.flash('danger', 'Please login');
+	  res.redirect('/users/login');
+	}
+  }
+
 
 module.exports = router;
