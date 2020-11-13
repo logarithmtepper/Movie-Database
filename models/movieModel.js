@@ -46,10 +46,6 @@ let movieSchema = Schema({
   similar: {
 		type: [],
 	}
-  //directors: [Schema.Types.ObjectId],
-  //writers: [Schema.Types.ObjectId],
-  //actors: [Schema.Types.ObjectId],
-  //similar: [Schema.Types.ObjectId]
 });
 
 module.exports = mongoose.model("Movie", movieSchema);
