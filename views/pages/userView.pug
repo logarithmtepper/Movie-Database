@@ -8,13 +8,13 @@ br
 br
 |Follow Users: 
 if display_user.followedUsers.length > 0
-    each u in display_user.followedUsers
-        a(href="http://localhost:3000/users/" + u) #{u}, 
+    each id in display_user.followedUsers
+        a(href="http://localhost:3000/users/" + id) #{id}, 
 br
 |Follow People: 
 if display_user.followedPeople.length > 0
-    each user in display_user.followedPeople
-        a(href="http://localhost:3000/people/" + people.id) #{people.name}, 
+    each id in display_user.followedPeople
+        a(href="http://localhost:3000/people/" + id) #{id}, 
 br
 #peopleFollowedDIV
 
