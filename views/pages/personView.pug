@@ -8,13 +8,13 @@ if person.works.length > 0
 b
   |Works: 
 each work in person.works
-  a(href="http://localhost:3000/movies/" + work) #{work}, 
+  a(href="http://localhost:9999/movies/" + work) #{work}, 
 br
 if person.collaborators.length > 0
 b
   |Collaborators: 
 each collab in person.collaborators
-  a(href="http://localhost:3000/people/" + collab) #{collab}, 
+  a(href="http://localhost:9999/people/" + collab) #{collab}, 
 
 //-
   3. Choose to follow this person. If a user follows a person, the user should

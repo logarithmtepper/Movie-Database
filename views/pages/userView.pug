@@ -9,15 +9,15 @@ br
 |Follow Users: 
 if display_user.followedUsers.length > 0
     each id in display_user.followedUsers
-        a(href="http://localhost:3000/users/" + id) #{id}, 
+        a(href="http://localhost:9999/users/" + id) #{id}, 
 br
 |Follow People: 
 if display_user.followedPeople.length > 0
     each id in display_user.followedPeople
-        a(href="http://localhost:3000/people/" + id) #{id}, 
+        a(href="http://localhost:9999/people/" + id) #{id}, 
 br
 #peopleFollowedDIV
 
-  a(href="http://localhost:3000/users/unfollow/" + display_user.id) Unfollow
+  a(href="http://localhost:9999/users/unfollow/" + display_user.id) Unfollow
   br
-  a(href="http://localhost:3000/users/follow/" + display_user.id) Follow
+  a(href="http://localhost:9999/users/follow/" + display_user.id) Follow
