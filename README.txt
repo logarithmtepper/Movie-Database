@@ -1,10 +1,9 @@
 Students: Thomas Soubliere 101144900, Wenyu Zhang 100941511
 Project: Movie Database
 
-Running instructions:
-    requires node and pug
-    $ npm install       //to install node modules
-    $ npm run start     //should start the server on localhost port 3000
+Running instructions (type these commands in cmd):
+	node database-generator
+	node server
 
 functionality:
     user login: localhost:3000/users/login
