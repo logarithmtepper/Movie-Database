@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Movie = require("../movieModel");
+const User = require("../userModel");
 
 start = 10000;
 //for GET /home
