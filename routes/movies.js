@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const Movie = require("../movieModel");
-const User = require("../userModel");
+const Movie = require("../models/movieModel");
+const User = require("../models/userModel");
 
 start = 10000;
 //for GET /home
@@ -56,6 +56,54 @@ router.post('/add', function(req, res, next){
 		}
 	});
 });
+
+
+router.get('/edit/:id', ensureAuthenticated, function(req, res){
+	Movie.findOne({id:req.params.id}, function(err, movie){
+	  	res.render('editMovie', {
+			title:'Edit Movie',
+			movie:movie
+	  	});
+	});
+});
+  
+  // Update Submit POST Route
+router.post('/edit/:id', function(req, res){
+	var genre = req.body.genre;
+	var writername = req.body.wname;
+	var directorname = req.body.dname;
+	var actorname = req.body.aname;
+	const genreList = genre.split(";");
+	const directorList = writername.split(";");
+	const writerList = directorname.split(";");
+	const actorList = actorname.split(";");
+
+	let movie = {};
+	movie.title = req.body.title;
+	movie.rated = req.body.rated;
+	movie.released = req.body.released;
+	movie.runtime = req.body.runtime;
+	movie.language = req.body.language;
+	
+	movie.genre = genreList;
+	movie.writer = writerList;
+	movie.actor = actorList;
+	movie.director = directorList;
+
+	let query = {id:req.params.id}
+  
+	Article.updateOne(query, movie, function(err){
+	  if(err){
+		console.log(err);
+		return;
+	  } else {
+		req.flash('success', 'Article Updated');
+		res.redirect('/movies');
+	  }
+	});
+  });
+
+
 
 router.post('/search', function(req, res, next){
 	const searchText = req.body.searchText;
@@ -162,5 +210,16 @@ function respondMovies(req, res, next){
   });
   next();
 }
+
+
+function ensureAuthenticated(req, res, next){
+	if(req.isAuthenticated()){
+	  return next();
+	} else {
+	  req.flash('danger', 'Please login');
+	  res.redirect('/users/login');
+	}
+  }
+  
 
 module.exports = router;

@@ -2,8 +2,7 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const fs = require('fs');
-let users = require("../users.json");
-let User = require("../userModel");
+let User = require("../models/userModel");
 const ObjectId= require('mongoose').Types.ObjectId
 
 
@@ -41,7 +40,9 @@ router.post('/register', function(req, res, next){
 
 
 router.get('/login', function(req, res){
-  res.render('login');
+  res.render('login',{
+    //user:user
+  });
 });
 
 

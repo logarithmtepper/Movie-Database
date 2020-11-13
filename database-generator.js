@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-const Movie = require("./movieModel");
-const User = require("./userModel");
-const Person = require("./personModel");
+const Movie = require("./models/movieModel");
+const User = require("./models/userModel");
+const Person = require("./models/personModel");
 
 //create and save movies and people
 //let movieData = require("./movie-data.json");

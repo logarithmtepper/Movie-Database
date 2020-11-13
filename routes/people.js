@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Person = require("../personModel");
+const Person = require("../models/personModel");
 
 router.get("/", queryParser);
 router.get("/", loadPeople);
