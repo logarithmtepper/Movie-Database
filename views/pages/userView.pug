@@ -1,4 +1,21 @@
 include ../partials/header
-#reviewsDIV
+#UserViewDIV
+|Name: 
+|#{display_user.username}
+br
+|Contributing: 
+|#{display_user.contributing}
+br
+|Follow Users: 
+if display_user.followedUsers.length > 0
+    each u in display_user.followedUsers
+        a(href="http://localhost:3000/users/" + u) #{u}, 
+br
+|Follow People: 
+if display_user.followedPeople.length > 0
+    each user in display_user.followedPeople
+        a(href="http://localhost:3000/people/" + people.id) #{people.name}, 
+br
 #peopleFollowedDIV
-button#followUser(name='followUser' onclick='') Follow
+
+  a(href="http://localhost:3000/users/follow/" + display_user.id) Follow

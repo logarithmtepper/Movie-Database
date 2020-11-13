@@ -1,1 +1,20 @@
 include ../partials/header
+form
+  .form-group.row.mx-sm-5.text-center
+      each display_user in users
+        .col-sm-2
+          - var id = display_user._id
+          a(href="http://localhost:3000/users/" + id) #{display_user.username}
+          br
+          br
+          br
+      - var length = qstring.length
+      if current > 1
+        - let url = "/users?page=" + (current-1)
+        - if(length > 0){ url += "&" + qstring; }
+        .col-sm-2
+          a(style="font-weight:bold;" href=url) Previous
+      - url = "/users?page=" + (current+1)
+      - if(length > 0){ url += "&" + qstring; }
+      .col-sm-2
+        a(style="font-weight:bold;" href=url) Next
