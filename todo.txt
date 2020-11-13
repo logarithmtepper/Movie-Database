@@ -17,3 +17,12 @@ list of people with links on movie page
 list of movies with links on people page
 movies sorted alphabetically
 people sorted alphabetically
+
+Ivory:
+done:
+editMovie added
+addMovie  added
+follow user
+
+To do:
+follow people: 
