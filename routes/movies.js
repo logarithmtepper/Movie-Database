@@ -69,23 +69,17 @@ router.get('/edit/:id', ensureAuthenticated, function(req, res){
   
   // Update Submit POST Route
 router.post('/edit/:id', function(req, res){
-	var genre = req.body.genre;
+
 	var writername = req.body.wname;
 	var directorname = req.body.dname;
 	var actorname = req.body.aname;
-	const genreList = genre.split(";");
+
 	const directorList = writername.split(";");
 	const writerList = directorname.split(";");
 	const actorList = actorname.split(";");
 
 	let movie = {};
-	movie.title = req.body.title;
-	movie.rated = req.body.rated;
-	movie.released = req.body.released;
-	movie.runtime = req.body.runtime;
-	movie.language = req.body.language;
 	
-	movie.genre = genreList;
 	movie.writer = writerList;
 	movie.actor = actorList;
 	movie.director = directorList;
