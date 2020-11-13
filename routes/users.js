@@ -67,7 +67,7 @@ router.get('/follow/:id', ensureAuthenticated, function (req, res, next) {
           console.log(err);
           return;
         } else {
-          req.flash('success', 'Followed');
+          //res.flash("You have followed this user");
           res.redirect('/users/'+id);
         }
       });
@@ -75,7 +75,28 @@ router.get('/follow/:id', ensureAuthenticated, function (req, res, next) {
   });
 
 });
+router.get('/unfollow/:id', ensureAuthenticated, function (req, res, next) {
+  const id = req.params.id;
+  const user_id = req.user._id;
+  User.findById(user_id, function(err, user){
+    if (user.followedUsers.includes(id)){
+      const index = user.followedUsers.indexOf(id);
+      user.followedUsers.splice(index,1);
+      User.updateOne({_id:user_id}, user, function(err){
+        if(err){
+          console.log(err);
+          return;
+        } else {
+          //res.flash("You have unfollowed this user");
+          res.redirect('/users/'+id);
+        }
+      });
+    }else{
+      res.send("You have not followed this user yet");
+    }
+  });
 
+});
 router.get('/profile', ensureAuthenticated, function(req, res){
   res.render('userProfile', {
     user: req.user
