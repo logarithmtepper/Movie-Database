@@ -58,7 +58,7 @@ router.post('/add', function(req, res, next){
 
 router.post('/search', function(req, res, next){
 	const searchText = req.body.searchText;
-	res.redirect('/movies?name=' + searchText);
+	res.redirect('/movies?name=' + searchText + "&genre=" + searchText);
 });
 
 router.get("/:id", getMovie);
@@ -99,6 +99,10 @@ function queryParser(req, res, next){
 	if(!req.query.name){
 		req.query.name = "?";
 	}
+
+	if(!req.query.genre){
+		req.query.genre = "?";
+	}
 	next();
 }
 
@@ -129,9 +133,11 @@ function sendMovie(req, res, next){
 function loadMovies(req, res, next){
   let startIndex = ((req.query.page-1) * req.query.limit);
   let amount = req.query.limit;
+	//let filter = choice to search by genre or name etc.
 
   Movie.find()
-  .where("title").regex(new RegExp(".*" + req.query.name + ".*", "i"))
+	.where("title").regex(new RegExp(".*" + req.query.name + ".*", "i"))
+	//if statement here
 	//.where("genre").regex(new RegExp(".*" + req.query.genre + ".*", "i"))
   .limit(amount)
   .skip(startIndex)
