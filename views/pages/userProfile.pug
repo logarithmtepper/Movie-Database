@@ -7,7 +7,7 @@ div.text-center
   p My Reviews
   if user.reviews.length > 0
     each review in user.reviews
-      a(href="http://localhost:9999/reviews/" + review) #{review}, 
+      a(href="http://localhost:3000/reviews/" + review) #{review}, 
 br
 #peopleFollowedDIV
 div.text-center
@@ -15,7 +15,7 @@ div.text-center
   br
   if user.followedPeople.length > 0
     each id in user.followedPeople
-      a(href="http://localhost:9999/people/" + id) #{id}, 
+      a(href="http://localhost:3000/people/" + id) #{id}, 
 br
 br
 #usersFollowedDIV
@@ -24,9 +24,9 @@ div.text-center
   br
   if user.followedUsers.length > 0
     each id in user.followedUsers
-      a(href="http://localhost:9999/users/" + id) #{id}
+      a(href="http://localhost:3000/users/" + id) #{id}
       | &nbsp; 
-      a(href="http://localhost:9999/users/unfollow/" + id) Unfollow
+      a(href="http://localhost:3000/users/unfollow/" + id) Unfollow
       br
 br
 

@@ -25,4 +25,4 @@ addMovie  added
 follow user
 
 To do:
-follow people: 
+follow people:
