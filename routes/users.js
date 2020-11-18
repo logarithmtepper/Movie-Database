@@ -96,8 +96,8 @@ router.get('/unfollow/:id', ensureAuthenticated, function (req, res, next) {
       res.send("You have not followed this user yet");
     }
   });
-
 });
+
 router.get('/profile', ensureAuthenticated, function(req, res){
   res.render('userProfile', {
     user: req.user

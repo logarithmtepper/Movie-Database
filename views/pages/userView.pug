@@ -16,7 +16,7 @@ if display_user.followedPeople.length > 0
     each id in display_user.followedPeople
         a(href="http://localhost:3000/people/" + id) #{id}, 
 br
-#peopleFollowedDIV
+#UserFollowedDIV
 
   a(href="http://localhost:3000/users/unfollow/" + display_user.id) Unfollow
   br

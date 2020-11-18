@@ -5,7 +5,7 @@ const Movie = require("../models/movieModel");
 const User = require("../models/userModel");
 const Genre = require("../models/genreModel");
 
-start = 10000;
+let start = 10000;
 //for GET /home
 router.get("/", queryParser);
 router.get("/", loadMovies);
