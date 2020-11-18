@@ -1,7 +1,17 @@
 include ../partials/header
 h2 Add People
 #addPersonDIV.container
-  label(for='pname')
-    b Person Name
-  input#pnameInput(type='text' placeholder='Enter Name' name='pname' required='')
-  button(onclick='') Add
+
+
+form(method='POST', action='/people/add')
+  #form-group
+    label(for='name')
+      b Name: 
+    input#nameInput(type='text' placeholder='Enter Name' name='name' required='')
+
+  #form-group
+    label(for='work')
+      b Work(s) (seperate by comma): 
+    input#workInput(type='text' placeholder='Enter Works' name='work')
+
+  button.btn.btn-primary(type='submit') Add

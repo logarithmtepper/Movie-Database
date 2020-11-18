@@ -20,3 +20,8 @@ each collab in person.collaborators
   3. Choose to follow this person. If a user follows a person, the user should
   receive a notification any time a new movie is added to the database that
   involves this person, or any time this person is added to an existing movie.
+#peopleFollowedDIV
+
+  a(href="http://localhost:3000/people/unfollow/" + person.id) Unfollow
+  br
+  a(href="http://localhost:3000/people/follow/" + person.id) Follow

@@ -1,13 +1,79 @@
 const express = require('express');
 const router = express.Router();
 const Person = require("../models/personModel");
+let User = require("../models/userModel");
+let start = 100000;
 
 router.get("/", queryParser);
 router.get("/", loadPeople);
 router.get("/", respondPeople);
 
-router.get('/add/person', function(req, res){
+//add person
+router.get('/add', function(req, res){
 	res.render('addPerson.pug');
+});
+
+router.post('/add', function(req, res, next){
+	const name = req.body.name;
+	const id = start++;
+	//need to check if this movie is exist
+	let newPerson = new Person({
+		id: id,
+		works: [],
+		collaborators:[],
+		name: name,
+	})
+	newPerson.save(function(err){
+		if(err){
+		  	console.log(err);
+		  	return;
+		}else{
+			res.redirect('/people/add');
+		}
+	});
+});
+
+router.get('/follow/:id', ensureAuthenticated, function (req, res, next) {
+	const id = req.params.id;
+	const user_id = req.user._id;
+	User.findById(user_id, function(err, user){
+	  if (user.followedPeople.includes(id)){
+		res.send("You have followed this user");
+	  }else{
+		user.followedPeople.push(id)
+		User.updateOne({_id:user_id}, user, function(err){
+		  if(err){
+			console.log(err);
+			return;
+		  } else {
+			//res.flash("You have followed this user");
+			res.redirect('/people/'+id);
+		  }
+		});
+	  }
+	});
+});
+  
+router.get('/unfollow/:id', ensureAuthenticated, function (req, res, next) {
+	const id = req.params.id;
+	const user_id = req.user._id;
+	User.findById(user_id, function(err, user){
+	  if (user.followedPeople.includes(id)){
+		const index = user.followedPeople.indexOf(id);
+		user.followedPeople.splice(index,1);
+		User.updateOne({_id:user_id}, user, function(err){
+		  if(err){
+			console.log(err);
+			return;
+		  } else {
+			//res.flash("You have unfollowed this user");
+			res.redirect('/people/'+id);
+		  }
+		});
+	  }else{
+		res.send("You have not followed this user yet");
+	  }
+	});
 });
 
 router.get("/:id", getPerson);
@@ -103,6 +169,14 @@ function respondPeople(req, res, next){
   "application/json": () => {res.status(200).json(res.people)}
   });
   next();
+}
+
+
+function ensureAuthenticated(req, res, next) {
+	if (req.isAuthenticated()) {
+		return next();
+	}
+	res.redirect('/users/login');
 }
 
 module.exports = router;
