@@ -2,23 +2,27 @@ include ../partials/header
 h2 #{title}
 #addMovieDIV.container
 
-form(method='POST', action='/movies/edit'+movie.id)
+form(method='POST', action='/movies/edit/'+movie.id)
+
+  #form-group
+    label(for='name')
+      b Name: 
+    input#nameInput(type='text' placeholder='Enter Name' name='name' required='')
 
 
   #form-group
-    label(for='wname')
-      b Writer Name(s) (seperate by comma): 
-    input#wnameInput(type='text' placeholder='Edit Writer Name(s)' name='wname' required='')
-  #form-group
-    label(for='dname')
-      b Director Name(s) (seperate by comma): 
-    input#dnameInput(type='text' placeholder='Edit Director Name(s)' name='dname' required='') 
-
-  #form-group
-    label(for='aname')
-      b Actor Name(s) (seperate by comma):  
-    input#anameInput(type='text' placeholder='Edit Actor Name(s)' name='aname' required='')  
-
+    label(for='type')
+      b Role in this work: 
+      br
+      input(type='checkbox' name="actor") 
+      |Actor
+      br
+      input(type='checkbox' name="writer") 
+      |Writer
+      br
+      input(type='checkbox' name="director") 
+      |Director
+      br
 
   button.btn.btn-primary(type='submit') Submit
 

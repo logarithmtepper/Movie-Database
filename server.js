@@ -27,7 +27,15 @@ app.use(session({
 }));
 
 // Express Messages Middleware
-app.use(require('connect-flash')());
+app.use(flash());
+app.use((req,res,next)=> {
+  res.locals.success_msg = req.flash('success_msg');
+  res.locals.error_msg = req.flash('error_msg');
+  res.locals.error  = req.flash('error');
+next();
+});
+
+
 app.use(function (req, res, next) {
   res.locals.messages = require('express-messages')(req, res);
   next();
@@ -50,30 +58,19 @@ let movieRouter = require('./routes/movies');
 app.use('/movies', movieRouter);
 
 const peopleRouter = require('./routes/people');
-app.use('/people', peopleRouter);
+app.use('/people', peopleRouter.router);
 
 //Respond with right page data if requested
 
 app.get('/', (req, res, next) => {
-  res.render('home.pug')
-})
+  res.render('home.pug',{
+    user:req.user
+  });
+});
 
 app.get('/forgotPassword', (req, res, next) => {
   res.render('forgotPassword.pug')
 })
-
-app.get('/personList', (req, res, next) => {
-  res.render('personList.pug')
-})
-
-app.get('/personView', (req, res, next) => {
-  res.render('personView.pug')
-})
-
-app.get('/userView', (req, res, next) => {
-  res.render('userView.pug')
-})
-
 
 mongoose.connect('mongodb://localhost/database', {useNewUrlParser: true, useUnifiedTopology: true});
 

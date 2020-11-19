@@ -11,7 +11,20 @@ form(method='POST', action='/people/add')
 
   #form-group
     label(for='work')
-      b Work(s) (seperate by comma): 
+      b Work (optional): 
     input#workInput(type='text' placeholder='Enter Works' name='work')
 
+  #form-group
+    label(for='type')
+      b Role in this work: 
+      br
+      input(type='checkbox' name="actor") 
+      |Actor
+      br
+      input(type='checkbox' name="writer") 
+      |Writer
+      br
+      input(type='checkbox' name="director") 
+      |Director
+      br
   button.btn.btn-primary(type='submit') Add

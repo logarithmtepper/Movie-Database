@@ -2,35 +2,82 @@ const express = require('express');
 const router = express.Router();
 const Person = require("../models/personModel");
 let User = require("../models/userModel");
-let start = 100000;
+const Movie = require("../models/movieModel");
+start = 100000;
 
 router.get("/", queryParser);
 router.get("/", loadPeople);
 router.get("/", respondPeople);
 
 //add person
-router.get('/add', function(req, res){
-	res.render('addPerson.pug');
+router.get('/add', ensureAuthenticated, function(req, res){
+	res.render('addPerson.pug',{
+		user:req.user
+	});
 });
 
-router.post('/add', function(req, res, next){
-	const name = req.body.name;
+function addPerson(name,works,collaborators){
 	const id = start++;
-	//need to check if this movie is exist
 	let newPerson = new Person({
 		id: id,
-		works: [],
-		collaborators:[],
-		name: name,
+		works: [works],
+		collaborators:collaborators,
+		name:name
 	})
 	newPerson.save(function(err){
 		if(err){
-		  	console.log(err);
-		  	return;
-		}else{
-			res.redirect('/people/add');
+			console.log(err);
+			return;
 		}
 	});
+	return newPerson.id;
+}
+router.post('/add', ensureAuthenticated, function(req, res, next){
+  const name = req.body.name;
+  const work = req.body.work;
+  
+
+  //need to check if this person is exist
+  Person.findOne({name:name}, function (err, result) {
+	if(err){
+	  res.status(500).send("Error reading people.");
+	  console.log(err);
+	  return;
+	}
+	if (result!==null){
+	  res.send('This person is exist in the database');
+	}else{
+	  if (work !== ''){
+		if (req.body.director === null||req.body.director === null||req.body.director === null){
+		  res.send("Select this person's role in this work");
+		}
+		Movie.findOne({title:work}, function(err, movie){
+			if(err){
+				res.status(500).send("Error reading people.");
+				console.log(err);
+				return;
+			}
+			let collaborators = movie.actors;
+			const personID = addPerson(name,movie.id,collaborators)
+			if (req.body.actor != null){movie.actors.push(personID);}
+			if (req.body.writer != null){movie.writer.push(personID);}
+			if (req.body.director != null){movie.director.push(personID);}
+			Movie.updateOne({title:work}, movie, function(err){
+			  if(err){
+				console.log(err);
+				return;
+			  } 
+			});
+			res.redirect('/people/add');
+
+		})
+	  }else{//when work entry is empty
+		addPerson(name,'',[]);
+		res.redirect('/people/add');
+	  }
+	}
+  });
+  
 });
 
 router.get('/follow/:id', ensureAuthenticated, function (req, res, next) {
@@ -179,4 +226,7 @@ function ensureAuthenticated(req, res, next) {
 	res.redirect('/users/login');
 }
 
-module.exports = router;
+module.exports = {
+	router:router, 
+	addPerson:addPerson
+};

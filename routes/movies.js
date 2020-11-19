@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-
+const addPerson = require("./people").addPerson;
 const Movie = require("../models/movieModel");
-const User = require("../models/userModel");
+const Person = require("../models/personModel");
 const Genre = require("../models/genreModel");
 
-let start = 10000;
+start = 10000;
 //for GET /home
 router.get("/", queryParser);
 router.get("/", loadMovies);
@@ -13,25 +13,47 @@ router.get("/", loadGenres);
 router.get("/", respondMovies);
 
 router.get('/add', function(req, res){
-	res.render('addMovie.pug');
+	res.render('addMovie.pug',{
+		user:req.user
+	});
 });
 
+function findPersonID(list){
+  for (i in list){
+	Person.findOne({name:list[i]}, function (err, person) {
+	  if(err){
+		res.status(500).send("Error reading people.");
+		console.log(err);
+		return;
+	  }
+	  if (person===null){
+		list[i] = addPerson(list[i],'',[]);
+		return list[i];
+	  }else{
+		list[i] = person.id;
+		return list[i];
+	  }
+	});
+  }
+  return list;
+}
 router.post('/add', function(req, res, next){
 	const moviename = req.body.mname;
 	const rated = req.body.rated;
 	const released = req.body.year;
 	const runtime = req.body.runtime;
-	var genre = req.body.genre;
-	var writername = req.body.wname;
-	var directorname = req.body.dname;
-	var actorname = req.body.aname;
 	const language = req.body.language;
 
-	const genreList = genre.split(";");
-	const directorList = writername.split(";");
-	const writerList = directorname.split(";");
-	const actorList = actorname.split(";");
+	const genreList = req.body.genre.split(",");
+	var directorList = req.body.dname.split(",");
+	var writerList = req.body.wname.split(",");
+	var actorList = req.body.aname.split(",");
 	const id = start++;
+
+	const director = findPersonID(directorList);
+	const writer = findPersonID(writerList);
+	const actor = findPersonID(actorList);
+
 
 	//need to check if this movie is exist
 	let newMovie = new Movie({
@@ -41,9 +63,9 @@ router.post('/add', function(req, res, next){
 	  	released: released,
 	  	runtime: runtime,
 	  	genre: genreList,
-	 	director: directorList,
-	  	writer: writerList,
-	  	actors: actorList,
+	 	director: director,
+	  	writer: writer,
+	  	actors: actor,
 	  	plot: '',
 	  	language: language,
 	  	ratings:  [],
@@ -65,38 +87,70 @@ router.get('/edit/:id', ensureAuthenticated, function(req, res){
 	Movie.findOne({id:req.params.id}, function(err, movie){
 	  	res.render('editMovie', {
 			title:'Edit Movie',
-			movie:movie
+			movie:movie,
+			user:req.user
 	  	});
 	});
 });
 
   // Update Submit POST Route
 router.post('/edit/:id', function(req, res){
-
-	var writername = req.body.wname;
-	var directorname = req.body.dname;
-	var actorname = req.body.aname;
-
-	const directorList = writername.split(";");
-	const writerList = directorname.split(";");
-	const actorList = actorname.split(";");
-
-	let movie = {};
-
-	movie.writer = writerList;
-	movie.actor = actorList;
-	movie.director = directorList;
-
-	let query = {id:req.params.id}
-
-	Article.updateOne(query, movie, function(err){
+	const name = req.body.name;
+	const query = {id:req.params.id}
+	//need to check if this person is exist
+	Person.findOne({name:name}, function (err, person) {
 	  if(err){
+		res.status(500).send("Error reading people.");
 		console.log(err);
 		return;
-	  } else {
-		req.flash('success', 'Article Updated');
-		res.redirect('/movies');
 	  }
+	  if (person===null){
+		res.redirect('/people/add');
+	  }else{
+		  if (req.body.director === null||req.body.director === null||req.body.director === null){
+			res.send("Select this person's role in this work");
+		  }
+		  Movie.findOne(query, function(err, movie){
+			  if(err){
+				  res.status(500).send("Error reading people.");
+				  console.log(err);
+				  return;
+			  }
+			  if (person.works.includes(movie.id)){
+				  res.redirect('/movies/'+movie.id);
+				  return;
+			  }
+			  let collaborators = movie.actors;
+			  for (i of collaborators){
+				if (!person.collaborators.includes(i)){
+					person.collaborators.push(i);
+				}
+			  }
+			  person.works.push(movie.id)
+			  if (req.body.actor != null){
+				  movie.actors.push(person.id)
+			  }
+			  if (req.body.writer != null){
+				  movie.writer.push(person.id)
+			  }
+			  if (req.body.director != null){
+				  movie.director.push(person.id)
+			  }
+			  Movie.updateOne(query, movie, function(err){
+				if(err){
+				  console.log(err);
+				  return;
+				} 
+			  });
+			  Person.updateOne({name:name}, person, function(err){
+				if(err){
+				  console.log(err);
+				  return;
+				} 
+			  });
+			  res.redirect('/movies/'+req.params.id)
+		  })
+		}
 	});
   });
 

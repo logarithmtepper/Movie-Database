@@ -11,7 +11,7 @@ router.get('/register', function(req, res){
   res.render('register');
 });
 
-router.post('/register', function(req, res, next){
+router.post('/register', function(req, res){
   const username = req.body.username;
   const password = req.body.password;
   const password2 = req.body.password2;
@@ -41,10 +41,10 @@ router.post('/register', function(req, res, next){
 
 router.get('/login', function(req, res){
   res.render('login',{
+    
     //user:user
   });
 });
-
 
 /* GET users listing. */
 router.post('/login', function (req, res, next) {
@@ -74,8 +74,9 @@ router.get('/follow/:id', ensureAuthenticated, function (req, res, next) {
       });
     }
   });
-
 });
+
+
 router.get('/unfollow/:id', ensureAuthenticated, function (req, res, next) {
   const id = req.params.id;
   const user_id = req.user._id;
@@ -101,7 +102,8 @@ router.get('/unfollow/:id', ensureAuthenticated, function (req, res, next) {
 router.get('/profile', ensureAuthenticated, function(req, res){
   res.render('userProfile', {
     user: req.user
-  })
+    
+  });
 });
 
 router.post('/profile', ensureAuthenticated, function(req, res){

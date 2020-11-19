@@ -4,8 +4,6 @@ frequent collaborator list 4 each collaborator (this is done but current solutio
 
 addMovie function (will add this once I finish the database generator and I know it works properly with large data) -> (contents of movie and person model still subject to change)
 addReview function (will add this once I finish the database generator and I know it works properly with large data) -> (contents of movie and person model still subject to change)
-addPerson function (will add this once I finish the database generator and I know it works properly with large data) -> (contents of movie and person model still subject to change)
-editMovie functionality (will add this once I finish the database generator and I know it works properly with large data) -> (contents of movie and person model still subject to change)
 
 user mongoose database same as movies and people (once they're done)
 user Route with similar functionality to movie and people routes (once they're done)
@@ -21,7 +19,9 @@ Ivory:
 done:
 editMovie added
 addMovie  added
-follow user
+addPerson   added
+follow user added
+follow people: added
 
 To do:
-follow people:
+edit the whole database while addMovie

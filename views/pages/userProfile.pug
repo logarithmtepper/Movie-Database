@@ -15,8 +15,11 @@ div.text-center
   br
   if user.followedPeople.length > 0
     each id in user.followedPeople
-      a(href="http://localhost:3000/people/" + id) #{id}, 
-br
+      a(href="http://localhost:3000/people/" + id) #{id} 
+      | &nbsp; 
+      a(href="http://localhost:3000/people/unfollow/" + id) Unfollow
+      br
+
 br
 #usersFollowedDIV
 div.text-center
