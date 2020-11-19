@@ -69,13 +69,16 @@ movies.forEach(movie => {
       //let temp = genres[i].movies
       //for (x=0; x < 5; x++){
       //maybe use Math.random(); here for dif similar movies
+      //if(temp[x]){
         //movie.similarObj.push(temp[x]);
+      //}
       //}
       movie.genreObj.push(genres[i].name);
     }
     //movie.similarObj = removeDuplicates(movie.similarObj);
     //console.log(movie.similarObj);
   }
+  //console.log(movie.similarObj);
   for(i=0; i < people.length; i++) {
     if(movie.Director.includes(people[i].name)){
       if(!people[i].works.includes(movie.id)){
@@ -125,7 +128,7 @@ for(let i = 0; i < movies.length; i++){
   m.rated = movies[i].Rated;
   m.released = movies[i].Released;
   m.runtime = movies[i].Runtime;
-  //m.similar = movies[i].similarObj;
+  m.similar = movies[i].similarObj;
   m.genre = movies[i].genreObj;
   m.director = movies[i].directorObj;
   m.writer = movies[i].writerObj;
