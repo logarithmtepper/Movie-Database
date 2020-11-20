@@ -6,8 +6,8 @@ const Person = require("./models/personModel");
 const Genre = require("./models/genreModel");
 
 //create and save movies and people
-//let movieData = require("./movie-data.json");
-let movieData = require("./movie-data-short.json");
+let movieData = require("./movie-data.json");
+//let movieData = require("./movie-data-short.json");
 
 let movies = []; //Stores all of the movies, key=z
 let z = 0;
@@ -66,19 +66,18 @@ movies.forEach(movie => {
       if(!genres[i].movies.includes(movie.id)){
         genres[i].movies.push(movie.id);
       }
-      //let temp = genres[i].movies
-      //for (x=0; x < 5; x++){
-      //maybe use Math.random(); here for dif similar movies
-      //if(temp[x]){
-        //movie.similarObj.push(temp[x]);
-      //}
-      //}
+      if(movies.similarObj == null){
+        let temp = genres[i].movies
+        for (x=0; x < 2; x++){
+          let y = Math.floor(Math.random() * temp.length);
+          if(temp[y] && !movie.similarObj.includes(temp[y])){
+            movie.similarObj.push(temp[y]);
+          }
+        }
+      }
       movie.genreObj.push(genres[i].name);
     }
-    //movie.similarObj = removeDuplicates(movie.similarObj);
-    //console.log(movie.similarObj);
   }
-  //console.log(movie.similarObj);
   for(i=0; i < people.length; i++) {
     if(movie.Director.includes(people[i].name)){
       if(!people[i].works.includes(movie.id)){
@@ -106,6 +105,7 @@ var collabs = [];
 collabs = collabMaker(people);
 collabs.sort((a, b) => a.commonIds.localeCompare(b.commonIds))
 
+/*
 for(i=0; i < collabs.length; i++) {
   var indexes = collabs[i].id.split('-');
   var p1 = indexes[0];
