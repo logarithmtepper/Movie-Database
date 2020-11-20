@@ -6,8 +6,8 @@ const Person = require("./models/personModel");
 const Genre = require("./models/genreModel");
 
 //create and save movies and people
-let movieData = require("./movie-data.json");
-//let movieData = require("./movie-data-short.json");
+//let movieData = require("./movie-data.json");
+let movieData = require("./movie-data-short.json");
 
 let movies = []; //Stores all of the movies, key=z
 let z = 0;
@@ -63,8 +63,8 @@ for(i=0; i < peopleList.length-1; i++) {
 movies.forEach(movie => {
   for(i=0; i < genres.length; i++) {
     if(movie.Genre.includes(genres[i].name)){
-      if(!genres[i].movies.includes(movie.id)){
-        genres[i].movies.push(movie.id);
+      if(!genres[i].movies.includes({id: movie.id, name: movie.Title})){
+        genres[i].movies.push({id: movie.id, name: movie.Title});
       }
       if(movies.similarObj == null){
         let temp = genres[i].movies
@@ -80,22 +80,22 @@ movies.forEach(movie => {
   }
   for(i=0; i < people.length; i++) {
     if(movie.Director.includes(people[i].name)){
-      if(!people[i].works.includes(movie.id)){
-        people[i].works.push(movie.id);
+      if(!people[i].works.includes({id: movie.id, name: movie.Title})){
+        people[i].works.push({id: movie.id, name: movie.Title});
       }
-      movie.directorObj.push(people[i].id);
+      movie.directorObj.push({id: people[i].id, name: people[i].name});
     }
     if(movie.Writer.includes(people[i].name)){
-      if(!people[i].works.includes(movie.id)){
-        people[i].works.push(movie.id);
+      if(!people[i].works.includes({id: movie.id, name: movie.Title})){
+        people[i].works.push({id: movie.id, name: movie.Title});
       }
-      movie.writerObj.push(people[i].id);
+      movie.writerObj.push({id: people[i].id, name: people[i].name});
     }
     if(movie.Actors.includes(people[i].name)){
-      if(!people[i].works.includes(movie.id)){
-        people[i].works.push(movie.id);
+      if(!people[i].works.includes({id: movie.id, name: movie.Title})){
+        people[i].works.push({id: movie.id, name: movie.Title});
       }
-      movie.actorsObj.push(people[i].id);
+      movie.actorsObj.push({id: people[i].id, name: people[i].name});
     }
   }
 });

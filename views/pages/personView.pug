@@ -8,7 +8,7 @@ if person.works.length > 0
 b
   |Works: 
 each work in person.works
-  a(href="http://localhost:3000/movies/" + work) #{work}, 
+  a(href="http://localhost:3000/movies/" + work.id) #{work.name}, 
 br
 if person.collaborators.length > 0
 b
