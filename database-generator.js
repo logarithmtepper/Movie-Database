@@ -103,9 +103,9 @@ movies.forEach(movie => {
 /*
 var collabs = [];
 collabs = collabMaker(people);
-collabs.sort((a, b) => a.commonIds.localeCompare(b.commonIds))
+//collabs.sort((a, b) => a.commonIds.localeCompare(b.commonIds))
 
-/*
+
 for(i=0; i < collabs.length; i++) {
   var indexes = collabs[i].id.split('-');
   var p1 = indexes[0];
@@ -145,7 +145,7 @@ for(let i = 0; i < people.length; i++){
   p.id = i;
   p.name = people[i].name;
   p.works = people[i].works;
-  //p.collaborators = people[i].collaborators;
+  p.collaborators = people[i].collaborators;
 	schemaPeople.push(p);
 }
 
@@ -272,6 +272,7 @@ function collabMaker(list1){
         }
       }
     }
+    //console.log(list1[i].works);
   }
   return collabs;
 }

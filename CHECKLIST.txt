@@ -52,11 +52,11 @@ In addition to the web-based client that most users will use, your movie databas
 		Your documentation should specify the required data and expected format. If a person is specified as a writer/director/actor within the movie but does not currently exist in the database,
 		a new person should be created and added to the database.
 4.	GET /people – Allows searching for people within the movie database. At minimum, this must support an optional name query parameter. If the query parameter is included,
-		it should return any person in the database whose name contains the given name parameter. The search should also be done in a case-insensitive nature.
+		it should return any person in the database whose name contains the given name parameter. The search should also be  in a case-insensitive nature.
 		If no parameter is given, all people should match the query.
 5.	GET /people/:person – Retrieves the person with the given unique ID, if they exist. This should include, at minimum, the name of the person and the movies they have been a part of.
 6.	GET /users – Allows searching the users of the application. At minimum, this must support an optional name query parameter.
-		If the query parameter is included, it should return any user in the database whose name contains the given name parameter. The search should also be done in a case-insensitive nature.
+		If the query parameter is included, it should return any user in the database whose name contains the given name parameter. The search should also be  in a case-insensitive nature.
 		If the parameter is not specified, any user should match the search constraint.
 7.	GET /users/:user – Get information about the user with the given unique ID, if they exist.
 		This should contain their username, their account status (regular user or contributing user) and the reviews the user has made.
@@ -87,26 +87,26 @@ pairs are encouraged to include more than the minimum recommended extensions and
 
 DONE:
 User Accounts
--provide a way for users to create new accounts DONE
--A user can log in and out using username and password DONE
--only a single user should be able to be logged in at one time DONE
--newly accounts considered regular users until upgraded to contributing user DONE
--Change between ‘regular’ user account and a ‘contributing’ user account. DONE
--Search for movies by title, name, and/or genre keyword, at minimum. DONE
+-provide a way for users to create new accounts
+-A user can log in and out using username and password
+-only a single user should be able to be logged in at one time
+-newly accounts considered regular users until upgraded to contributing user
+-Change between ‘regular’ user account and a ‘contributing’ user account.
+-Search for movies by title, name, and/or genre keyword, at minimum.
 
 Viewing Movies
--See the basic movie information DONE
--See the genre keywords DONE
-	user can navigate to search results of movies with that genre keyword DONE
--See the director, writer, and actors the movie has DONE
-	allow the user to navigate directly to each person’s page. DONE
--See a list of similar movies to this one DONE
-	allow the user to navigate to the page for any of those movies. DONE
--See movie reviews that have been added for the movie. DONE
+-See the basic movie information
+-See the genre keywords
+	user can navigate to search results of movies with that genre keyword
+-See the director, writer, and actors the movie has
+	allow the user to navigate directly to each person’s page.
+-See a list of similar movies to this one
+	allow the user to navigate to the page for any of those movies.
+-See movie reviews that have been added for the movie.
 
 Viewing People (directors, writers, actors)
--See a history of all of this person’s work DONE
-	Each movie entry should allow the user to navigate to that movie’s page DONE
+-See a history of all of this person’s work
+	Each movie entry should allow the user to navigate to that movie’s page
 
 Viewing Other Users
 
