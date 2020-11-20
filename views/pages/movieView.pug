@@ -1,76 +1,80 @@
 include ../partials/header
-br
-- var img = movie.poster
-img(src=img width="270" height="360")
-br
-b
-  |Title: 
-|#{movie.title}
-br
-b
-  |Rated: 
-|#{movie.rated}
-br
-b
-  |Released: 
-|#{movie.released}
-br
-b
-  |Runtime: 
-|#{movie.runtime}
-br
-if movie.genre.length > 0
-b
-  |Genres: 
-each obj in movie.genre
-  a(href="http://localhost:3000/movies?name=&genre=" + obj) #{obj}, 
-br
-if movie.director.length > 0
-b
-  |Director(s): 
-each obj in movie.director
-  a(href="http://localhost:3000/people/" + obj.id) #{obj.name}, 
-br
-if movie.writer.length > 0
-b
-  |Writer(s): 
-each obj in movie.writer
-  a(href="http://localhost:3000/people/" + obj.id) #{obj.name}, 
-br
-if movie.actors.length > 0
-b
-  |Actors: 
-each obj in movie.actors
-  a(href="http://localhost:3000/people/" + obj.id) #{obj.name}, 
-br
-b
-  |Plot: 
-|#{movie.plot}
-br
-b
-  |Language: 
-|#{movie.language}
-br
-if movie.similar.length > 0
-b
-  |Similar Movies: 
-each obj in movie.similar
-  a(href="http://localhost:3000/movies/" + obj.id) #{obj.name}, 
-br
-if movie.ratings.length > 0
-b
-  |Reviews:
-br
-each review in movie.ratings
-  b
-    |Source: 
-  |#{review.Source} 
-  b
-    |Value: 
-  |#{review.Value} 
-  br
-
-
-
-a(href='/movies/edit/' + movie.id) Edit
-a(href='') Review this movie
+form
+  .form-group.row.mx-sm-5.text-center
+    .col
+      br
+      - var img = movie.poster
+      img(src=img width="210" height="280")
+      br
+      br
+      b
+        |Title: 
+      |#{movie.title}
+      br
+      b
+        |Rated: 
+      |#{movie.rated}
+      br
+      b
+        |Released: 
+      |#{movie.released}
+      br
+      b
+        |Runtime: 
+      |#{movie.runtime}
+      br
+      if movie.genre.length > 0
+      b
+        |Genres: 
+      each obj in movie.genre
+        a(href="http://localhost:3000/movies?name=&genre=" + obj) #{obj}, 
+      br
+      if movie.director.length > 0
+      b
+        |Director(s): 
+      each obj in movie.director
+        a(href="http://localhost:3000/people/" + obj.id) #{obj.name}, 
+      br
+      if movie.writer.length > 0
+      b
+        |Writer(s): 
+      each obj in movie.writer
+        a(href="http://localhost:3000/people/" + obj.id) #{obj.name}, 
+      br
+      if movie.actors.length > 0
+      b
+        |Actors: 
+      each obj in movie.actors
+        a(href="http://localhost:3000/people/" + obj.id) #{obj.name}, 
+      br
+      b
+        |Plot: 
+      |#{movie.plot}
+      br
+      b
+        |Language: 
+      |#{movie.language}
+      br
+      if movie.similar.length > 0
+      b
+        |Similar Movies: 
+      each obj in movie.similar
+        a(href="http://localhost:3000/movies/" + obj.id) #{obj.name}, 
+      br
+      if movie.ratings.length > 0
+      b
+        |Reviews:
+      br
+      each review in movie.ratings
+        b
+          |Source: 
+        |#{review.Source} 
+        b
+          |Value: 
+        |#{review.Value} 
+        br
+      .form-group.row.mx-sm-2
+        .col
+          a(href='/movies/edit/' + movie.id) Edit
+        .col
+          a(href='') Review this movie

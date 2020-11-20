@@ -25,13 +25,17 @@ form(method='POST', action='/movies/search')
         | &nbsp; 
     .col-sm-5
       if genres
-        .input-group.mb-5
-          .input-group-prepend
-            label.input-group-text(for='inputGroupSelect01') Filter by Genre
-          select.custom-select(name="searchGenre")
+        .input-group
+          .input-group-prepend(style="margin:25px")
+            label.input-group-text Filter by Genre
+          select.custom-select(name="searchGenre" style="margin:25px")
             option(selected='' value="") Choose Genre...
             each genre in genres
               option(value=genre.name) #{genre.name}
-      .input-group
-        input.form-control(name="searchText" style="margin:25px" type='text' placeholder='Enter search')
-        button.btn.btn-primary(style="margin:25px" type='submit') Search
+          .input-group
+            input.form-control(style="margin:25px" name="searchText" type='text' placeholder='Enter search')
+            button.btn.btn-primary(style="margin:25px" type='submit') Search
+      else
+        .input-group
+          input.form-control(name="searchText" style="margin:25px" type='text' placeholder='Enter search')
+          button.btn.btn-primary(style="margin:25px" type='submit') Search

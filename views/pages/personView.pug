@@ -1,27 +1,31 @@
 include ../partials/header
-br
-b
-  |Name: 
-|#{person.name}
-br
-if person.works.length > 0
-b
-  |Works: 
-each work in person.works
-  a(href="http://localhost:3000/movies/" + work.id) #{work.name}, 
-br
-if person.collaborators.length > 0
-b
-  |Collaborators: 
-each collab in person.collaborators
-  a(href="http://localhost:3000/people/" + collab) #{collab}, 
-
-//-
-  3. Choose to follow this person. If a user follows a person, the user should
-  receive a notification any time a new movie is added to the database that
-  involves this person, or any time this person is added to an existing movie.
-#peopleFollowedDIV
-
-  a(href="http://localhost:3000/people/unfollow/" + person.id) Unfollow
-  br
-  a(href="http://localhost:3000/people/follow/" + person.id) Follow
+form
+  .form-group.row.mx-sm-5.text-center
+    .col
+      br
+      b
+        |Name: 
+      |#{person.name}
+      br
+      if person.works.length > 0
+      b
+        |Works: 
+      each work in person.works
+        a(href="http://localhost:3000/movies/" + work.id) #{work.name}, 
+      br
+      if person.collaborators.length > 0
+      b
+        |Collaborators: 
+      each collab in person.collaborators
+        a(href="http://localhost:3000/people/" + collab) #{collab}, 
+      
+      //-
+        3. Choose to follow this person. If a user follows a person, the user should
+        receive a notification any time a new movie is added to the database that
+        involves this person, or any time this person is added to an existing movie.
+      #peopleFollowedDIV
+      .form-group.row.mx-sm-2
+        .col
+          a(href="http://localhost:3000/people/follow/" + person.id) Follow
+        .col
+          a(href="http://localhost:3000/people/unfollow/" + person.id) Unfollow
