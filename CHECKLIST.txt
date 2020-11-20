@@ -38,29 +38,44 @@ Contributing Users
 REST API
 In addition to the web-based client that most users will use, your movie database application must also provide a public JSON REST API that supports the following routes and parameters, at minimum:
 1.	GET /movies – Allows searching for movies in the database. Returns an array of movies that match the query constraints. Must support at least the following query parameters:
-a.	title – A string that should be considered a match for any movie that has a title containing the given string title (character case should be ignored). If no value is given for this parameter, all movies should match the title constraint.
-b.	genre – A string that should be considered a match if the movie’s list of genre keywords contains the given keyword. If no value is given for this parameter, all movies should match the genre constraint.
-c.	year – A number that should be considered a match if the movie’s release year matches. If no value is given for this parameter, all movies should match the year constraint.
-d.	minrating – A number that should be considered a match if the movie’s overall average review rating on your site is greater than or equal to the given value. If a movie does not have any reviews, the number value of its rating should be considered 0.
-2.	GET /movies/:movie – Allows retrieving information about a specific movie with the unique ID movie, assuming it is a valid ID. The returned JSON should
-contain the basic movie information (title, year, actors, etc.) and also information about the reviews of the movie.
+	a.	title – A string that should be considered a match for any movie that has a title containing the given string title (character case should be ignored).
+			If no value is given for this parameter, all movies should match the title constraint.
+	b.	genre – A string that should be considered a match if the movie’s list of genre keywords contains the given keyword.
+			If no value is given for this parameter, all movies should match the genre constraint.
+	c.	year – A number that should be considered a match if the movie’s release year matches.
+			If no value is given for this parameter, all movies should match the year constraint.
+	d.	minrating – A number that should be considered a match if the movie’s overall average review rating on your site is greater than or equal to the given value.
+			If a movie does not have any reviews, the number value of its rating should be considered 0.
+2.	GET /movies/:movie – Allows retrieving information about a specific movie with the unique ID movie, assuming it is a valid ID. The returned JSON should contain the basic movie information (title, year, actors, etc.) and also information about the reviews of the movie.
 3.	POST /movies – Allows a new movie to be added into the database. It will accept a JSON representation of a movie and is responsible for checking the data is valid before adding it to the database. Your documentation should specify the required data and expected format. If a person is specified as a writer/director/actor within the movie but does not currently exist in the database, a new person should be created and added to the database.
 4.	GET /people – Allows searching for people within the movie database. At minimum, this must support an optional name query parameter. If the query parameter is included, it should return any person in the database whose name contains the given name parameter. The search should also be done in a case-insensitive nature. If no parameter is given, all people should match the query.
 5.	GET /people/:person – Retrieves the person with the given unique ID, if they exist. This should include, at minimum, the name of the person and the movies they have been a part of.
 6.	GET /users – Allows searching the users of the application. At minimum, this must support an optional name query parameter. If the query parameter is included, it should return any user in the database whose name contains the given name parameter. The search should also be done in a case-insensitive nature. If the parameter is not specified, any user should match the search constraint.
 7.	GET /users/:user – Get information about the user with the given unique ID, if they exist. This should contain their username, their account status (regular user or contributing user) and the reviews the user has made.
+
 Project Report
-You will also be required to submit a project report that must explain the overall design of the system, outline any assumptions that were made, provide supporting arguments for the design decisions that were made, discuss technologies used within the application, document your server’s API, describe any testing completed as part of the project, highlight key features of the system, and provide documentation on how to use/test the system. You must be able to justify your design and implementation choices from a perspective that considers scalability, robustness, extensibility, and maintainability, as well as the overall user experience. It is important to document the design decisions you make, as well as your reasoning for making those decisions and any alternative approaches you tried or considered as the term progresses. This will make writing a quality report near the end of the term significantly easier. We will discuss potential sections and other outline details for the project reports throughout the term.
+You will also be required to submit a project report that must explain the overall design of the system, outline any assumptions that were made,
+provide supporting arguments for the design decisions that were made, discuss technologies used within the application, document your server’s API,
+describe any testing completed as part of the project, highlight key features of the system, and provide documentation on how to use/test the system.
+You must be able to justify your design and implementation choices from a perspective that considers scalability, robustness, extensibility, and maintainability,
+as well as the overall user experience. It is important to document the design decisions you make,
+as well as your reasoning for making those decisions and any alternative approaches you tried or considered as the term progresses.
+This will make writing a quality report near the end of the term significantly easier. We will discuss potential sections and other outline details for the project reports throughout the term.
 
 Pair Project Extensions
-it is recommended that you include at least 3 of the below extensions into your project, or similar extensions you come up with on your own. For those looking for an A grade on the project, pairs are encouraged to include more than the minimum recommended extensions and individuals are encouraged to include some extensions as well.
+it is recommended that you include at least 3 of the below extensions into your project,
+or similar extensions you come up with on your own. For those looking for an A grade on the project,
+pairs are encouraged to include more than the minimum recommended extensions and individuals are encouraged to include some extensions as well.
 1.	Use React, Angular, or another supported frontend framework.
 2.	Implement a GraphQL API in addition to the REST API.
-3.	Implement your own load balancing solution and simulate a distributed system by instantiating multiple instances of your server. This load balancer should be able to detect any of the servers going offline (e.g., simulating a machine crash). This load balancer could also handle the addition of more servers at runtime.
+3.	Implement your own load balancing solution and simulate a distributed system by instantiating multiple instances of your server.
+	This load balancer should be able to detect any of the servers going offline (e.g., simulating a machine crash). This load balancer could also handle the addition of more servers at runtime.
 4.	Support a full-sized/desktop interface, as well as a smaller, mobile-friendly interface.
 5.	Provide in-depth automated testing of your API and system, including documenting specific test cases and their expected results.
 6.	Implement your own caching mechanism for your server/API. Test your caching system under various circumstances and compare its performance to a version that does not use caching.
-7.	Implement a web-scraper to retrieve additional movie data from IMDB and incorporate it into your system. You could do this in an automated way (e.g., like a web crawler) or by allowing a user to provide an IMDB URL to have a specific movie parsed. If your parser is error-prone, you could also use this feature to initially populate a form on the page and have the user double-check the information manually before it is submitted to the database.
+7.	Implement a web-scraper to retrieve additional movie data from IMDB and incorporate it into your system.
+	You could do this in an automated way (e.g., like a web crawler) or by allowing a user to provide an IMDB URL to have a specific movie parsed.
+	If your parser is error-prone, you could also use this feature to initially populate a form on the page and have the user double-check the information manually before it is submitted to the database.
 
 DONE:
 User Accounts
