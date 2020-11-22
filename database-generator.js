@@ -42,15 +42,18 @@ peopleList = removeDuplicates(peopleList);
 
 let unknownCounter = 0;
 
+//Some misplaced commas in the json we're causing extra people to be created this removes them
 for(i=0; i < peopleList.length; i++){
   if(peopleList[i].includes("(") || peopleList[i].includes(")")){
     peopleList.splice(i, 1);
   }
+  /*
   if(!peopleList[i].includes(" ")){
     console.log(peopleList[i]);
-    //peopleList[i] += " Unknown #" + unknownCounter;
-    //unknownCounter++;
+    peopleList[i] += " Unknown #" + unknownCounter;
+    unknownCounter++;
   }
+  */
 }
 
 genreList = stringCleaner(genreList);
