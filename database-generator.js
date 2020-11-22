@@ -85,20 +85,44 @@ movies.forEach(movie => {
       }
       movie.directorObj.push({id: people[i].id, name: people[i].name});
     }
+
     if(movie.Writer.includes(people[i].name)){
+      //people[i].works.includes({id: movie.id, name: movie.Title})
       if(!people[i].works.includes({id: movie.id, name: movie.Title})){
         people[i].works.push({id: movie.id, name: movie.Title});
       }
       movie.writerObj.push({id: people[i].id, name: people[i].name});
     }
+
     if(movie.Actors.includes(people[i].name)){
+      //people[i].works.includes({id: movie.id, name: movie.Title})
       if(!people[i].works.includes({id: movie.id, name: movie.Title})){
         people[i].works.push({id: movie.id, name: movie.Title});
       }
       movie.actorsObj.push({id: people[i].id, name: people[i].name});
     }
+
+    //console.log(people[i].works);
   }
 });
+
+function containsObject(obj, list) {
+    var i;
+    console.log(list.length);
+    for (i = 0; i < list.length; i++) {
+      console.log("tits");
+        if (list[i] === obj) {
+            return true;
+        }
+    }
+    return 5;
+}
+
+var thing = [{id:9}, {id:6}]
+
+console.log(thing.length);
+console.log(containsObject({id:9}, thing));
+
 
 /*
 var collabs = [];
@@ -245,13 +269,13 @@ function containsObject(obj, list) {
 
 function commonItems(arr1, arr2){
   var count = 0;
-  for(var movie1 in arr1){
-    for(var movie2 in arr2){
-      if(movie1 == movie2){
+  arr1.forEach(movie1 => {
+    arr2.forEach(movie2 => {
+      if(movie1.id == movie2.id){
         count+=1;
       }
-    }
-  }
+    });
+  });
   return count;
 }
 
@@ -262,17 +286,20 @@ function collabMaker(list1){
       if(list1[i].id !== list1[x].id){
         var commonWorks = commonItems(list1[i].works, list1[x].works);
         if(commonWorks >= 2){
+          //console.log(list1[i]);
           var commonIds = `${list1[i].id}-${list1[x].id}`;
+          //console.log(commonIds);
           var dict = {};
           dict = {
             id: commonIds,
             commonIds: commonWorks
           };
           collabs.push(dict);
+          //console.log(collabs);
         }
       }
     }
-    //console.log(list1[i].works);
   }
+  //console.log(collabs);
   return collabs;
 }
