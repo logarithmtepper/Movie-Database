@@ -35,7 +35,7 @@ function addPerson(name,works,collaborators){
 router.post('/add', ensureAuthenticated, function(req, res, next){
   const name = req.body.name;
   const work = req.body.work;
-  
+
 
   //need to check if this person is exist
   Person.findOne({name:name}, function (err, result) {
@@ -66,7 +66,7 @@ router.post('/add', ensureAuthenticated, function(req, res, next){
 			  if(err){
 				console.log(err);
 				return;
-			  } 
+			  }
 			});
 			res.redirect('/people/add');
 
@@ -77,7 +77,7 @@ router.post('/add', ensureAuthenticated, function(req, res, next){
 	  }
 	}
   });
-  
+
 });
 
 router.get('/follow/:id', ensureAuthenticated, function (req, res, next) {
@@ -100,7 +100,7 @@ router.get('/follow/:id', ensureAuthenticated, function (req, res, next) {
 	  }
 	});
 });
-  
+
 router.get('/unfollow/:id', ensureAuthenticated, function (req, res, next) {
 	const id = req.params.id;
 	const user_id = req.user._id;
@@ -127,7 +127,7 @@ router.get("/:id", getPerson);
 router.get("/:id", sendPerson);
 
 function queryParser(req, res, next){
-	const MAX_PEOPLE = 48;
+	const MAX_PEOPLE = 66;
 
 	let params = [];
 	for(prop in req.query){
@@ -139,13 +139,13 @@ function queryParser(req, res, next){
 	req.qstring = params.join("&");
 
 	try{
-		req.query.limit = req.query.limit || 48;
+		req.query.limit = req.query.limit || 66;
 		req.query.limit = Number(req.query.limit);
 		if(req.query.limit > MAX_PEOPLE){
 			req.query.limit = MAX_PEOPLE;
 		}
 	}catch{
-		req.query.limit = 48;
+		req.query.limit = 66;
 	}
 
 	try{
@@ -227,6 +227,6 @@ function ensureAuthenticated(req, res, next) {
 }
 
 module.exports = {
-	router:router, 
+	router:router,
 	addPerson:addPerson
 };
