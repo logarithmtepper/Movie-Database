@@ -82,6 +82,8 @@ pairs are encouraged to include more than the minimum recommended extensions and
 7.	Implement a web-scraper to retrieve additional movie data from IMDB and incorporate it into your system.
 	You could do this in an automated way (e.g., like a web crawler) or by allowing a user to provide an IMDB URL to have a specific movie parsed.
 	If your parser is error-prone, you could also use this feature to initially populate a form on the page and have the user double-check the information manually before it is submitted to the database.
+IDEAS:
+web scrubber to get images for each person
 
 DONE:
 User Accounts
