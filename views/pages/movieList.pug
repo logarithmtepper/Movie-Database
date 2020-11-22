@@ -16,7 +16,9 @@ form
       if current > 1
         - let url = "/movies?page=" + (current-1)
         - if(length > 0){ url += "&" + qstring; }
-        a(href=url) Previous
+        .col-sm-2
+          a(style="font-weight:bold;font-size: 18px;" href=url) Previous
       - url = "/movies?page=" + (current+1)
       - if(length > 0){ url += "&" + qstring; }
-      a(href=url) Next
+      .col-sm-2
+        a(style="font-weight:bold;font-size: 18px;" href=url) Next
