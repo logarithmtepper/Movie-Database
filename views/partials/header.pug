@@ -33,9 +33,9 @@ form(method='POST', action='/movies/search')
             each genre in genres
               option(value=genre.name) #{genre.name}
           .input-group
-            input.form-control(style="margin:25px" name="searchText" type='text' placeholder='Enter search')
+            input.form-control(style="margin:25px" name="searchText" type='text' placeholder='Enter movie name')
             button.btn.btn-primary(style="margin:25px" type='submit') Search
       else
         .input-group
-          input.form-control(name="searchText" style="margin:25px" type='text' placeholder='Enter search')
+          input.form-control(name="searchText" style="margin:25px" type='text' placeholder='Enter movie name')
           button.btn.btn-primary(style="margin:25px" type='submit') Search
