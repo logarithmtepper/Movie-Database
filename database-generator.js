@@ -44,11 +44,10 @@ let unknownCounter = 0;
 
 for(i=0; i < peopleList.length; i++){
   if(peopleList[i].includes("(") || peopleList[i].includes(")")){
-    console.log(peopleList[i]);
     peopleList.splice(i, 1);
   }
   if(!peopleList[i].includes(" ")){
-    //console.log(peopleList[i]);
+    console.log(peopleList[i]);
     //peopleList[i] += " Unknown #" + unknownCounter;
     //unknownCounter++;
   }
@@ -238,20 +237,20 @@ function removeDuplicates(arr) {
 }
 
 function stringCleaner(arr) {
-    let newArr = [];
-    for(d = 0; d < arr.length; d++){
-        var temp = "";
-        for(b = 0; b < arr[d].length; b++){
-            if(arr[d][b] == '('){
-                break;
-            }
-            temp += arr[d][b];
-        }
-        let temptemp = temp;
-        temp = temp.replace(/^\s+|\s+$|\s+(?=\s)/g, "");
-        newArr.push(temp);
+  let newArr = [];
+  for(d = 0; d < arr.length; d++){
+    var temp = "";
+    for(b = 0; b < arr[d].length; b++){
+      if(arr[d][b] == '('){
+        break;
+      }
+      temp += arr[d][b];
     }
-    return newArr;
+    let temptemp = temp;
+    temp = temp.replace(/^\s+|\s+$|\s+(?=\s)/g, "");
+    newArr.push(temp);
+  }
+  return newArr;
 }
 
 function containsObjectId(obj, list) {
