@@ -44,11 +44,13 @@ let unknownCounter = 0;
 
 for(i=0; i < peopleList.length; i++){
   if(peopleList[i].includes("(") || peopleList[i].includes(")")){
+    console.log(peopleList[i]);
     peopleList.splice(i, 1);
   }
   if(!peopleList[i].includes(" ")){
-    peopleList[i] += " Unknown #" + unknownCounter;
-    unknownCounter++;
+    //console.log(peopleList[i]);
+    //peopleList[i] += " Unknown #" + unknownCounter;
+    //unknownCounter++;
   }
 }
 
