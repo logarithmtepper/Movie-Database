@@ -87,7 +87,6 @@ movies.forEach(movie => {
     }
 
     if(movie.Writer.includes(people[i].name)){
-      //people[i].works.includes({id: movie.id, name: movie.Title})
       if(!people[i].works.includes({id: movie.id, name: movie.Title})){
         people[i].works.push({id: movie.id, name: movie.Title});
       }
@@ -95,13 +94,11 @@ movies.forEach(movie => {
     }
 
     if(movie.Actors.includes(people[i].name)){
-      //people[i].works.includes({id: movie.id, name: movie.Title})
       if(!people[i].works.includes({id: movie.id, name: movie.Title})){
         people[i].works.push({id: movie.id, name: movie.Title});
       }
       movie.actorsObj.push({id: people[i].id, name: people[i].name});
     }
-
     //console.log(people[i].works);
   }
 });
