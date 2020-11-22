@@ -17,7 +17,7 @@ form
       b
         |Collaborators: 
       each collab in person.collaborators
-        a(href="http://localhost:3000/people/" + collab) #{collab}, 
+        a(href="http://localhost:3000/people/" + collab.id) #{collab.name}, 
       
       //-
         3. Choose to follow this person. If a user follows a person, the user should

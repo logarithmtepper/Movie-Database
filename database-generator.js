@@ -6,20 +6,22 @@ const Person = require("./models/personModel");
 const Genre = require("./models/genreModel");
 
 //create and save movies and people
-//let movieData = require("./movie-data.json");
-let movieData = require("./movie-data-short.json");
+let movieData = require("./movie-data.json");
+//let movieData = require("./movie-data-short.json");
 
 let movies = []; //Stores all of the movies, key=z
 let z = 0;
 movieData.forEach(movie => {
-  movies[z] = movie;
-  movies[z].id = z;
-  movies[z].directorObj = [];
-  movies[z].writerObj = [];
-  movies[z].actorsObj = [];
-  movies[z].similarObj = [];
-  movies[z].genreObj = [];
-  z++;
+  if(movie.Title != "#DUPE#"){
+    movies[z] = movie;
+    movies[z].id = z;
+    movies[z].directorObj = [];
+    movies[z].writerObj = [];
+    movies[z].actorsObj = [];
+    movies[z].similarObj = [];
+    movies[z].genreObj = [];
+    z++;
+  }
 });
 
 let peopleString = "";
@@ -37,6 +39,18 @@ let genreList = genreString.split(',');
 
 peopleList = stringCleaner(peopleList);
 peopleList = removeDuplicates(peopleList);
+
+let unknownCounter = 0;
+
+for(i=0; i < peopleList.length; i++){
+  if(peopleList[i].includes("(") || peopleList[i].includes(")")){
+    peopleList.splice(i, 1);
+  }
+  if(!peopleList[i].includes(" ")){
+    peopleList[i] += " Unknown #" + unknownCounter;
+    unknownCounter++;
+  }
+}
 
 genreList = stringCleaner(genreList);
 genreList = removeDuplicates(genreList);
@@ -80,21 +94,21 @@ movies.forEach(movie => {
   }
   for(i=0; i < people.length; i++) {
     if(movie.Director.includes(people[i].name)){
-      if(!people[i].works.includes({id: movie.id, name: movie.Title})){
+      if(!containsObjectId(movie, people[i].works)){
         people[i].works.push({id: movie.id, name: movie.Title});
       }
       movie.directorObj.push({id: people[i].id, name: people[i].name});
     }
 
     if(movie.Writer.includes(people[i].name)){
-      if(!people[i].works.includes({id: movie.id, name: movie.Title})){
+      if(!containsObjectId(movie, people[i].works)){
         people[i].works.push({id: movie.id, name: movie.Title});
       }
       movie.writerObj.push({id: people[i].id, name: people[i].name});
     }
 
     if(movie.Actors.includes(people[i].name)){
-      if(!people[i].works.includes({id: movie.id, name: movie.Title})){
+      if(!containsObjectId(movie, people[i].works)){
         people[i].works.push({id: movie.id, name: movie.Title});
       }
       movie.actorsObj.push({id: people[i].id, name: people[i].name});
@@ -103,25 +117,7 @@ movies.forEach(movie => {
   }
 });
 
-function containsObject(obj, list) {
-    var i;
-    console.log(list.length);
-    for (i = 0; i < list.length; i++) {
-      console.log("tits");
-        if (list[i] === obj) {
-            return true;
-        }
-    }
-    return 5;
-}
 
-var thing = [{id:9}, {id:6}]
-
-console.log(thing.length);
-console.log(containsObject({id:9}, thing));
-
-
-/*
 var collabs = [];
 collabs = collabMaker(people);
 //collabs.sort((a, b) => a.commonIds.localeCompare(b.commonIds))
@@ -132,12 +128,12 @@ for(i=0; i < collabs.length; i++) {
   var p1 = indexes[0];
   var p2 = indexes[1];
 
-  if(!containsObject(people[p1].collaborators, people[p2]) && !containsObject(people[p2].collaborators, people[p1])){
-    people[p1].collaborators.push(people[p2].id);
-    people[p2].collaborators.push(people[p1].id);
+  if(!containsObjectId(people[p1].collaborators, people[p2]) && !containsObjectId(people[p2].collaborators, people[p1])){
+    people[p1].collaborators.push({id: people[p2].id, name: people[p2].name});
+    people[p2].collaborators.push({id: people[p1].id, name: people[p1].name});
   }
 }
-*/
+
 
 let schemaMovies = [];
 let schemaPeople = [];
@@ -232,32 +228,33 @@ db.once('open', function() {
 });
 
 function setCharAt(str,index,chr) {
-	return str.substr(0,index) + chr + str.substr(index+1);
+  return str.substr(0,index) + chr + str.substr(index+1);
 }
 
 function removeDuplicates(arr) {
-    return arr.filter((a, b) => arr.indexOf(a) === b)
+  return arr.filter((a, b) => arr.indexOf(a) === b)
 }
 
 function stringCleaner(arr) {
-  let newArr = [];
-  for (var s of arr){
-    var temp = "";
-    for (var c of s){
-      if(c == '('){
-        break;
-      }
-      temp += c;
+    let newArr = [];
+    for(d = 0; d < arr.length; d++){
+        var temp = "";
+        for(b = 0; b < arr[d].length; b++){
+            if(arr[d][b] == '('){
+                break;
+            }
+            temp += arr[d][b];
+        }
+        let temptemp = temp;
+        temp = temp.replace(/^\s+|\s+$|\s+(?=\s)/g, "");
+        newArr.push(temp);
     }
-    temp = temp.replace(/^\s+|\s+$|\s+(?=\s)/g, "");
-    newArr.push(temp);
-  }
-  return newArr;
+    return newArr;
 }
 
-function containsObject(obj, list) {
-    for (i = 0; i < list.length; i++) {
-        if (list[i] === obj) {
+function containsObjectId(obj, list) {
+    for (k = 0; k < list.length; k++) {
+        if (list[k].id === obj.id) {
             return true;
         }
     }
@@ -283,20 +280,16 @@ function collabMaker(list1){
       if(list1[i].id !== list1[x].id){
         var commonWorks = commonItems(list1[i].works, list1[x].works);
         if(commonWorks >= 2){
-          //console.log(list1[i]);
           var commonIds = `${list1[i].id}-${list1[x].id}`;
-          //console.log(commonIds);
           var dict = {};
           dict = {
             id: commonIds,
             commonIds: commonWorks
           };
           collabs.push(dict);
-          //console.log(collabs);
         }
       }
     }
   }
-  //console.log(collabs);
   return collabs;
 }
