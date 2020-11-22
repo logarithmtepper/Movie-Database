@@ -37,6 +37,7 @@ function findPersonID(list){
   }
   return list;
 }
+
 router.post('/add', function(req, res, next){
 	const moviename = req.body.mname;
 	const rated = req.body.rated;
@@ -53,7 +54,6 @@ router.post('/add', function(req, res, next){
 	const director = findPersonID(directorList);
 	const writer = findPersonID(writerList);
 	const actor = findPersonID(actorList);
-
 
 	//need to check if this movie is exist
 	let newMovie = new Movie({
@@ -140,13 +140,13 @@ router.post('/edit/:id', function(req, res){
 				if(err){
 				  console.log(err);
 				  return;
-				} 
+				}
 			  });
 			  Person.updateOne({name:name}, person, function(err){
 				if(err){
 				  console.log(err);
 				  return;
-				} 
+				}
 			  });
 			  res.redirect('/movies/'+req.params.id)
 		  })
@@ -236,6 +236,7 @@ function loadMovies(req, res, next){
 
   Movie.find()
 	.where("title").regex(new RegExp(".*" + req.query.name + ".*", "i"))
+	//this isnt necessary.. i think
 	.where("genre").regex(new RegExp(".*" + req.query.genre + ".*", "i"))
   .limit(amount)
   .skip(startIndex)
