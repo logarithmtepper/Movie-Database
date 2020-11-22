@@ -13,8 +13,6 @@ Viewing Movies
 -Add full review by specifying out of 10, a brief summary, and a full review text.
 
 Viewing People (directors, writers, actors)
--See a list of frequent collaborators of this person.
-	list of people this person has worked with the most
 -Choose to follow this person.
 	If a user follows a person, the user should receive a notification any time a new movie is added to the database that involves this person, or any time this person is added to an existing movie.
 
@@ -107,6 +105,8 @@ Viewing Movies
 Viewing People (directors, writers, actors)
 -See a history of all of this person’s work
 	Each movie entry should allow the user to navigate to that movie’s page
+-See a list of frequent collaborators of this person.
+	list of people this person has worked with the most
 
 Viewing Other Users
 
