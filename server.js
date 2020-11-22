@@ -61,7 +61,6 @@ const peopleRouter = require('./routes/people');
 app.use('/people', peopleRouter.router);
 
 //Respond with right page data if requested
-
 app.get('/', (req, res, next) => {
   res.render('home.pug',{
     user:req.user
