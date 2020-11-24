@@ -41,7 +41,7 @@ router.post('/register', function(req, res){
 
 router.get('/login', function(req, res){
   res.render('login',{
-    
+
     //user:user
   });
 });
@@ -102,7 +102,7 @@ router.get('/unfollow/:id', ensureAuthenticated, function (req, res, next) {
 router.get('/profile', ensureAuthenticated, function(req, res){
   res.render('userProfile', {
     user: req.user
-    
+
   });
 });
 
@@ -192,6 +192,11 @@ function getUser(req, res, next){
 	});
 }
 
+router.post('/search', function(req, res, next){
+	const searchText = req.body.searchText;
+	res.redirect('/users?name=' + searchText);
+});
+
 function sendUser(req, res, next){
   res.format({
 		"application/json": function(){
@@ -207,6 +212,7 @@ function loadUsers(req, res, next){
   let amount = req.query.limit;
 
   User.find()
+  .where("username").regex(new RegExp(".*" + req.query.name + ".*", "i"))
   .limit(amount)
   .skip(startIndex)
   .exec(function(err, results){

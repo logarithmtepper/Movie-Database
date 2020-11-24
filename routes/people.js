@@ -32,6 +32,12 @@ function addPerson(name,works,collaborators){
 	});
 	return newPerson.id;
 }
+
+router.post('/search', function(req, res, next){
+	const searchText = req.body.searchText;
+	res.redirect('/people?name=' + searchText);
+});
+
 router.post('/add', ensureAuthenticated, function(req, res, next){
   const name = req.body.name;
   const work = req.body.work;

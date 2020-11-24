@@ -6,8 +6,8 @@ const Person = require("./models/personModel");
 const Genre = require("./models/genreModel");
 
 //create and save movies and people
-let movieData = require("./movie-data.json");
-//let movieData = require("./movie-data-short.json");
+//let movieData = require("./movie-data.json");
+let movieData = require("./movie-data-short.json");
 
 let movies = []; //Stores all of the movies, key=z
 let z = 0;
@@ -40,20 +40,11 @@ let genreList = genreString.split(',');
 peopleList = stringCleaner(peopleList);
 peopleList = removeDuplicates(peopleList);
 
-//let unknownCounter = 0;
-
 //Some misplaced commas in the json we're causing extra people to be created this removes them
 for(i=0; i < peopleList.length; i++){
   if(peopleList[i].includes("(") || peopleList[i].includes(")")){
     peopleList.splice(i, 1);
   }
-  /*
-  if(!peopleList[i].includes(" ")){
-    console.log(peopleList[i]);
-    peopleList[i] += " Unknown #" + unknownCounter;
-    unknownCounter++;
-  }
-  */
 }
 
 genreList = stringCleaner(genreList);
@@ -117,15 +108,11 @@ movies.forEach(movie => {
       }
       movie.actorsObj.push({id: people[i].id, name: people[i].name});
     }
-    //console.log(people[i].works);
   }
 });
 
-
 var collabs = [];
 collabs = collabMaker(people);
-//collabs.sort((a, b) => a.commonIds.localeCompare(b.commonIds))
-
 
 for(i=0; i < collabs.length; i++) {
   var indexes = collabs[i].id.split('-');
@@ -137,7 +124,6 @@ for(i=0; i < collabs.length; i++) {
     people[p2].collaborators.push({id: people[p1].id, name: people[p1].name});
   }
 }
-
 
 let schemaMovies = [];
 let schemaPeople = [];
