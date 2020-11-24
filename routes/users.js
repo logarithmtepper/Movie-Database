@@ -138,6 +138,10 @@ router.get("/", respondUsers);
 router.get("/:id", getUser);
 router.get("/:id", sendUser);
 
+router.post('/search', function(req, res, next){
+	const searchText = req.body.searchText;
+	res.redirect('/users?name=' + searchText);
+});
 
 function queryParser(req, res, next){
 	const MAX_USER = 48;
@@ -191,11 +195,6 @@ function getUser(req, res, next){
 		return;
 	});
 }
-
-router.post('/search', function(req, res, next){
-	const searchText = req.body.searchText;
-	res.redirect('/users?name=' + searchText);
-});
 
 function sendUser(req, res, next){
   res.format({

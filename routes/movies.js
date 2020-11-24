@@ -18,26 +18,6 @@ router.get('/add', function(req, res){
 	});
 });
 
-function findPersonID(list){
-  for (i in list){
-	Person.findOne({name:list[i]}, function (err, person) {
-	  if(err){
-		res.status(500).send("Error reading people.");
-		console.log(err);
-		return;
-	  }
-	  if (person===null){
-		list[i] = addPerson(list[i],'',[]);
-		return list[i];
-	  }else{
-		list[i] = person.id;
-		return list[i];
-	  }
-	});
-  }
-  return list;
-}
-
 router.post('/add', function(req, res, next){
 	const moviename = req.body.mname;
 	const rated = req.body.rated;
@@ -206,6 +186,26 @@ function queryParser(req, res, next){
 	next();
 }
 
+function findPersonID(list){
+  for (i in list){
+	Person.findOne({name:list[i]}, function (err, person) {
+	  if(err){
+		res.status(500).send("Error reading people.");
+		console.log(err);
+		return;
+	  }
+	  if (person===null){
+		list[i] = addPerson(list[i],'',[]);
+		return list[i];
+	  }else{
+		list[i] = person.id;
+		return list[i];
+	  }
+	});
+  }
+  return list;
+}
+
 function getMovie(req, res, next){
   let id = req.params.id;
   Movie.findOne({id:id}, function (err, result) {
@@ -236,7 +236,6 @@ function loadMovies(req, res, next){
 
   Movie.find()
 	.where("title").regex(new RegExp(".*" + req.query.name + ".*", "i"))
-	//this isnt necessary.. i think
 	.where("genre").regex(new RegExp(".*" + req.query.genre + ".*", "i"))
   .limit(amount)
   .skip(startIndex)
