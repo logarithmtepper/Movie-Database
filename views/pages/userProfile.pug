@@ -6,18 +6,21 @@ br
 div.text-center
   p My Reviews
   if user.reviews.length > 0
-    each review in user.reviews
-      a(href="http://localhost:3000/reviews/" + review) #{review}, 
+    each obj in user.reviews
+      a(href="http://localhost:3000/movies/" + obj.movie_id) #{obj.movie}: 
+      a(href="http://localhost:3000/reviews/" + obj._id) #{obj.title}
+      br
+      
 br
 #peopleFollowedDIV
 div.text-center
   a Followed People 
   br
   if user.followedPeople.length > 0
-    each id in user.followedPeople
-      a(href="http://localhost:3000/people/" + id) #{id} 
+    each obj in user.followedPeople
+      a(href="http://localhost:3000/people/" + obj.id) #{obj.name}
       | &nbsp; 
-      a(href="http://localhost:3000/people/unfollow/" + id) Unfollow
+      a(href="http://localhost:3000/people/unfollow/" + obj.id) Unfollow
       br
 
 br
@@ -26,10 +29,10 @@ div.text-center
   a Followed Users 
   br
   if user.followedUsers.length > 0
-    each id in user.followedUsers
-      a(href="http://localhost:3000/users/" + id) #{id}
+    each obj in user.followedUsers
+      a(href="http://localhost:3000/users/" + obj._id) #{obj.username}
       | &nbsp; 
-      a(href="http://localhost:3000/users/unfollow/" + id) Unfollow
+      a(href="http://localhost:3000/users/unfollow/" + obj._id) Unfollow
       br
 br
 
@@ -39,10 +42,12 @@ div.text-center
   br
 
 div.text-center
-  a(href='/users') see all users
+  a(href='/users') See all Users
   br
-  a(href='/movies') Movies
-
+  a(href='/movies') See all Movies
+  br
+  a(href='/people') See all People
+  br
 form(method='POST', action='/users/profile')
   div.text-center
     if user.contributing==="n"

@@ -51,6 +51,9 @@ app.use(passport.session());
 
 
 //Router Setup
+let reviewRouter = require('./routes/reviews');
+app.use('/reviews', reviewRouter);
+
 let userRouter = require('./routes/users');
 app.use('/users', userRouter);
 
@@ -59,6 +62,9 @@ app.use('/movies', movieRouter);
 
 const peopleRouter = require('./routes/people');
 app.use('/people', peopleRouter.router);
+
+
+
 
 //Respond with right page data if requested
 app.get('/', (req, res, next) => {

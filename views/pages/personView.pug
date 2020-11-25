@@ -24,8 +24,12 @@ form
         receive a notification any time a new movie is added to the database that
         involves this person, or any time this person is added to an existing movie.
       #peopleFollowedDIV
-      .form-group.row.mx-sm-2
-        .col
-          a(href="http://localhost:3000/people/follow/" + person.id) Follow
-        .col
-          a(href="http://localhost:3000/people/unfollow/" + person.id) Unfollow
+      if user
+        .form-group.row.mx-sm-2
+          .col
+            a(href="http://localhost:3000/people/follow/" + person.id) Follow
+          .col
+            a(href="http://localhost:3000/people/unfollow/" + person.id) Unfollow
+      else
+        a(href="http://localhost:3000/users/login/") log in 
+        |to follow this person

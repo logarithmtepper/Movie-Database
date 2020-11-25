@@ -15,11 +15,11 @@ let reviewSchema = Schema({
 		required: true
 	},
     reviewer: {
-		type: Schema.Types.ObjectId,
+		type: Object,
 		required: true
 	},
     movie: {
-		type: Schema.Types.ObjectId,
+		type: Object,
 		required: true
 	}
 

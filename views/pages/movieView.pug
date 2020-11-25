@@ -74,7 +74,9 @@ form
         |#{review.Value} 
         br
       .form-group.row.mx-sm-2
+      if user
+        if user.contributing == "y"
+          .col
+            a(href='/movies/edit/' + movie.id) Edit
         .col
-          a(href='/movies/edit/' + movie.id) Edit
-        .col
-          a(href='') Review this movie
+          a(href='/reviews/add/'+ movie.id) Review this movie

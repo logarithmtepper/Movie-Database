@@ -221,11 +221,12 @@ function getMovie(req, res, next){
 }
 
 function sendMovie(req, res, next){
+	
   res.format({
 		"application/json": function(){
 			res.status(200).json(req.movie);
 		},
-		"text/html": () => { res.render("movieView", {genres:res.genres, movie:req.movie}); }
+		"text/html": () => { res.render("movieView", {genres:res.genres, movie:req.movie,user:req.user}); }
 	});
 	next();
 }
@@ -269,7 +270,7 @@ function loadGenres(req, res, next){
 
 function respondMovies(req, res, next){
   res.format({
-  "text/html": () => {res.render("movieList", {movies:res.movies, genres:res.genres, qstring: req.qstring, current: req.query.page} )},
+  "text/html": () => {res.render("movieList", {movies:res.movies, genres:res.genres, qstring: req.qstring, current: req.query.page,user:req.user} )},
   "application/json": () => {res.status(200).json(res.movies)}
   });
   next();

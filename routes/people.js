@@ -87,48 +87,84 @@ router.post('/add', ensureAuthenticated, function(req, res, next){
 });
 
 router.get('/follow/:id', ensureAuthenticated, function (req, res, next) {
-	const id = req.params.id;
+	const follow_id = req.params.id;
 	const user_id = req.user._id;
 	User.findById(user_id, function(err, user){
-	  if (user.followedPeople.includes(id)){
-		res.send("You have followed this user");
-	  }else{
-		user.followedPeople.push(id)
-		User.updateOne({_id:user_id}, user, function(err){
-		  if(err){
-			console.log(err);
-			return;
-		  } else {
-			//res.flash("You have followed this user");
-			res.redirect('/people/'+id);
-		  }
-		});
+	  if(err){
+		console.log(err);
+		return;
 	  }
+	  Person.findOne({id:follow_id}, function(err, person_follow){
+		if(err){
+		  console.log(err);
+		  return;
+		}
+		let person_obj = {id: person_follow.id, name:person_follow.name};
+		if (containsObjectId(person_obj, user.followedPeople)){
+		  res.send("You have followed this person");
+		}else{
+		  user.followedPeople.push(person_obj)
+		  User.updateOne({_id:user_id}, user, function(err){
+			if(err){
+			  console.log(err);
+			  return;
+			} else {
+			  //res.flash("You have followed this user");
+			  res.redirect('/users/profile');
+			}
+		  });
+		}
+	  });
 	});
 });
 
+function containsObjectId(obj, list) {
+	for (k = 0; k < list.length; k++) {
+		//console.log(obj._id);
+		if (list[k].id===obj.id) {
+			return true;
+		}
+	}
+	return false;
+  }
+  
+  
 router.get('/unfollow/:id', ensureAuthenticated, function (req, res, next) {
-	const id = req.params.id;
+	const follow_id = req.params.id;
 	const user_id = req.user._id;
 	User.findById(user_id, function(err, user){
-	  if (user.followedPeople.includes(id)){
-		const index = user.followedPeople.indexOf(id);
-		user.followedPeople.splice(index,1);
-		User.updateOne({_id:user_id}, user, function(err){
-		  if(err){
-			console.log(err);
-			return;
-		  } else {
-			//res.flash("You have unfollowed this user");
-			res.redirect('/people/'+id);
-		  }
-		});
-	  }else{
-		res.send("You have not followed this user yet");
+	  if(err){
+		console.log(err);
+		return;
 	  }
+	  Person.findOne({id:follow_id}, function(err, person_follow){
+		if(err){
+		  console.log(err);
+		  return;
+		}
+		let person_obj = {id: person_follow.id, name:person_follow.name};
+		if (!containsObjectId(person_obj, user.followedPeople)){
+		  res.send("You have not followed this user yet");
+		}else{
+		  for (i in user.followedPeople){
+			if (user.followedPeople[i].id===person_obj.id){
+			  user.followedPeople.splice(i,1);
+			}
+		  }
+		  User.updateOne({_id:user_id}, user, function(err){
+			if(err){
+			  console.log(err);
+			  return;
+			} else {
+			  //res.flash("You have followed this user");
+			  res.redirect('/users/profile');
+			}
+		  });
+		}
+	  });
 	});
 });
-
+  
 router.get("/:id", getPerson);
 router.get("/:id", sendPerson);
 
@@ -190,7 +226,7 @@ function sendPerson(req, res, next){
 		"application/json": function(){
 			res.status(200).json(req.person);
 		},
-		"text/html": () => { res.render("personView", {person: req.person}); }
+		"text/html": () => { res.render("personView", {person: req.person,user:req.user}); }
 	});
 	next();
 }
@@ -218,7 +254,7 @@ function loadPeople(req, res, next){
 
 function respondPeople(req, res, next){
 	res.format({
-  "text/html": () => {res.render("personList", {people:res.people, qstring: req.qstring, current: req.query.page } )},
+  "text/html": () => {res.render("personList", {people:res.people, qstring: req.qstring, current: req.query.page,user:req.user} )},
   "application/json": () => {res.status(200).json(res.people)}
   });
   next();

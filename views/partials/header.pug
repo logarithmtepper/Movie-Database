@@ -41,7 +41,7 @@ if movies || movie
             input.form-control(name="searchText" style="margin:25px" type='text' placeholder='Enter movie name')
             button.btn.btn-primary(style="margin:25px" type='submit') Search
 
-if person || people
+else if person || people
   form(method='POST', action='/people/search')
     .form-group.row.mx-sm-5
       .col-sm-7
@@ -66,7 +66,7 @@ if person || people
           input.form-control(name="searchText" style="margin:25px" type='text' placeholder='Enter person name')
           button.btn.btn-primary(style="margin:25px" type='submit') Search
 
-if users
+else
   form(method='POST', action='/users/search')
     .form-group.row.mx-sm-5
       .col-sm-7
