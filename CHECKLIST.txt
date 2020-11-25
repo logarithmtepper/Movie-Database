@@ -93,6 +93,8 @@ User Accounts
 -newly accounts considered regular users until upgraded to contributing user
 -Change between ‘regular’ user account and a ‘contributing’ user account.
 -Search for movies by title, name, and/or genre keyword, at minimum.
+-follow/unfollow other users and people
+
 
 Viewing Movies
 -See the basic movie information
@@ -111,6 +113,7 @@ Viewing People (directors, writers, actors)
 	list of people this person has worked with the most
 
 Viewing Other Users
+-See their followed person
 
 
 Contributing Users
