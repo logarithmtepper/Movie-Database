@@ -9,12 +9,21 @@ br
 |Follow Users: 
 if display_user.followedUsers.length > 0
     each id in display_user.followedUsers
-        a(href="http://localhost:3000/users/" + id) #{id}, 
+        a(href="http://localhost:3000/users/" + obj._id) #{obj.username}, 
 br
 |Follow People: 
 if display_user.followedPeople.length > 0
-    each id in display_user.followedPeople
-        a(href="http://localhost:3000/people/" + id) #{id}, 
+    each obj in display_user.followedPeople
+        a(href="http://localhost:3000/people/" + obj.id) #{obj.name}, 
+br
+|Reviews: 
+br
+if display_user.reviews.length > 0
+    each obj in display_user.reviews
+        a(href="http://localhost:3000/movies/" + obj.movie_id) #{obj.movie}: 
+        a(href="http://localhost:3000/reviews/" + obj._id) #{obj.title}
+        br
+        
 br
 #UserFollowedDIV
 a(href="http://localhost:3000/users/unfollow/" + display_user.id) Unfollow

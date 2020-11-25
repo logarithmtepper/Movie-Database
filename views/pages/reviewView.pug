@@ -1,0 +1,17 @@
+include ../partials/header
+#UserViewDIV
+b Movie: 
+a(href="http://localhost:3000/movies/" + review.movie.id) #{review.movie.title}
+br
+b Review title: 
+|#{review.title}
+br
+b Written by: 
+a(href="http://localhost:3000/users/" + review.reviewer._id) #{review.reviewer.name}
+br
+b Full Review: 
+|#{review.full}
+
+
+
+

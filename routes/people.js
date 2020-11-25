@@ -16,12 +16,12 @@ router.get('/add', ensureAuthenticated, function(req, res){
 	});
 });
 
-function addPerson(name,works,collaborators){
+function addPerson(name){
 	const id = start++;
 	let newPerson = new Person({
 		id: id,
-		works: [works],
-		collaborators:collaborators,
+		works: [],
+		collaborators:[],
 		name:name
 	})
 	newPerson.save(function(err){
@@ -30,7 +30,23 @@ function addPerson(name,works,collaborators){
 			return;
 		}
 	});
-	return newPerson.id;
+	return id;
+}
+function addPersonWork(name, work){
+	const id = start++;
+	let newPerson = new Person({
+		id: id,
+		works: [work],
+		collaborators:[],
+		name:name
+	})
+	newPerson.save(function(err){
+		if(err){
+			console.log(err);
+			return;
+		}
+	});
+	return id;
 }
 
 router.post('/search', function(req, res, next){
@@ -40,8 +56,6 @@ router.post('/search', function(req, res, next){
 
 router.post('/add', ensureAuthenticated, function(req, res, next){
   const name = req.body.name;
-  const work = req.body.work;
-
 
   //need to check if this person is exist
   Person.findOne({name:name}, function (err, result) {
@@ -53,34 +67,8 @@ router.post('/add', ensureAuthenticated, function(req, res, next){
 	if (result!==null){
 	  res.send('This person is exist in the database');
 	}else{
-	  if (work !== ''){
-		if (req.body.director === null||req.body.director === null||req.body.director === null){
-		  res.send("Select this person's role in this work");
-		}
-		Movie.findOne({title:work}, function(err, movie){
-			if(err){
-				res.status(500).send("Error reading people.");
-				console.log(err);
-				return;
-			}
-			let collaborators = movie.actors;
-			const personID = addPerson(name,movie.id,collaborators)
-			if (req.body.actor != null){movie.actors.push(personID);}
-			if (req.body.writer != null){movie.writer.push(personID);}
-			if (req.body.director != null){movie.director.push(personID);}
-			Movie.updateOne({title:work}, movie, function(err){
-			  if(err){
-				console.log(err);
-				return;
-			  }
-			});
-			res.redirect('/people/add');
-
-		})
-	  }else{//when work entry is empty
-		addPerson(name,'',[]);
-		res.redirect('/people/add');
-	  }
+	  addPerson(name)
+	  res.redirect('/people/add');
 	}
   });
 
@@ -270,5 +258,6 @@ function ensureAuthenticated(req, res, next) {
 
 module.exports = {
 	router:router,
-	addPerson:addPerson
+	addPerson:addPerson,
+	addPersonWork:addPersonWork
 };

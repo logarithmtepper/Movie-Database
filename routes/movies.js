@@ -18,48 +18,156 @@ router.get('/add', function(req, res){
 	});
 });
 
+function collab(collaborators,movie_obj){
+  for (name of collaborators){
+	const pname = name;
+	  Person.findOne({name:pname}, function (err, person) {
+		if(err){
+		  res.status(500).send("Error reading people.");
+		  console.log(err);
+		  return;
+		}
+		for (name of list){
+			const collab_name = name
+			if (collab_name !== pname){
+				person.collaborators.push(collab_name)
+			}
+		}
+		person.works.push(movie_obj);
+	  });
+  }
+}
+const findUser = async function (params) { 
+    try {  return await Person.findOne(params)
+    } catch(err) { console.log(err) }
+}
+
+
+
+const findPerson = async function (list) { 
+	var newList = []
+	for (i of list){
+		const pname = i
+		const person = findUser({name: pname})
+
+		if (person===null){var person_id = addPerson(pname);}
+		else{var person_id = person.id}
+		person_obj = {id:person_id,name:pname}
+		newList.push(person_obj);
+				//collaborators.push(person_obj);
+
+	}
+	return  newList
+}
+
 router.post('/add', function(req, res, next){
-	const moviename = req.body.mname;
+	const title = req.body.mname;
 	const rated = req.body.rated;
 	const released = req.body.year;
 	const runtime = req.body.runtime;
 	const language = req.body.language;
 
 	const genreList = req.body.genre.split(",");
-	var directorList = req.body.dname.split(",");
-	var writerList = req.body.wname.split(",");
-	var actorList = req.body.aname.split(",");
+	const directorList = req.body.dname.split(",");
+	const writerList = req.body.wname.split(",");
+	const actorList = req.body.aname.split(",");
 	const id = start++;
+	var actor = []
+	var writer = []		
+	var director = []
+	var collaborators = []
 
-	const director = findPersonID(directorList);
-	const writer = findPersonID(writerList);
-	const actor = findPersonID(actorList);
+	Movie.findOne({title:title}, function (err, movie) {
 
-	//need to check if this movie is exist
-	let newMovie = new Movie({
-		id: id,
-		title:moviename,
-		rated: rated,
-	  	released: released,
-	  	runtime: runtime,
-	  	genre: genreList,
-	 	director: director,
-	  	writer: writer,
-	  	actors: actor,
-	  	plot: '',
-	  	language: language,
-	  	ratings:  [],
-	  	similar: [],
-	})
+	  if(err){
+		res.status(500).send("Error reading movie.");
+		console.log(err);
+		return;
+	  }
+	  if (movie!==null){
+		res.send("This movie is exist");
+	  }
+/*
+	  for (i of actorList){
+		const pname = i
+		Person.findOne({name:pname})
+		.exec(function (err, person) {
+			if(err){
+			  res.status(500).send("Error reading people.");
+			  console.log(err);
+			  return;
+			}
+			if (person===null){var person_id = addPerson(pname);}
+			else{var person_id = person.id}
+			person_obj = {id:person_id,name:pname}
+			actor.push(person_obj);
+			collaborators.push(person_obj);
+		})
+	  }
+	  for (i of directorList){
+		const pname = i
+		Person.findOne({name:pname})
+		.exec(function (err, person) {
+			if(err){
+			  res.status(500).send("Error reading people.");
+			  console.log(err);
+			  return;
+			}
+			if (person===null){var person_id = addPerson(pname);}
+			else{var person_id = person.id}
+			person_obj = {id:person_id,name:pname}
+			director.push(person_obj);
+			collaborators.push(person_obj);
+		})
+	  }
+	  for (i of writerList){
+		const pname = i
+		Person.findOne({name:pname})
+		.exec(function (err, person) {
+			if(err){
+			  res.status(500).send("Error reading people.");
+			  console.log(err);
+			  return;
+			}
+			if (person===null){var person_id = addPerson(pname);}
+			else{var person_id = person.id}
+			person_obj = {id:person_id,name:pname}
+			writer.push(person_obj);
+			collaborators.push(person_obj);
+		})
+	  }
+	  */
+	  
+	  
 
-	newMovie.save(function(err){
-		if(err){
-		  	console.log(err);
-		  	return;
-		}else{
-			res.redirect('/movies/add');
-		}
+	    let newMovie = new Movie({
+			id: id,
+			title:title,
+			rated: rated,
+			released: released,
+			runtime: runtime,
+			genre: genreList,
+			director: director,
+			writer: writer,
+			actors: actor,
+			plot: '',
+			language: language,
+			ratings:  [],
+			similar: [],
+		})
+		
+		newMovie.save(function(err){
+			if(err){
+				res.status(500).send("Error saving movie.");
+				console.log(err);
+				return;
+			}
+			res.redirect('/movies');
+		});
+		movie_obj = {id:id, name:title}
+		//collab(collaborators, movie_obj);
 	});
+	
 });
 
 
@@ -87,7 +195,7 @@ router.post('/edit/:id', function(req, res){
 	  if (person===null){
 		res.redirect('/people/add');
 	  }else{
-		  if (req.body.director === null||req.body.director === null||req.body.director === null){
+		  if (req.body.director === null||req.body.actor === null||req.body.writer === null){
 			res.send("Select this person's role in this work");
 		  }
 		  Movie.findOne(query, function(err, movie){
@@ -96,25 +204,28 @@ router.post('/edit/:id', function(req, res){
 				  console.log(err);
 				  return;
 			  }
-			  if (person.works.includes(movie.id)){
+			  movie_obj = {id:movie.id,name:movie.title};
+			  person_obj = {id:person.id, name:person.name}
+			  if (person.works.includes(movie_obj)){
 				  res.redirect('/movies/'+movie.id);
 				  return;
 			  }
+
 			  let collaborators = movie.actors;
-			  for (i of collaborators){
-				if (!person.collaborators.includes(i)){
-					person.collaborators.push(i);
+			  for (obj of collaborators){
+				if (!person.collaborators.includes(obj)){
+					person.collaborators.push(obj);
 				}
 			  }
-			  person.works.push(movie.id)
+			  person.works.push(movie_obj)
 			  if (req.body.actor != null){
-				  movie.actors.push(person.id)
+				  movie.actors.push(person_obj)
 			  }
 			  if (req.body.writer != null){
-				  movie.writer.push(person.id)
+				  movie.writer.push(person_obj)
 			  }
 			  if (req.body.director != null){
-				  movie.director.push(person.id)
+				  movie.director.push(person_obj)
 			  }
 			  Movie.updateOne(query, movie, function(err){
 				if(err){
@@ -186,25 +297,6 @@ function queryParser(req, res, next){
 	next();
 }
 
-function findPersonID(list){
-  for (i in list){
-	Person.findOne({name:list[i]}, function (err, person) {
-	  if(err){
-		res.status(500).send("Error reading people.");
-		console.log(err);
-		return;
-	  }
-	  if (person===null){
-		list[i] = addPerson(list[i],'',[]);
-		return list[i];
-	  }else{
-		list[i] = person.id;
-		return list[i];
-	  }
-	});
-  }
-  return list;
-}
 
 function getMovie(req, res, next){
   let id = req.params.id;

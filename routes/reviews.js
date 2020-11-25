@@ -102,7 +102,7 @@ function sendReview(req, res, next){
 		"application/json": function(){
 			res.status(200).json(req.review);
 		},
-		"text/html": () => { res.render("userView", {review: req.review, user:req.user}); }
+		"text/html": () => { res.render("reviewView", {review: req.review, user:req.user}); }
 	});
 	next();
 }
