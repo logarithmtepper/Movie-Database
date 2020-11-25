@@ -8,33 +8,50 @@ const ObjectId= require('mongoose').Types.ObjectId
 
 // Register Form
 router.get('/register', function(req, res){
-  res.render('register');
+  res.render('register',{
+    error: req.err
+  });
 });
 
 router.post('/register', function(req, res){
   const username = req.body.username;
   const password = req.body.password;
   const password2 = req.body.password2;
+  
   if (password!==password2){
-    res.send("Password does not match");
-  }else{
-    let newUser = new User({
-      username:username,
-      password:password,
-      contributing:"n",
-      followedUsers: [],
-      followedPeople: [],
-      reviews: []
-    })
-    newUser.save(function(err){
-      if(err){
-        console.log(err);
-        return;
-      }else{
-      res.redirect('login');
-      }
-
+    res.render('register',{
+      error: "Password does not match"
     });
+  }
+  if (password.length<6){
+    res.render('register',{
+      error: "Password need to be at least 6 characters"
+    });
+  }else{
+    User.findOne({username:username},function(err,user){
+      if (user!==null){
+        res.render('register',{
+          error: "This username exist, choose another one"
+        });
+      }else{
+        let newUser = new User({
+          username:username,
+          password:password,
+          contributing:"n",
+          followedUsers: [],
+          followedPeople: [],
+          reviews: []
+        })
+        newUser.save(function(err){
+          if(err){
+            console.log(err);
+            return;
+          }else{
+          res.redirect('login');
+          }
+        });
+      }
+    })
   }
 });
 
