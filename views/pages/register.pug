@@ -3,13 +3,16 @@ form(method='POST', action='/users/register')
   .form-group.mx-sm-5.text-center
     br
     h2 Sign Up
+    br
+    | #{error}
+    br
   .form-group.row.mx-sm-5.text-center
     .col-sm-4
     .col-sm-4
       label(for='username')
         b Username
       input#unameInput.form-control(type='text', placeholder='Enter Username', name='username')
-      br
+
       label(for='password')
         b Password
       input#pswInput.form-control(type='password', placeholder='Enter Password', name='password')
