@@ -5,8 +5,9 @@ User Accounts
 Viewing Movies
 -New reviews not displayed on movie page***
 
-Viewing People (directors, writers, actors)
-ALL DONE!
+Viewing People
+-If a user follows a person,
+	the user should receive a notification any time a new movie is added to the database that involves this person, or any time this person is added to an existing movie.
 
 Viewing Other Users
 -Error when trying to view second user on list of users
@@ -44,15 +45,6 @@ In addition to the web-based client that most users will use, your movie databas
 7.	GET /users/:user – Get information about the user with the given unique ID, if they exist.
 		This should contain their username, their account status (regular user or contributing user) and the reviews the user has made.
 
-Project Report
-You will also be required to submit a project report that must explain the overall design of the system, outline any assumptions that were made,
-provide supporting arguments for the design decisions that were made, discuss technologies used within the application, document your server’s API,
-describe any testing completed as part of the project, highlight key features of the system, and provide documentation on how to use/test the system.
-You must be able to justify your design and implementation choices from a perspective that considers scalability, robustness, extensibility, and maintainability,
-as well as the overall user experience. It is important to document the design decisions you make,
-as well as your reasoning for making those decisions and any alternative approaches you tried or considered as the term progresses.
-This will make writing a quality report near the end of the term significantly easier. We will discuss potential sections and other outline details for the project reports throughout the term.
-
 Pair Project Extensions
 it is recommended that you include at least 3 of the below extensions into your project,
 or similar extensions you come up with on your own. For those looking for an A grade on the project,
@@ -70,7 +62,23 @@ pairs are encouraged to include more than the minimum recommended extensions and
 IDEAS:
 web scrubber to get images for each person
 
-DONE:
+Project Report
+1. Provide instructions for the TA describing how to log in to your OpenStack instance and start your server.
+	a. Include your instance information including the public IP, instance name, and instance username/password.
+	b. Provide steps required to start the database or any other supporting software.
+	c. Provide any initialization steps the TA must take (e.g., running a database initialization script).
+	d. Provide instructions to run your server.
+	e. Everything should be installed already, the TA should not have to install modules, etc.
+2. Provide a summary of what functionality you have implemented successfully and what functionality you have not implemented.
+3. Describe any extensions you included beyond the required specification.
+4. Discuss any design decisions you made that you believe increase the overall quality of your system.
+	Some important things to think about in this regard include the scalability, robustness, and user experience.
+5. Discuss any improvements to your system that you think could be made to increase its overall quality.
+	This is an opportunity to demonstrate your understanding of course concepts that you feel were not adequately demonstrated in your project
+6. Identify any modules, frameworks, or other tools that you used and justify their use.
+7. What do you like most about your project? What would you say is the best feature(s)?
+
+DONE: *******************************************************************************************************************************
 User Accounts
 -provide a way for users to create new accounts
 -A user can log in and out using username and password
@@ -104,13 +112,13 @@ Viewing People (directors, writers, actors)
 -See a list of frequent collaborators of this person.
 	list of people this person has worked with the most
 -Choose to follow this person.
-	If a user follows a person, the user should receive a notification any time a new movie is added to the database that involves this person, or any time this person is added to an existing movie.
+	If a user follows a person,
+	the user should receive a notification any time a new movie is added to the database that involves this person, or any time this person is added to an existing movie.
 
 Viewing Other Users
 -See their followed person
 -See a list of all of the reviews this user has made
 	and be able to read each full review
-
 
 Contributing Users
 -Add a new person to the database by specifying their name.
