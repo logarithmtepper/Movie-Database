@@ -22,10 +22,6 @@ let reviewSchema = Schema({
 		type: Object,
 		required: true
 	}
-
-  //followedUsers: [Schema.Types.ObjectId],
-  //followedPeople: [Schema.Types.ObjectId],
-  //reviews: [Schema.Types.ObjectId]
 });
 
 module.exports = mongoose.model("Review", reviewSchema);

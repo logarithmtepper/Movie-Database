@@ -17,8 +17,6 @@ let personSchema = Schema({
   collaborators: {
 		type: [],
 	}
-  //works: [Schema.Types.ObjectId],
-  //collaborators: [Schema.Types.ObjectId],
 });
 
 module.exports = mongoose.model("Person", personSchema);
