@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const addPerson = require("./people").addPerson;
 const Movie = require("../models/movieModel");
 const Person = require("../models/personModel");
 const Genre = require("../models/genreModel");
@@ -18,46 +17,53 @@ router.get('/add', function(req, res){
 	});
 });
 
-function collab(collaborators,movie_obj){
-  for (name of collaborators){
-	const pname = name;
-	  Person.findOne({name:pname}, function (err, person) {
-		if(err){
-		  res.status(500).send("Error reading people.");
-		  console.log(err);
-		  return;
-		}
-		for (name of list){
-			const collab_name = name
-			if (collab_name !== pname){
-				person.collaborators.push(collab_name)
-			}
-		}
-		person.works.push(movie_obj);
-	  });
-  }
-}
-const findUser = async function (params) { 
-    try {  return await Person.findOne(params)
-    } catch(err) { console.log(err) }
-}
 
-
-
-const findPerson = async function (list) { 
-	var newList = []
+function addPersonToMovie(list,role,movie){
+	const movie_obj = {id:movie.id, name:movie.title}
 	for (i of list){
-		const pname = i
-		const person = findUser({name: pname})
-
-		if (person===null){var person_id = addPerson(pname);}
-		else{var person_id = person.id}
-		person_obj = {id:person_id,name:pname}
-		newList.push(person_obj);
-				//collaborators.push(person_obj);
-
+		const name =i.trim();
+		Person.findOne({name:name},function (err, person) {
+			if(err){
+			  console.log(err);
+			  return;
+			}
+			if (person===null){
+				Movie.deleteOne({title:movie.title}, function (err) {
+					if(err){
+						console.log(err);
+						return;
+					}
+				});
+				return;
+			}
+			else{
+				person_obj = {id:person.id,name:name};
+				person.works.push(movie_obj);
+				if(role === "actor"){
+					console.log(person_obj)
+					movie.actors.push(person_obj);
+				}
+				if(role === "writer"){
+					movie.writer.push(person_obj);
+				}
+				if(role === "director"){
+					movie.director.push(person_obj);
+				}
+				Person.updateOne({name:name},person, function(err){
+					if(err){
+						console.log(err);
+						return;
+					}
+				});
+				Movie.updateOne({id:movie.id},movie, function(err){
+					if(err){
+						console.log(err);
+						return;
+					}
+				});
+			}
+		});
 	}
-	return  newList
 }
 
 router.post('/add', function(req, res, next){
@@ -72,13 +78,9 @@ router.post('/add', function(req, res, next){
 	const writerList = req.body.wname.split(",");
 	const actorList = req.body.aname.split(",");
 	const id = start++;
-	var actor = []
-	var writer = []		
-	var director = []
-	var collaborators = []
 
 	Movie.findOne({title:title}, function (err, movie) {
-
+	  
 	  if(err){
 		res.status(500).send("Error reading movie.");
 		console.log(err);
@@ -87,86 +89,30 @@ router.post('/add', function(req, res, next){
 	  if (movie!==null){
 		res.send("This movie is exist");
 	  }
-/*
-	  for (i of actorList){
-		const pname = i
-		Person.findOne({name:pname})
-		.exec(function (err, person) {
-			if(err){
-			  res.status(500).send("Error reading people.");
-			  console.log(err);
-			  return;
-			}
-			if (person===null){var person_id = addPerson(pname);}
-			else{var person_id = person.id}
-			person_obj = {id:person_id,name:pname}
-			actor.push(person_obj);
-			collaborators.push(person_obj);
-		})
-	  }
-	  for (i of directorList){
-		const pname = i
-		Person.findOne({name:pname})
-		.exec(function (err, person) {
-			if(err){
-			  res.status(500).send("Error reading people.");
-			  console.log(err);
-			  return;
-			}
-			if (person===null){var person_id = addPerson(pname);}
-			else{var person_id = person.id}
-			person_obj = {id:person_id,name:pname}
-			director.push(person_obj);
-			collaborators.push(person_obj);
-		})
-	  }
-	  for (i of writerList){
-		const pname = i
-		Person.findOne({name:pname})
-		.exec(function (err, person) {
-			if(err){
-			  res.status(500).send("Error reading people.");
-			  console.log(err);
-			  return;
-			}
-			if (person===null){var person_id = addPerson(pname);}
-			else{var person_id = person.id}
-			person_obj = {id:person_id,name:pname}
-			writer.push(person_obj);
-			collaborators.push(person_obj);
-		})
-	  }
-	  */
-	  
-	  
+	  let newMovie = new Movie({
+		id: id,
+		title:title,
+		rated: rated,
+		released: released,
+		runtime: runtime,
+		genre: genreList,
+		director: [],
+		writer: [],
+		actors: [],
+		plot: '',
+		language: language,
+		ratings:  [],
+		similar: [],
+	  })
+	  newMovie.save(function(err){
 
-	    let newMovie = new Movie({
-			id: id,
-			title:title,
-			rated: rated,
-			released: released,
-			runtime: runtime,
-			genre: genreList,
-			director: director,
-			writer: writer,
-			actors: actor,
-			plot: '',
-			language: language,
-			ratings:  [],
-			similar: [],
-		})
-		
-		newMovie.save(function(err){
-			if(err){
-				res.status(500).send("Error saving movie.");
-				console.log(err);
-				return;
-			}
-			res.redirect('/movies');
-		});
-		movie_obj = {id:id, name:title}
-		//collab(collaborators, movie_obj);
+	  })
+	  addPersonToMovie(directorList,"director", newMovie);
+	  addPersonToMovie(writerList,"writer", newMovie);
+	  addPersonToMovie(actorList,"actor", newMovie);
+	  res.redirect('/movies')
 	});
+	
 	
 });
 
