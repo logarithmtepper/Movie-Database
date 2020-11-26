@@ -3,7 +3,7 @@ User Accounts
 	recommendations made based on what information your web application knows about the user, such as what movies they have reviewed or what people/users they have followed.
 
 Viewing Movies
--New reviews not displayed on movie page***
+-New reviews not displayed on movie page
 
 Viewing People
 -If a user follows a person,
