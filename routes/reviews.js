@@ -19,7 +19,7 @@ router.get('/add/:id', ensureAuthenticated, function(req, res){
         else{
             res.movie = result;
             res.render('addReview',{
-                user:req.user,  
+                user: req.user,
                 movie: result,
                 title: result.title
             });
@@ -52,8 +52,12 @@ router.post('/add/:id', ensureAuthenticated, function(req, res){
                 movie:movie_obj
             })
             review_obj = {_id:newReview._id,movie_id:movie.id,title:newReview.title,rating:newReview.rating, movie:movie.title}
-            //movie.ratings.push(review_obj);
+            movieReview = {Source:user_obj.name, Value:rating}
+            movie.ratings.push(movieReview);
             user.reviews.push(review_obj);
+            movie.similar.forEach(movieObj => {
+              user.recommended.push(movieObj);
+            });
             Movie.updateOne({title:movie.title}, movie, function(err){
                 if(err){
                   console.log(err);

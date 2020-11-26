@@ -80,7 +80,7 @@ router.post('/add', function(req, res, next){
 	const id = start++;
 
 	Movie.findOne({title:title}, function (err, movie) {
-	  
+
 	  if(err){
 		res.status(500).send("Error reading movie.");
 		console.log(err);
@@ -112,8 +112,8 @@ router.post('/add', function(req, res, next){
 	  addPersonToMovie(actorList,"actor", newMovie);
 	  res.redirect('/movies')
 	});
-	
-	
+
+
 });
 
 
@@ -243,7 +243,6 @@ function queryParser(req, res, next){
 	next();
 }
 
-
 function getMovie(req, res, next){
   let id = req.params.id;
   Movie.findOne({id:id}, function (err, result) {
@@ -259,7 +258,6 @@ function getMovie(req, res, next){
 }
 
 function sendMovie(req, res, next){
-	
   res.format({
 		"application/json": function(){
 			res.status(200).json(req.movie);
@@ -322,7 +320,7 @@ function ensureAuthenticated(req, res, next){
 	  req.flash('danger', 'Please login');
 	  res.redirect('/users/login');
 	}
-  }
+}
 
 
 module.exports = router;

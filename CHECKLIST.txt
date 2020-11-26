@@ -2,15 +2,11 @@ User Accounts
 -View recommended movies.
 	recommendations made based on what information your web application knows about the user, such as what movies they have reviewed or what people/users they have followed.
 
-Viewing Movies
--New reviews not displayed on movie page
-
 Viewing People
 -If a user follows a person,
 	the user should receive a notification any time a new movie is added to the database that involves this person, or any time this person is added to an existing movie.
 
 Viewing Other Users
--Error when trying to view second user on list of users
 -If a user X follows a user Y, user X should receive a notification any time user Y creates a new review
 
 Contributing Users

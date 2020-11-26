@@ -39,8 +39,11 @@ br
 #recommendedDIV
 div.text-center
   p Recommended for you
-  br
+  if user.recommended.length > 0
+    each obj in user.recommended
+      a(href="http://localhost:3000/movies/" + obj.id) #{obj.name}, 
 
+br
 div.text-center
   a(href='/users') See all Users
   br
@@ -51,6 +54,7 @@ div.text-center
 form(method='POST', action='/users/profile')
   div.text-center
     if user.contributing==="n"
+      br
       input.btn.btn-primary(type='submit', value='Become a contributing user') 
     else
       input.btn.btn-primary(type='submit',value='Become a regular user') 
