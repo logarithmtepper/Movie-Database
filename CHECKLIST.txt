@@ -1,37 +1,22 @@
 User Accounts
--Usernames must be unique
--View and manage the people they follow.
-	The user should be able to navigate to the personal page of any person they have followed.
-	The user should be able to stop following any person that they have followed.
--View and manage the other users they follow.
-	The user should be able to navigate to the user page of any user they have followed. The user should be able to stop following any user that they have followed.
 -View recommended movies.
 	recommendations made based on what information your web application knows about the user, such as what movies they have reviewed or what people/users they have followed.
 
 Viewing Movies
--Add a basic review by specifying a score out of 10.
--Add full review by specifying out of 10, a brief summary, and a full review text.
+-New reviews not displayed on movie page***
 
 Viewing People (directors, writers, actors)
--Choose to follow this person.
-	If a user follows a person, the user should receive a notification any time a new movie is added to the database that involves this person, or any time this person is added to an existing movie.
+ALL DONE!
 
 Viewing Other Users
--See a list of all of the reviews this user has made
-	and be able to read each full review
--See a list of all of the people this user has followed
-	and be able to navigate to each person’s page.
--Choose to follow this user.
-	If a user X follows a user Y, user X should receive a notification any time user Y creates a new review.
+-Error when trying to view second user on list of users
+-If a user X follows a user Y, user X should receive a notification any time user Y creates a new review
 
 Contributing Users
--Add a new person to the database by specifying their name.
-	If the name already exists, the user should not be able to add the new person.
--Add a new movie
-	minimum information: including at least one writer, director, and actor.
-	user should only be allowed to add people to a movie if that person exists in the database already
--When viewing a movie, be able to edit the movie by adding people
-	user should only be allowed to add people to a movie if that person exists in the database already
+-Error picking collaborators properly with newly added people
+-Error displaying people on moviepage when adding new movie
+-Error displaying similar movie on moviepage when adding new movie
+-Addmovie page does not have plot entry section
 
 REST API
 In addition to the web-based client that most users will use, your movie database application must also provide a public JSON REST API that supports the following routes and parameters, at minimum:
@@ -94,7 +79,12 @@ User Accounts
 -Change between ‘regular’ user account and a ‘contributing’ user account.
 -Search for movies by title, name, and/or genre keyword, at minimum.
 -follow/unfollow other users and people
-
+-Usernames must be unique
+-View and manage the people they follow.
+	The user should be able to navigate to the personal page of any person they have followed.
+	The user should be able to stop following any person that they have followed.
+-View and manage the other users they follow.
+	The user should be able to navigate to the user page of any user they have followed. The user should be able to stop following any user that they have followed.
 
 Viewing Movies
 -See the basic movie information
@@ -105,15 +95,25 @@ Viewing Movies
 -See a list of similar movies to this one
 	allow the user to navigate to the page for any of those movies.
 -See movie reviews that have been added for the movie.
+-Add a basic review by specifying a score out of 10.
+-Add full review by specifying out of 10, a brief summary, and a full review text.
 
 Viewing People (directors, writers, actors)
 -See a history of all of this person’s work
 	Each movie entry should allow the user to navigate to that movie’s page
 -See a list of frequent collaborators of this person.
 	list of people this person has worked with the most
+-Choose to follow this person.
+	If a user follows a person, the user should receive a notification any time a new movie is added to the database that involves this person, or any time this person is added to an existing movie.
 
 Viewing Other Users
 -See their followed person
+-See a list of all of the reviews this user has made
+	and be able to read each full review
 
 
 Contributing Users
+-Add a new person to the database by specifying their name.
+	If the name already exists, the user should not be able to add the new person.
+-When viewing a movie, be able to edit the movie by adding people
+	user should only be allowed to add people to a movie if that person exists in the database already
