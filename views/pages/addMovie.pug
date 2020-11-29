@@ -7,23 +7,23 @@ br
 form(method='POST', action='/movies/add')
   #form-group
     label(for='mname')
-      b Movie Name:   
+      b Movie Name:    
     input#mnameInput(type='text' placeholder='Enter Movie Name' name='mname' required='')
 
   #form-group
     label(for='rated')
       b Rated: 
-    input#dnameInput(type='text' placeholder='Enter Rated' name='rated' required='')  
+    input#ratedInput(type='text' placeholder='Enter Rated' name='rated' required='')  
 
   #form-group
     label(for='released')
       b Released Year:  
-    input#dnameInput(type='text' placeholder='Enter The Released Year' name='released' required='') 
+    input#releasedInput(type='text' placeholder='Enter The Released Year' name='released' required='') 
 
   #form-group
     label(for='language')
       b Language:  
-    input#dnameInput(type='text' placeholder='Enter The Language' name='language' required='')  
+    input#languageInput(type='text' placeholder='Enter The Language' name='language' required='')  
 
   #form-group
     label(for='wname')
@@ -48,5 +48,11 @@ form(method='POST', action='/movies/add')
     label(for='runtime')
       b Run Time:  
     input#anameInput(type='text' placeholder='Enter Runtime' name='runtime' required='')  
+
+  #form-group
+    label(for='plot')
+      b Plot:  
+    br
+    textarea#plotInput(type='text' placeholder='Enter The plot' name='plot' cols="40" rows="10" required='')
 
   button.btn.btn-primary(type='submit') Add Movie
