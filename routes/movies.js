@@ -3,7 +3,7 @@ const router = express.Router();
 const Movie = require("../models/movieModel");
 const Person = require("../models/personModel");
 const Genre = require("../models/genreModel");
-
+var bodyParser = require('body-parser');
 start = 10000;
 //for GET /home
 router.get("/", queryParser);
@@ -12,29 +12,38 @@ router.get("/", loadGenres);
 router.get("/", respondMovies);
 
 router.get('/add', function(req, res){
-	res.render('addMovie.pug',{
-		user:req.user
-	});
+	if (req.user === undefined){
+		res.redirect("/users/login");
+	}
+	else if (req.user.contributing !== "y"){
+		res.redirect("/users/profile");
+	}	
+	else{
+		res.render('addMovie.pug',{
+			user:req.user
+		});
+	}
 });
 
 
-function addPersonToMovie(list,role,movie){
+let addPersonToMovie = async (list,role,people, movie)=>{
+	console.log(people);
 	const movie_obj = {id:movie.id, name:movie.title}
-	for (i of list){
-		const name =i.trim();
+	Movie.findOne({title:movie.title},function (err, result) {
+		if(err){
+		  	console.log(err);
+		 	return;
+		}
+		if(result === null){
+			return;
+		}
+	});
+	for (const name of list){
+		//const name =i;
 		Person.findOne({name:name},function (err, person) {
 			if(err){
-			  console.log(err);
-			  return;
-			}
-			if (person===null){
-				Movie.deleteOne({title:movie.title}, function (err) {
-					if(err){
-						console.log(err);
-						return;
-					}
-				});
-				return;
+			    console.log(err);
+			    return;
 			}
 			else{
 				person_obj = {id:person.id,name:name};
@@ -48,6 +57,13 @@ function addPersonToMovie(list,role,movie){
 				}
 				if(role === "director"){
 					movie.director.push(person_obj);
+				}
+				for (obj of people){
+					console.log(obj)
+					console.log(person_obj)
+					if (!person.collaborators.includes(obj) && obj.name!==person_obj.name){
+						person.collaborators.push(obj);
+					}
 				}
 				Person.updateOne({name:name},person, function(err){
 					if(err){
@@ -64,67 +80,100 @@ function addPersonToMovie(list,role,movie){
 			}
 		});
 	}
+
 }
 
-router.post('/add', function(req, res, next){
+router.post('/add', function(req, res){
 	const title = req.body.mname;
 	const rated = req.body.rated;
 	const released = req.body.year;
 	const runtime = req.body.runtime;
 	const language = req.body.language;
-
-	const genreList = req.body.genre.split(",");
-	const directorList = req.body.dname.split(",");
-	const writerList = req.body.wname.split(",");
-	const actorList = req.body.aname.split(",");
+	const plot =  req.body.plot;
+	const genreList = req.body.genre.trim().split(/\s*,\s*/);
+	const directorList = req.body.dname.trim().split(/\s*,\s*/);
+	const writerList = req.body.wname.trim().split(/\s*,\s*/);
+	const actorList = req.body.aname.trim().split(/\s*,\s*/);
 	const id = start++;
 
+	var people = directorList.concat(writerList, actorList)
+	var unique_people = people.filter((v, i, a) => a.indexOf(v) === i)
 	Movie.findOne({title:title}, function (err, movie) {
-	  
+		
 	  if(err){
 		res.status(500).send("Error reading movie.");
 		console.log(err);
 		return;
 	  }
-	  if (movie!==null){
-		res.send("This movie is exist");
+	  else if (movie!==null){
+		res.render("addMovie",{
+			error:"This movie exists in the database"
+		});
+	  } 
+	  else{
+		
+		Person.find({},{"_id":0, "id": 1,"name":1},function(err, result){
+		    if (err){
+				res.status(500).send("Error reading movie.");
+				console.log(err);
+				return;
+			}
+			var colab = result.filter(x=>unique_people.includes(x.name))
+			
+			if (colab.length!==unique_people.length){
+				return res.render("addMovie",{
+					error:"People have to be in the database"
+				});
+			}	
+			
+			let newMovie = new Movie({
+				id: id,
+				title:title,
+				rated: rated,
+				released: released,
+				runtime: runtime,
+				genre: genreList,
+				director: [],
+				writer: [],
+				actors: [],
+				plot: plot,
+				language: language,
+				ratings:  [],
+				similar: [],
+			})
+			
+			newMovie.save(function(err){
+				if(err){
+				  console.log(err);
+				  return;
+				}
+			})
+			addPersonToMovie(directorList,"director", colab, newMovie)
+			addPersonToMovie(writerList,"writer", colab, newMovie)
+			addPersonToMovie(actorList,"actor", colab, newMovie)
+			res.redirect("/movies");
+		});
 	  }
-	  let newMovie = new Movie({
-		id: id,
-		title:title,
-		rated: rated,
-		released: released,
-		runtime: runtime,
-		genre: genreList,
-		director: [],
-		writer: [],
-		actors: [],
-		plot: '',
-		language: language,
-		ratings:  [],
-		similar: [],
-	  })
-	  newMovie.save(function(err){
-
-	  })
-	  addPersonToMovie(directorList,"director", newMovie);
-	  addPersonToMovie(writerList,"writer", newMovie);
-	  addPersonToMovie(actorList,"actor", newMovie);
-	  res.redirect('/movies')
 	});
-	
-	
 });
 
 
 router.get('/edit/:id', ensureAuthenticated, function(req, res){
-	Movie.findOne({id:req.params.id}, function(err, movie){
-	  	res.render('editMovie', {
-			title:'Edit Movie',
-			movie:movie,
-			user:req.user
-	  	});
-	});
+	if (req.user === undefined){
+		res.redirect("/users/login");
+	}
+	else if (req.user.contributing !== "y"){
+		res.redirect("/users/profile");
+	}	
+	else{
+	  	Movie.findOne({id:req.params.id}, function(err, movie){
+	  		res.render('editMovie', {
+				title:'Edit Movie',
+				movie:movie,
+				user:req.user
+	  		});
+		});
+	}
 });
 
   // Update Submit POST Route
