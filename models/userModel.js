@@ -22,7 +22,10 @@ let userSchema = Schema({
 	},
   reviews: {
 		type: [],
-	}
+	},
+  recommended: {
+		type: [],
+  }
 });
 
 module.exports = mongoose.model("User", userSchema);

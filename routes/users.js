@@ -17,7 +17,7 @@ router.post('/register', function(req, res){
   const username = req.body.username;
   const password = req.body.password;
   const password2 = req.body.password2;
-  
+
   if (password!==password2){
     res.render('register',{
       error: "Password does not match"
@@ -40,7 +40,8 @@ router.post('/register', function(req, res){
           contributing:"n",
           followedUsers: [],
           followedPeople: [],
-          reviews: []
+          reviews: [],
+          recommended: []
         })
         newUser.save(function(err){
           if(err){
@@ -197,7 +198,7 @@ router.post('/search', function(req, res, next){
 });
 
 function queryParser(req, res, next){
-	const MAX_USER = 48;
+	const MAX_USER = 66;
 
 	let params = [];
 	for(prop in req.query){
@@ -209,13 +210,13 @@ function queryParser(req, res, next){
 	req.qstring = params.join("&");
 
 	try{
-		req.query.limit = req.query.limit || 48;
+		req.query.limit = req.query.limit || 66;
 		req.query.limit = Number(req.query.limit);
 		if(req.query.limit > MAX_USER){
 			req.query.limit = MAX_USER;
 		}
 	}catch{
-		req.query.limit = 48;
+		req.query.limit = 66;
 	}
 
 	try{

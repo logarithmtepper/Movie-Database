@@ -79,7 +79,7 @@ movies.forEach(movie => {
         let temp = genres[i].movies
         for (x=0; x < 2; x++){
           let y = Math.floor(Math.random() * temp.length);
-          if(temp[y] && !movie.similarObj.includes(temp[y])){
+          if(temp[y].id != movie.id && temp[y] && !containsObjectId(temp[y], movie.similarObj)){
             movie.similarObj.push(temp[y]);
           }
         }
