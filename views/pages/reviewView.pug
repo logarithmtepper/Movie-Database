@@ -6,6 +6,9 @@ br
 b Review title: 
 |#{review.title}
 br
+b Rating: 
+|#{review.rating}
+br
 b Written by: 
 a(href="http://localhost:3000/users/" + review.reviewer._id) #{review.reviewer.name}
 br
