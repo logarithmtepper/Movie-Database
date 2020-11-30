@@ -40,7 +40,7 @@ let genreList = genreString.split(',');
 peopleList = stringCleaner(peopleList);
 peopleList = removeDuplicates(peopleList);
 
-//Some misplaced commas in the json we're causing extra people to be created this removes them
+//Some misplaced commas in the json we're causing extra people to be created. This function removes them.
 for(i=0; i < peopleList.length; i++){
   if(peopleList[i].includes("(") || peopleList[i].includes(")")){
     peopleList.splice(i, 1);
