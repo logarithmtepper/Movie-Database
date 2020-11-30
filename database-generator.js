@@ -179,7 +179,7 @@ db.once('open', function() {
 			return;
 		}
 
-		console.log("Dropped database. Starting re-creation.");
+		console.log("Dropped database. Re-creating.");
 
 		let completedMovies = 0;
 		schemaMovies.forEach(movie => {
