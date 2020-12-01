@@ -92,7 +92,7 @@ function addPersonToMovie(list,role,people, movie){
 }
 
 router.post('/addbyurl', function(req, res, next){
-
+	const newMovie = fetchMovieInfo(req.body.murl);
 })
 
 router.post('/add', function(req, res, next){
