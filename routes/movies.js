@@ -93,7 +93,7 @@ function addPersonToMovie(list,role,people, movie){
 
 router.post('/addbyurl', function(req, res, next){
 	const newMovie = fetchMovieInfo(req.body.murl);
-
+	console.log(newMovie);
 })
 
 router.post('/add', function(req, res, next){
@@ -601,18 +601,18 @@ function fetchMovieInfo(url){
         let movieLanguage = rawHtml.substring(rawMovieLanguage, rawMovieLanguage+movieLanguageEnd);
 
         let cleanedLanguage = "";
-        let add_letters = true;
+        let addLetters = true;
 
         // Clean out the html tags
         movieLanguage.split('').forEach(c => {
           if(c == '<'){
-            add_letters = false;
+            addLetters = false;
           };
-          if(add_letters) {
+          if(addLetters) {
             cleanedLanguage += c;
           };
           if(c == '>'){
-            add_letters = true;
+            addLetters = true;
           };
 
         });
@@ -629,14 +629,14 @@ function fetchMovieInfo(url){
         movie.movieLanguage = cleanedLanguage2;
 
         // Unset & delete
-        rawMovieLanguage, movieLanguageEnd, movieLanguage, cleanedLanguage, add_letters, cleanedLanguage2 = undefined;
-        delete(rawMovieLanguage, movieLanguageEnd, movieLanguage, cleanedLanguage, add_letters, cleanedLanguage2);
+        rawMovieLanguage, movieLanguageEnd, movieLanguage, cleanedLanguage, addLetters, cleanedLanguage2 = undefined;
+        delete(rawMovieLanguage, movieLanguageEnd, movieLanguage, cleanedLanguage, addLetters, cleanedLanguage2);
 
       }catch(err) {
         movie.movieLanguage = "N/A";
       }
 
-      console.log(movie);
+			return movie;
     });
 }
 
