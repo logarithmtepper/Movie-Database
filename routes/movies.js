@@ -93,6 +93,7 @@ function addPersonToMovie(list,role,people, movie){
 
 router.post('/addbyurl', function(req, res, next){
 	const newMovie = fetchMovieInfo(req.body.murl);
+
 })
 
 router.post('/add', function(req, res, next){
@@ -390,6 +391,7 @@ function fetchMovieInfo(url){
 
       movie = {}
 
+      // Disgusting regex to find movie title
       try{
         let rawMovieTitle = rawHtml.match('(<div\\sclass="title_wrapper">\\n.+&nbsp;)')[0]
         rawMovieTitle = rawMovieTitle.substring(27, rawMovieTitle.length);
@@ -591,6 +593,47 @@ function fetchMovieInfo(url){
         movie.movieImdbRating = movieImdbRating
       }catch {
         movie.movieImdbRating = "N/A"
+      }
+
+      try {
+        let rawMovieLanguage = rawHtml.match('(Language:<\/h4)')['index'];
+        let movieLanguageEnd = rawHtml.substring(rawMovieLanguage, rawMovieLanguage+1500).match('(<\/div>)')['index'];
+        let movieLanguage = rawHtml.substring(rawMovieLanguage, rawMovieLanguage+movieLanguageEnd);
+
+        let cleanedLanguage = "";
+        let add_letters = true;
+
+        // Clean out the html tags
+        movieLanguage.split('').forEach(c => {
+          if(c == '<'){
+            add_letters = false;
+          };
+          if(add_letters) {
+            cleanedLanguage += c;
+          };
+          if(c == '>'){
+            add_letters = true;
+          };
+
+        });
+
+        // Clean out excess
+        let cleanedLanguage2 = [];
+        cleanedLanguage = cleanedLanguage.split('\n');
+        for(i = 0; i<cleanedLanguage.length; i++) {
+          if(i % 2 == 1){
+            cleanedLanguage2.push(cleanedLanguage[i].trim())
+          }
+        }
+
+        movie.movieLanguage = cleanedLanguage2;
+
+        // Unset & delete
+        rawMovieLanguage, movieLanguageEnd, movieLanguage, cleanedLanguage, add_letters, cleanedLanguage2 = undefined;
+        delete(rawMovieLanguage, movieLanguageEnd, movieLanguage, cleanedLanguage, add_letters, cleanedLanguage2);
+
+      }catch(err) {
+        movie.movieLanguage = "N/A";
       }
 
       console.log(movie);
