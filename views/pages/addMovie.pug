@@ -1,8 +1,10 @@
 include ../partials/header
 h2 Add Movies
 #addMovieDIV.container
-br
 | #{error}
+br
+a(style='font-size:18px;font-weight:bold' href='http://localhost:3000/movies/addbyurl') Add Movie Using IMDB Url
+br
 br
 form(method='POST', action='/movies/add')
   #form-group
@@ -61,3 +63,5 @@ form(method='POST', action='/movies/add')
     textarea#plotInput(type='text' placeholder='Enter The plot' name='plot' cols="40" rows="10" required='')
 
   button.btn.btn-primary(type='submit') Add Movie
+  
+  
