@@ -215,6 +215,47 @@ function fetchMovieInfo(url){
         movie.movieImdbRating = "N/A"
       }
 
+      try {
+        let raw_lang = raw_html.match('(Language:<\/h4)')['index'];
+        let movie_lang_end = raw_html.substring(raw_lang, raw_lang+1500).match('(<\/div>)')['index'];
+        let movie_lang = raw_html.substring(raw_lang, raw_lang+movie_lang_end);
+
+        let cleaned_lang = "";
+        let add_letters = true;
+
+        // Clean out the html tags
+        movie_lang.split('').forEach(c => {
+          if(c == '<'){
+            add_letters = false;
+          };
+          if(add_letters) {
+            cleaned_lang += c;
+          };
+          if(c == '>'){
+            add_letters = true;
+          };
+
+        });
+
+        // Clean out excess
+        let cleaned_lang_2 = [];
+        cleaned_lang = cleaned_lang.split('\n');
+        for(i = 0; i<cleaned_lang.length; i++) {
+          if(i % 2 == 1){
+            cleaned_lang_2.push(cleaned_lang[i].trim())
+          }
+        }
+
+        movie.movie_language = cleaned_lang_2;
+
+        // Unset & delete
+        raw_lang, movie_lang_end, movie_lang, cleaned_lang, add_letters, cleaned_lang_2 = undefined;
+        delete(raw_lang, movie_lang_end, movie_lang, cleaned_lang, add_letters, cleaned_lang_2);
+
+      }catch {
+        movie.movie_language = "N/A";
+      }
+
       console.log(movie);
     });
 }
