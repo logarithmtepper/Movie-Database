@@ -43,11 +43,16 @@ form(method='POST', action='/movies/add')
     label(for='genre')
       b Genre(s) (seperate by comma):  
     input#anameInput(type='text' placeholder='Enter Genre(s)' name='genre' required='')  
-
+  
+  #form-group
+    label(for='poster')
+      b Poster:  
+    input#anameInput(type='text' placeholder='Enter Poster Link' name='poster' required='')
+      
   #form-group
     label(for='runtime')
-      b Run Time:  
-    input#anameInput(type='text' placeholder='Enter Runtime' name='runtime' required='')  
+      b Runtime:  
+    input#anameInput(type='text' placeholder='Enter Runtime' name='runtime' required='')
 
   #form-group
     label(for='plot')
