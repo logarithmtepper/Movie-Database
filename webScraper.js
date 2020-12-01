@@ -43,18 +43,18 @@ function fetchMovieInfo(url){
 
       // Disgusting regex to find age rated
       try{
-        let rawMovieAge = rawHtml.match('(<time\\sdatetime="PT)')['index'];
-        let movieAge = rawHtml.substring(rawMovieAge-150, rawMovieAge-53);
-        let movieAgeStart = movieAge.match('(\\s{20}.{1,10})')['index'];
-        movieAge = movieAge.substring(movieAgeStart+21, movieAge.length);
-        movie.movieAge = movieAge;
+        let rawMovieRating = rawHtml.match('(<time\\sdatetime="PT)')['index'];
+        let movieRating = rawHtml.substring(rawMovieRating-150, rawMovieRating-53);
+        let movieRatingStart = movieRating.match('(\\s{20}.{1,10})')['index'];
+        movieRating = movieRating.substring(movieRatingStart+21, movieRating.length);
+        movie.movieRating = movieRating;
 
         // Unset & delete
-        rawMovieAge, movieAge, movieAgeStart = undefined;
-        delete(rawMovieAge, movieAge, movieAgeStart);
+        rawMovieRating, movieRating, movieRatingStart = undefined;
+        delete(rawMovieRating, movieRating, movieRatingStart);
 
       }catch {
-        movie.movieAge = "N/A";
+        movie.movieRating = "N/A";
       }
 
       // Disgusting regex to find runtime
@@ -146,75 +146,74 @@ function fetchMovieInfo(url){
 
       // Disgusting regex to find plot
       try {
-        let movie_plot_start = rawHtml.match('(summary_text)')['index'];
-        let movie_plot_end = rawHtml.substring(movie_plot_start, movie_plot_start+500).match('(<\/div>)')['index'];
-        let movie_plot = rawHtml.substring(movie_plot_start+35, movie_plot_start+movie_plot_end-13);
-        let cleaned_plot = "";
-        let add_letters = true;
+        let moviePlotStart = rawHtml.match('(summary_text)')['index'];
+        let moviePlotEnd = rawHtml.substring(moviePlotStart, moviePlotStart+500).match('(<\/div>)')['index'];
+        let moviePlot = rawHtml.substring(moviePlotStart+35, moviePlotStart+moviePlotEnd-13);
+        let cleanedPlot = "";
+        let addLetters = true;
 
         // Clean out the html tags
-        movie_plot.split('').forEach(c => {
+        moviePlot.split('').forEach(c => {
           if(c == '<'){
-            add_letters = false;
+            addLetters = false;
           };
-          if(add_letters) {
-            cleaned_plot += c;
+          if(addLetters) {
+            cleanedPlot += c;
           };
           if(c == '>'){
-            add_letters = true;
+            addLetters = true;
           };
 
         });
-        movie.movie_plot = cleaned_plot;
+        movie.moviePlot = cleanedPlot;
 
         // Unset & delete
-        movie_plot_start, movie_plot_end, movie_plot, cleaned_plot, add_letters = undefined;
-        delete(movie_plot_start, movie_plot_end, movie_plot, cleaned_plot, add_letters);
+        moviePlotStart, moviePlotEnd, moviePlot, cleanedPlot, addLetters = undefined;
+        delete(moviePlotStart, moviePlotEnd, moviePlot, cleanedPlot, addLetters);
 
       }catch {
-        movie.movie_plot = "N/A";
+        movie.moviePlot = "N/A";
       }
 
       // Disgusting regex to find poster
       try{
-        let movie_poster_start = rawHtml.match('(class=\"poster\")')['index'];
-        let movie_poster_end = rawHtml.substring(movie_poster_start, movie_poster_start+400).match('(\\.jpg)')['index'];
-        let movie_poster_start_2 = rawHtml.substring(movie_poster_start, movie_poster_start+movie_poster_end+4).match('(src=\")')['index'];
-        let movie_poster = rawHtml.substring(movie_poster_start+movie_poster_start_2+5, movie_poster_start+movie_poster_end+4);
-        movie.movie_poster = movie_poster;
+        let moviePosterStart = rawHtml.match('(class=\"poster\")')['index'];
+        let moviePosterEnd = rawHtml.substring(moviePosterStart, moviePosterStart+400).match('(\\.jpg)')['index'];
+        let moviePosterStart2 = rawHtml.substring(moviePosterStart, moviePosterStart+moviePosterEnd+4).match('(src=\")')['index'];
+        let moviePoster = rawHtml.substring(moviePosterStart+moviePosterStart2+5, moviePosterStart+moviePosterEnd+4);
+        movie.moviePoster = moviePoster;
 
         // Unset & delete
-        movie_poster_start, movie_poster_end, movie_poster_start_2, movie_poster = undefined;
-        delete(movie_poster_start, movie_poster_end, movie_poster_start_2, movie_poster);
+        moviePosterStart, moviePosterEnd, moviePosterStart2, moviePoster = undefined;
+        delete(moviePosterStart, moviePosterEnd, moviePosterStart2, moviePoster);
 
       }catch {
-        movie.movie_poster = "N/A";
+        movie.moviePoster = "N/A";
       }
 
       // Disgusting regex to find ratings
       try{
-        let movie_metascore_start = rawHtml.match('(\"metacriticScore score_favorable titleReviewBarSubItem)')['index'];
-        let movie_metascore_end = rawHtml.substring(movie_metascore_start, movie_metascore_start+400).match('(</span>)')['index'];
-        let movie_metascore = rawHtml.substring(movie_metascore_start+63, movie_metascore_start + movie_metascore_end);
-        movie.movie_metascore = movie_metascore
+        let movieMetascoreStart = rawHtml.match('(\"metacriticScore score_favorable titleReviewBarSubItem)')['index'];
+        let movieMetascoreEnd = rawHtml.substring(movieMetascoreStart, movieMetascoreStart+400).match('(</span>)')['index'];
+        let movieMetascore = rawHtml.substring(movieMetascoreStart+63, movieMetascoreStart + movieMetascoreEnd);
+        movie.movieMetascore = movieMetascore
 
         // Unset & delete
-        movie_metascore_start, movie_metascore_end, movie_metascore = undefined;
-        delete(movie_metascore_start, movie_metascore_end, movie_metascore);
+        movieMetascoreStart, movieMetascoreEnd, movieMetascore = undefined;
+        delete(movieMetascoreStart, movieMetascoreEnd, movieMetascore);
 
       }catch{
-        movie.movie_metascore = "N/A";
+        movie.movieMetascore = "N/A";
       }
 
       // Disgusting regex to find movie rating
       try {
-        let raw_rating = rawHtml.match('(itemprop="ratingValue")')['index'];
-        let movie_rating = rawHtml.substring(raw_rating+23, raw_rating+26);
-        movie.movie_rating = movie_rating
+        let rawImdbRating = rawHtml.match('(itemprop="ratingValue")')['index'];
+        let movieImdbRating = rawHtml.substring(rawImdbRating+23, rawImdbRating+26);
+        movie.movieImdbRating = movieImdbRating
       }catch {
-        movie.movie_rating = "N/A"
+        movie.movieImdbRating = "N/A"
       }
-
 
       console.log(movie);
     });
