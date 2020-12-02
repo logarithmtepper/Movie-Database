@@ -343,21 +343,19 @@ router.post('/addbyurl', function(req, res, next){
 			var uniquePeople = people.filter((v, i, a) => a.indexOf(v) === i)
 
 			Movie.findOne({title:newMovie.title}, function (err, movie) {
-
 				if(err){
-				res.status(500).send("Error reading movie.");
-				console.log(err);
-				return;
+					res.status(500).send("Error reading movie.");
+					console.log(err);
+					return;
 				}
 				else if (movie!==null){
-				res.render("addMovieByUrl",{
+					res.render("addMovieByUrl",{
 					error:"This movie exists in the database"
-				});
+					});
 				}
-
 				else{
 				Person.find({},{"_id":0, "id": 1,"name":1},function(err, result){
-						if (err){
+					if (err){
 						res.status(500).send("Error reading movie.");
 						console.log(err);
 						return;
@@ -406,20 +404,19 @@ router.post('/add', function(req, res, next){
 	var uniquePeople = people.filter((v, i, a) => a.indexOf(v) === i)
 
 	Movie.findOne({title:title}, function (err, movie) {
-
-	  if(err){
-		res.status(500).send("Error reading movie.");
-		console.log(err);
-		return;
+		if(err){
+			res.status(500).send("Error reading movie.");
+			console.log(err);
+			return;
 	  }
 	  else if (movie!==null){
 		res.render("addMovie",{
 			error:"This movie exists in the database"
-		});
+			});
 	  }
 	  else{
 		Person.find({},{"_id":0, "id": 1,"name":1},function(err, result){
-		    if (err){
+			if (err){
 				res.status(500).send("Error reading movie.");
 				console.log(err);
 				return;
@@ -474,12 +471,12 @@ router.get('/edit/:id', ensureAuthenticated, function(req, res){
 		res.redirect("/users/profile");
 	}
 	else{
-	  	Movie.findOne({id:req.params.id}, function(err, movie){
-	  		res.render('editMovie', {
+	  Movie.findOne({id:req.params.id}, function(err, movie){
+	  	res.render('editMovie', {
 				title:movie.title,
 				movie:movie,
 				user:req.user
-	  		});
+	  	});
 		});
 	}
 });
@@ -491,15 +488,15 @@ router.post('/edit/:id', function(req, res){
 	//need to check if this person is exist
 	Person.findOne({name:name}, function (err, person) {
 	  if(err){
-		res.status(500).send("Error reading people.");
-		console.log(err);
-		return;
+			res.status(500).send("Error reading people.");
+			console.log(err);
+			return;
 	  }
 	  if (person===null){
-		res.redirect('/people/add');
+			res.redirect('/people/add');
 	  }else{
 		  if (req.body.director === null||req.body.actor === null||req.body.writer === null){
-			res.send("Select this person's role in this work");
+				res.send("Select this person's role in this work");
 		  }
 		  Movie.findOne(query, function(err, movie){
 			  if(err){
