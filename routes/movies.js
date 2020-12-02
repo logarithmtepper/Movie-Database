@@ -339,11 +339,8 @@ router.post('/addbyurl', function(req, res, next){
         movieLanguage = "N/A";
       }
 
-			console.log(newMovie);
-
 			var people = directorList.concat(actorList, writerList)
-			console.log(people);
-			var unique_people = people.filter((v, i, a) => a.indexOf(v) === i)
+			var uniquePeople = people.filter((v, i, a) => a.indexOf(v) === i)
 
 			Movie.findOne({title:newMovie.title}, function (err, movie) {
 
@@ -365,11 +362,13 @@ router.post('/addbyurl', function(req, res, next){
 						console.log(err);
 						return;
 					}
-					var colab = result.filter(x=>unique_people.includes(x.name))
+					var colab = result.filter(x=>uniquePeople.includes(x.name))
 
-					if (colab.length!==unique_people.length){
+					if (colab.length!==uniquePeople.length){
+						let peopleString = "";
+						uniquePeople.forEach(person => {peopleString += person + ", "});
 						return res.render("addMovieByUrl",{
-							error:"People have to be in the database"
+							error:"Try adding these people to the database: " + peopleString
 						});
 					}
 					newMovie.save(function(err){
@@ -404,8 +403,7 @@ router.post('/add', function(req, res, next){
 	const id = start++;
 
 	var people = directorList.concat(writerList, actorList)
-	console.log(people);
-	var unique_people = people.filter((v, i, a) => a.indexOf(v) === i)
+	var uniquePeople = people.filter((v, i, a) => a.indexOf(v) === i)
 
 	Movie.findOne({title:title}, function (err, movie) {
 
@@ -426,11 +424,13 @@ router.post('/add', function(req, res, next){
 				console.log(err);
 				return;
 			}
-			var colab = result.filter(x=>unique_people.includes(x.name))
+			var colab = result.filter(x=>uniquePeople.includes(x.name))
 
-			if (colab.length!==unique_people.length){
+			if (colab.length!==uniquePeople.length){
+				let peopleString = "";
+				uniquePeople.forEach(person => {peopleString += person + ", "});
 				return res.render("addMovie",{
-					error:"People have to be in the database"
+					error:"Try adding these people to the database: " + peopleString
 				});
 			}
 
