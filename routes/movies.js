@@ -366,7 +366,7 @@ router.post('/addbyurl', function(req, res, next){
 						let peopleString = "";
 						uniquePeople.forEach(person => {peopleString += person + ", "});
 						return res.render("addMovieByUrl",{
-							error:"Try adding these people to the database: " + peopleString
+							error:"People must be in database to add new movie. Try adding these to the database: " + peopleString
 						});
 					}
 					newMovie.save(function(err){
@@ -427,7 +427,7 @@ router.post('/add', function(req, res, next){
 				let peopleString = "";
 				uniquePeople.forEach(person => {peopleString += person + ", "});
 				return res.render("addMovie",{
-					error:"Try adding these people to the database: " + peopleString
+					error:"People must be in database to add new movie. Try adding these to the database: " + peopleString
 				});
 			}
 
