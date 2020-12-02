@@ -476,7 +476,7 @@ router.get('/edit/:id', ensureAuthenticated, function(req, res){
 	else{
 	  	Movie.findOne({id:req.params.id}, function(err, movie){
 	  		res.render('editMovie', {
-				title:'Edit Movie',
+				title:movie.title,
 				movie:movie,
 				user:req.user
 	  		});

@@ -4,7 +4,7 @@ div.text-center
 br
 #reviewsDIV
 div.text-center
-  p My Reviews
+  b My Reviews
   if user.reviews.length > 0
     each obj in user.reviews
       a(href="http://localhost:3000/movies/" + obj.movie_id) #{obj.movie}: 
@@ -14,7 +14,7 @@ div.text-center
 br
 #peopleFollowedDIV
 div.text-center
-  a Followed People 
+  b Followed People 
   br
   if user.followedPeople.length > 0
     each obj in user.followedPeople
@@ -26,7 +26,7 @@ div.text-center
 br
 #usersFollowedDIV
 div.text-center
-  a Followed Users 
+  b Followed Users 
   br
   if user.followedUsers.length > 0
     each obj in user.followedUsers
@@ -38,11 +38,10 @@ br
 
 #recommendedDIV
 div.text-center
-  p Recommended for you
+  b Recommended for you
   if user.recommended.length > 0
     each obj in user.recommended
       a(href="http://localhost:3000/movies/" + obj.id) #{obj.name}, 
-
 br
 div.text-center
   a(href='/users') See all Users
@@ -50,6 +49,7 @@ div.text-center
   a(href='/movies') See all Movies
   br
   a(href='/people') See all People
+  br
   br
 form(method='POST', action='/users/profile')
   div.text-center

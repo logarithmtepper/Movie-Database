@@ -1,22 +1,25 @@
 include ../partials/header
-h2 Add review to #{title}
-
-#addReviewDIV.container
-
-form(method='POST', action='/reviews/add/'+movie.id)
-  #form-group
-    label(for='title')
-      b Brief Review:   
-    input#titleInput(type='text' placeholder='Enter a Brief Review' name='title' required='')
-  #form-group
-    label(for='rating')
-      b Rating (0 to 10):   
-    input#titleInput(type='text' placeholder='Enter rating' name='rating' required='')
-  #form-group
-    label(for='body')
-      b Full Review:
-    br   
-    | &nbsp; 
-    textarea(name="full", cols="40", rows="10" required='')
-  
-  button.btn.btn-primary(type='submit') Add Review
+form
+  .form-group.row.mx-sm-5.text-left
+    .col
+      h2 Add review to #{title}
+      
+      #addReviewDIV.container
+      
+      form(method='POST', action='/reviews/add/'+movie.id)
+        #form-group
+          label(for='title')
+            b Brief Review:   
+          input#titleInput(type='text' placeholder='Enter a Brief Review' name='title' required='')
+        #form-group
+          label(for='rating')
+            b Rating (0 to 10):   
+          input#titleInput(type='text' placeholder='Enter rating' name='rating' required='')
+        #form-group
+          label(for='body')
+            b Full Review:
+          br   
+          | &nbsp; 
+          textarea(name="full", cols="40", rows="10" required='')
+        
+        button.btn.btn-primary(type='submit') Add Review

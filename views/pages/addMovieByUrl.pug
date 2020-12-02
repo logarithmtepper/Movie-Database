@@ -1,13 +1,16 @@
 include ../partials/header
-h2 Add Movies By Url
-#addMovieUrlDIV.container
-br
-| #{error}
-br
-form(method='POST', action='/movies/addbyurl')
-  #form-group
-    label(for='murl')
-      b IMDB Url:    
-    input#mnameInput(type='text' placeholder='Enter IMDB Url' name='murl' required='')
-
-  button.btn.btn-primary(type='submit') Add Movie
+form
+  .form-group.row.mx-sm-5.text-left
+    .col
+      h2 Add Movies By Url
+      #addMovieUrlDIV.container
+      br
+      | #{error}
+      br
+      form(method='POST', action='/movies/addbyurl')
+        #form-group
+          label(for='murl')
+            b IMDB Url:    
+          input#mnameInput(type='text' placeholder='Enter IMDB Url' name='murl' required='')
+      
+        button.btn.btn-primary(type='submit') Add Movie

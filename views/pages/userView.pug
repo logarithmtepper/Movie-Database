@@ -1,31 +1,34 @@
 include ../partials/header
-#UserViewDIV
-|Name: 
-|#{display_user.username}
-br
-|Contributing: 
-|#{display_user.contributing}
-br
-|Follow Users: 
-if display_user.followedUsers.length > 0
-    each id in display_user.followedUsers
-        a(href="http://localhost:3000/users/" + obj._id) #{obj.username}, 
-br
-|Follow People: 
-if display_user.followedPeople.length > 0
-    each obj in display_user.followedPeople
-        a(href="http://localhost:3000/people/" + obj.id) #{obj.name}, 
-br
-|Reviews: 
-br
-if display_user.reviews.length > 0
-    each obj in display_user.reviews
-        a(href="http://localhost:3000/movies/" + obj.movie_id) #{obj.movie}: 
-        a(href="http://localhost:3000/reviews/" + obj._id) #{obj.title}
-        br
-        
-br
-#UserFollowedDIV
-a(href="http://localhost:3000/users/unfollow/" + display_user.id) Unfollow
-br
-a(href="http://localhost:3000/users/follow/" + display_user.id) Follow
+form
+  .form-group.row.mx-sm-5.text-left
+    .col
+      #UserViewDIV
+      b Name: 
+      |#{display_user.username}
+      br
+      b Contributing: 
+      |#{display_user.contributing}
+      br
+      b Followed Users: 
+      if display_user.followedUsers.length > 0
+          each id in display_user.followedUsers
+              a(href="http://localhost:3000/users/" + obj._id) #{obj.username}, 
+      br
+      b Followed People: 
+      if display_user.followedPeople.length > 0
+          each obj in display_user.followedPeople
+              a(href="http://localhost:3000/people/" + obj.id) #{obj.name}, 
+      br
+      b Reviews: 
+      br
+      if display_user.reviews.length > 0
+          each obj in display_user.reviews
+              a(href="http://localhost:3000/movies/" + obj.movie_id) #{obj.movie}: 
+              a(href="http://localhost:3000/reviews/" + obj._id) #{obj.title}
+              br
+              
+      br
+      #UserFollowedDIV
+      a(href="http://localhost:3000/users/unfollow/" + display_user.id) Unfollow
+      br
+      a(href="http://localhost:3000/users/follow/" + display_user.id) Follow

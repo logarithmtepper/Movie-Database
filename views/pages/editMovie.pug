@@ -1,28 +1,30 @@
 include ../partials/header
-h2 #{title}
-#addMovieDIV.container
-
-form(method='POST', action='/movies/edit/'+movie.id)
-
-  #form-group
-    label(for='name')
-      b Name: 
-    input#nameInput(type='text' placeholder='Enter Name' name='name' required='')
-
-
-  #form-group
-    label(for='type')
-      b Role in this work: 
-      br
-      input(type='checkbox' name="actor") 
-      |Actor
-      br
-      input(type='checkbox' name="writer") 
-      |Writer
-      br
-      input(type='checkbox' name="director") 
-      |Director
-      br
-
-  button.btn.btn-primary(type='submit') Submit
-
+form
+  .form-group.row.mx-sm-5.text-left
+    .col
+      h2 Add People To #{title}
+      #addMovieDIV.container
+      
+      form(method='POST', action='/movies/edit/'+movie.id)
+      
+        #form-group
+          label(for='name')
+            b Name: 
+          input#nameInput(type='text' placeholder='Enter Name' name='name' required='')
+      
+      
+        #form-group
+          label(for='type')
+            b Role in this work: 
+            br
+            input(type='checkbox' name="actor") 
+            |Actor
+            br
+            input(type='checkbox' name="writer") 
+            |Writer
+            br
+            input(type='checkbox' name="director") 
+            |Director
+            br
+      
+        button.btn.btn-primary(type='submit') Submit

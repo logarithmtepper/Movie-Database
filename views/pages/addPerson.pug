@@ -1,12 +1,15 @@
 include ../partials/header
-h2 Add People
-#addPersonDIV.container
-
-
-form(method='POST', action='/people/add')
-  #form-group
-    label(for='name')
-      b Name: 
-    input#nameInput(type='text' placeholder='Enter Name' name='name' required='')
-
-  button.btn.btn-primary(type='submit') Add
+form
+  .form-group.row.mx-sm-5.text-left
+    .col
+      h2 Add People
+      #addPersonDIV.container
+      
+      
+      form(method='POST', action='/people/add')
+        #form-group
+          label(for='name')
+            b Name: 
+          input#nameInput(type='text' placeholder='Enter Name' name='name' required='')
+      
+        button.btn.btn-primary(type='submit') Add

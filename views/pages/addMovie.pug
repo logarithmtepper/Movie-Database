@@ -1,67 +1,70 @@
 include ../partials/header
-h2 Add Movies
-#addMovieDIV.container
-| #{error}
-br
-a(style='font-size:18px;font-weight:bold' href='http://localhost:3000/movies/addbyurl') Add Movie Using IMDB Url
-br
-br
-form(method='POST', action='/movies/add')
-  #form-group
-    label(for='mname')
-      b Movie Name:    
-    input#mnameInput(type='text' placeholder='Enter Movie Name' name='mname' required='')
-
-  #form-group
-    label(for='rated')
-      b Rated: 
-    input#ratedInput(type='text' placeholder='Enter Rated' name='rated' required='')  
-
-  #form-group
-    label(for='released')
-      b Released Year:  
-    input#releasedInput(type='text' placeholder='Enter The Released Year' name='released' required='') 
-
-  #form-group
-    label(for='language')
-      b Language:  
-    input#languageInput(type='text' placeholder='Enter The Language' name='language' required='')  
-
-  #form-group
-    label(for='wname')
-      b Writer Name(s) (seperate by comma): 
-    input#wnameInput(type='text' placeholder='Enter Writer Name(s)' name='wname' required='')
-  #form-group
-    label(for='dname')
-      b Director Name(s) (seperate by comma): 
-    input#dnameInput(type='text' placeholder='Enter Director Name(s)' name='dname' required='') 
-
-  #form-group
-    label(for='aname')
-      b Actor Name(s) (seperate by comma):  
-    input#anameInput(type='text' placeholder='Enter Actor Name(s)' name='aname' required='')  
-
-  #form-group
-    label(for='genre')
-      b Genre(s) (seperate by comma):  
-    input#anameInput(type='text' placeholder='Enter Genre(s)' name='genre' required='')  
-  
-  #form-group
-    label(for='poster')
-      b Poster:  
-    input#anameInput(type='text' placeholder='Enter Poster Link' name='poster' required='')
+form
+  .form-group.row.mx-sm-5.text-left
+    .col
+      h2 Add Movies
+      #addMovieDIV.container
+      | #{error}
+      br
+      a(style='font-size:18px;font-weight:bold' href='http://localhost:3000/movies/addbyurl') Add Movie Using IMDB Url
+      br
+      br
+      form(method='POST', action='/movies/add')
+        #form-group
+          label(for='mname')
+            b Movie Name:     
+          input#mnameInput(type='text' placeholder='Enter Movie Name' name='mname' required='')
       
-  #form-group
-    label(for='runtime')
-      b Runtime:  
-    input#anameInput(type='text' placeholder='Enter Runtime' name='runtime' required='')
-
-  #form-group
-    label(for='plot')
-      b Plot:  
-    br
-    textarea#plotInput(type='text' placeholder='Enter The plot' name='plot' cols="40" rows="10" required='')
-
-  button.btn.btn-primary(type='submit') Add Movie
-  
-  
+        #form-group
+          label(for='rated')
+            b Rated: 
+          input#ratedInput(type='text' placeholder='Enter Rated' name='rated' required='')  
+      
+        #form-group
+          label(for='released')
+            b Released Year:  
+          input#releasedInput(type='text' placeholder='Enter The Released Year' name='released' required='') 
+      
+        #form-group
+          label(for='language')
+            b Language:  
+          input#languageInput(type='text' placeholder='Enter The Language' name='language' required='')  
+      
+        #form-group
+          label(for='wname')
+            b Writer Name(s) (seperate by comma): 
+          input#wnameInput(type='text' placeholder='Enter Writer Name(s)' name='wname' required='')
+        #form-group
+          label(for='dname')
+            b Director Name(s) (seperate by comma): 
+          input#dnameInput(type='text' placeholder='Enter Director Name(s)' name='dname' required='') 
+      
+        #form-group
+          label(for='aname')
+            b Actor Name(s) (seperate by comma):  
+          input#anameInput(type='text' placeholder='Enter Actor Name(s)' name='aname' required='')  
+      
+        #form-group
+          label(for='genre')
+            b Genre(s) (seperate by comma):  
+          input#anameInput(type='text' placeholder='Enter Genre(s)' name='genre' required='')  
+        
+        #form-group
+          label(for='poster')
+            b Poster:  
+          input#anameInput(type='text' placeholder='Enter Poster Link' name='poster' required='')
+            
+        #form-group
+          label(for='runtime')
+            b Runtime:  
+          input#anameInput(type='text' placeholder='Enter Runtime' name='runtime' required='')
+      
+        #form-group
+          label(for='plot')
+            b Plot:  
+          br
+          textarea#plotInput(type='text' placeholder='Enter The plot' name='plot' cols="40" rows="10" required='')
+      
+        button.btn.btn-primary(type='submit') Add Movie
+        
+        

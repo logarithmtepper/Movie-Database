@@ -1,20 +1,19 @@
 include ../partials/header
-#UserViewDIV
-b Movie: 
-a(href="http://localhost:3000/movies/" + review.movie.id) #{review.movie.title}
-br
-b Review title: 
-|#{review.title}
-br
-b Rating: 
-|#{review.rating}
-br
-b Written by: 
-a(href="http://localhost:3000/users/" + review.reviewer._id) #{review.reviewer.name}
-br
-b Full Review: 
-|#{review.full}
-
-
-
-
+form
+  .form-group.row.mx-sm-5.text-left
+    .col
+      #UserViewDIV
+      b Movie: 
+      a(href="http://localhost:3000/movies/" + review.movie.id) #{review.movie.title}
+      br
+      b Review title: 
+      |#{review.title}
+      br
+      b Rating: 
+      |#{review.rating}
+      br
+      b Written by: 
+      a(href="http://localhost:3000/users/" + review.reviewer._id) #{review.reviewer.name}
+      br
+      b Full Review: 
+      |#{review.full}
