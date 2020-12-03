@@ -77,10 +77,6 @@ app.get('/', (req, res, next) => {
   });
 });
 
-app.get('/forgotPassword', (req, res, next) => {
-  res.render('forgotPassword.pug')
-})
-
 mongoose.connect('mongodb://localhost/database', {useNewUrlParser: true, useUnifiedTopology: true});
 
 let db = mongoose.connection;
@@ -89,25 +85,8 @@ db.once('open', function() {
 
   console.log("database is connected");
 });
-const server = app.listen(3000, function(){
+app.listen(3000, function(){
   console.log('Server started on port 3000...');
 });
 
 
-const io = require("socket.io")(server);
-
-
-io.on('connection', function (socket) {
-  socket.on("welcome", function(data){
-    socket.emit("welcome", "Hello and welcome")
-    console.log('connect', data);
-
-  })
-
-
-  /*
-  socket.on('join', function (data) {
-    socket.join(data.username); // We are using room of socket io
-  });
-  */
-});
