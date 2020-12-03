@@ -235,7 +235,6 @@ function stringCleaner(arr) {
       }
       temp += arr[d][b];
     }
-    let temptemp = temp;
     temp = temp.replace(/^\s+|\s+$|\s+(?=\s)/g, "");
     newArr.push(temp);
   }
