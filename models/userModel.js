@@ -10,6 +10,11 @@ let userSchema = Schema({
 		type: String,
 		required: true
 	},
+	email:
+	{
+		type: String,
+		required: true
+	},
   contributing: {
 		type: String,
 		required: true

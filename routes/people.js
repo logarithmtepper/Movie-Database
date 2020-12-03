@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Person = require("../models/personModel");
 let User = require("../models/userModel");
-const Movie = require("../models/movieModel");
+
 start = 100000;
 
 router.get("/", queryParser);

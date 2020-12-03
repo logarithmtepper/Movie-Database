@@ -4,7 +4,7 @@ const router = express.Router();
 const Movie = require("../models/movieModel");
 const Person = require("../models/personModel");
 const Genre = require("../models/genreModel");
-
+const User = require("../models/userModel");
 start = 10000;
 //for GET /home
 router.get("/", queryParser);
@@ -74,6 +74,7 @@ function addPersonToMovie(list,role,people, movie){
 						person.collaborators.push(obj);
 					}
 				}
+				sendNotification(person.follower, person.name)
 				Person.updateOne({name:name},person, function(err){
 					if(err){
 						console.log(err);
@@ -89,7 +90,7 @@ function addPersonToMovie(list,role,people, movie){
 		})
 
 	}
-}
+};
 
 router.post('/addbyurl', function(req, res, next){
 	fetch(req.body.murl)
@@ -521,6 +522,7 @@ router.post('/edit/:id', function(req, res){
 			  if (req.body.director != null&&!movie.director.some(a => a.name === person_obj.name)){
 				  movie.director.push(person_obj)
 			  }
+			  sendNotification(person.follower, person.name)
 			  Movie.updateOne(query, movie, function(err){
 				if(err){
 				  console.log(err);
@@ -669,5 +671,32 @@ function ensureAuthenticated(req, res, next){
 	  res.redirect('/users/login');
 	}
 }
+
+//helper for send notification
+function sendNotification(follower, person) { 
+	for (const id of follower){
+	  User.findById({_id:id}, function(err,user){
+		if(err){
+		  console.log(err);
+		  return;
+		}
+		transporter.sendMail({
+		  from: 'noreplay_database_test@outlook.com',
+		  to: user.email,
+		  subject: person+' has a new work',
+		  text: 	"Hello "+user.username+
+				  	",\n\n"+person+' just had a new work in our database, check it out!'+
+					"\n\nMovie Database Team"
+		}, function(err){
+		  if(err){
+			console.log(err);
+			return
+		  }
+		  console.log('Message sent');
+		});
+	  })
+	} 
+  }
+  
 
 module.exports = router;
