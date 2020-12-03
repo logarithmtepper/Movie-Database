@@ -10,6 +10,10 @@ const passport = require('passport');
 
 const app = express();
 
+
+
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views/pages'));
 app.set('view engine', 'pug');
@@ -85,6 +89,25 @@ db.once('open', function() {
 
   console.log("database is connected");
 });
-app.listen(3000, function(){
+const server = app.listen(3000, function(){
   console.log('Server started on port 3000...');
+});
+
+
+const io = require("socket.io")(server);
+
+
+io.on('connection', function (socket) {
+  socket.on("welcome", function(data){
+    socket.emit("welcome", "Hello and welcome")
+    console.log('connect', data);
+
+  })
+
+
+  /*
+  socket.on('join', function (data) {
+    socket.join(data.username); // We are using room of socket io
+  });
+  */
 });
