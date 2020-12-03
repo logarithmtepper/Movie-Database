@@ -3,9 +3,62 @@ const router = express.Router();
 const passport = require('passport');
 const fs = require('fs');
 let User = require("../models/userModel");
-const ObjectId= require('mongoose').Types.ObjectId
+nodemailer = require('nodemailer');
+
+//initiate email sender
+transporter = nodemailer.createTransport({
+  host: "smtp-mail.outlook.com", 
+  secureConnection: false, 
+  service: 'outlook',
+  port: 587, 
+  auth: {
+      user: "noreplay_database_test@outlook.com",
+      pass: "Movie123456"
+  },
+  tls: {
+      rejectUnauthorized: false
+  }
+});
 
 
+router.get('/forgotPassword', (req, res, next) => {
+  res.render('forgotPassword')
+})
+
+router.post('/forgotPassword', (req, res, next) => {
+  const email = req.body.email;
+  User.findOne({email:email},function(err,user){
+    if(err){
+      console.log(err);
+      return;
+    }
+    
+    if (user===null){
+      return res.render('forgotPassword',{
+        error: "We can't find this Email address in our record"
+      });
+    }
+    else{
+      transporter.sendMail({
+        from: 'noreplay_database_test@outlook.com',
+        to: user.email,
+        subject: 'Your password of Movie Database',
+        text: 	"Hello "+user.username+
+                ",\n\nHere is your username and password in Movie Database\n"+
+                "Username: "+user.username+'\n'+
+                "Password: "+user.password+'\n'+
+                "\nMovie Database Team"
+      }, function(err){
+        if(err){
+          console.log(err);
+          return
+        }
+        console.log('Message sent');
+      });
+      res.redirect('login')
+    }
+  })
+})
 // Register Form
 router.get('/register', function(req, res){
   res.render('register',{
@@ -13,11 +66,12 @@ router.get('/register', function(req, res){
   });
 });
 
+// Register Form
 router.post('/register', function(req, res){
   const username = req.body.username;
   const password = req.body.password;
   const password2 = req.body.password2;
-
+  const email = req.body.email;
   if (password!==password2){
     res.render('register',{
       error: "Password does not match"
@@ -27,7 +81,14 @@ router.post('/register', function(req, res){
     res.render('register',{
       error: "Password need to be at least 6 characters"
     });
-  }else{
+  }
+  var re = /\S+@\S+\.\S+/;
+  if (!re.test(email)){
+    res.render('register',{
+      error: "Please enter a valid email address"
+    });
+  }
+  else{
     User.findOne({username:username},function(err,user){
       if (user!==null){
         res.render('register',{
@@ -37,6 +98,7 @@ router.post('/register', function(req, res){
         let newUser = new User({
           username:username,
           password:password,
+          email:email,
           contributing:"n",
           followedUsers: [],
           followedPeople: [],
@@ -57,7 +119,7 @@ router.post('/register', function(req, res){
   }
 });
 
-
+// login form
 router.get('/login', function(req, res){
   res.render('login',{
 
@@ -74,6 +136,7 @@ router.post('/login', function (req, res, next) {
   })(req, res, next);
 });
 
+//follow a user
 router.get('/follow/:id', ensureAuthenticated, function (req, res, next) {
   const follow_id = req.params.id;
   const user_id = req.user._id;
@@ -91,6 +154,7 @@ router.get('/follow/:id', ensureAuthenticated, function (req, res, next) {
       if (containsObjectId(user_obj, user.followedUsers)){
         res.send("You have followed this user");
       }else{
+        sendNotification(user.follower, user.username);
         user.followedUsers.push(user_obj)
         user_follow.follower.push(user_id)
         User.updateOne({_id:user_follow._id}, user_follow, function(err){
@@ -113,17 +177,7 @@ router.get('/follow/:id', ensureAuthenticated, function (req, res, next) {
   });
 });
 
-function containsObjectId(obj, list) {
-  for (k = 0; k < list.length; k++) {
-      //console.log(obj._id);
-      if (list[k]._id.equals(obj._id)) {
-          return true;
-      }
-  }
-  return false;
-}
-
-
+//unfollow a user
 router.get('/unfollow/:id', ensureAuthenticated, function (req, res, next) {
   const follow_id = req.params.id;
   const user_id = req.user._id;
@@ -171,7 +225,7 @@ router.get('/unfollow/:id', ensureAuthenticated, function (req, res, next) {
   });
 });
 
-
+//user's profile page
 router.get('/profile', ensureAuthenticated, function(req, res){
   res.render('userProfile', {
     user: req.user
@@ -179,6 +233,7 @@ router.get('/profile', ensureAuthenticated, function(req, res){
   });
 });
 
+//user's profile page
 router.post('/profile', ensureAuthenticated, function(req, res){
   let user = req.user
   changeContributing(user);
@@ -193,7 +248,6 @@ router.post('/profile', ensureAuthenticated, function(req, res){
   });
 });
 
-
 //log out
 router.get('/logout', function(req, res){
   req.logout();
@@ -201,15 +255,15 @@ router.get('/logout', function(req, res){
   res.redirect('/users/login');
 });
 
-
-//for GET /home
+//for GET /users
 router.get("/", queryParser);
 router.get("/", loadUsers);
 router.get("/", respondUsers);
 
-
+//for GET /users/:user
 router.get("/:id", getUser);
 router.get("/:id", sendUser);
+
 
 router.post('/search', function(req, res, next){
 	const searchText = req.body.searchText;
@@ -308,6 +362,7 @@ function respondUsers(req, res, next){
   next();
 }
 
+//helper to change between regular and contributing
 function changeContributing(user){
   if (user.contributing === 'y'){
     user.contributing = 'n';
@@ -317,18 +372,48 @@ function changeContributing(user){
 }
 
 
-
+//ensureAuthenticated
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
       return next();
   }
   res.redirect('/users/login');
 }
-function forwardAuthenticated(req, res, next) {
-  if (!req.isAuthenticated()) {
-      return next();
-  }
-  res.redirect('/profile');
+
+//helper to send notification email
+function sendNotification(follower, username) { 
+  for (const id of follower){
+    User.findById({_id:id}, function(err,user){
+      if(err){
+        console.log(err);
+        return;
+      }
+      transporter.sendMail({
+        from: 'noreplay_database_test@outlook.com',
+        to: user.email,
+        subject: username+' followed a new user',
+        text: 	"Hello "+user.username+
+                ",\n\n"+username+' just followed a new user in the database, check it out!'+
+                "\n\nMovie Database Team"
+      }, function(err){
+        if(err){
+          console.log(err);
+          return
+        }
+        console.log('Message sent');
+      });
+    })
+  } 
 }
 
+//helper
+function containsObjectId(obj, list) {
+  for (k = 0; k < list.length; k++) {
+      //console.log(obj._id);
+      if (list[k]._id.equals(obj._id)) {
+          return true;
+      }
+  }
+  return false;
+}
 module.exports = router;
