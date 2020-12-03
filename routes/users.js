@@ -41,7 +41,8 @@ router.post('/register', function(req, res){
           followedUsers: [],
           followedPeople: [],
           reviews: [],
-          recommended: []
+          recommended: [],
+          follower: []
         })
         newUser.save(function(err){
           if(err){
@@ -91,6 +92,13 @@ router.get('/follow/:id', ensureAuthenticated, function (req, res, next) {
         res.send("You have followed this user");
       }else{
         user.followedUsers.push(user_obj)
+        user_follow.follower.push(user_id)
+        User.updateOne({_id:user_follow._id}, user_follow, function(err){
+          if(err){
+            console.log(err);
+            return;
+          }
+        });
         User.updateOne({_id:user_id}, user, function(err){
           if(err){
             console.log(err);
@@ -138,6 +146,17 @@ router.get('/unfollow/:id', ensureAuthenticated, function (req, res, next) {
             user.followedUsers.splice(i,1);
           }
         }
+        for (i in user_follow.follower){
+          if (user_follow.follower[i].equals(user_id)){
+            user_follow.follower.splice(i,1);
+          }
+        }
+        User.updateOne({_id:user_follow._id}, user_follow, function(err){
+          if(err){
+            console.log(err);
+            return;
+          }
+        });
         User.updateOne({_id:user_id}, user, function(err){
           if(err){
             console.log(err);

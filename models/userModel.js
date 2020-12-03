@@ -25,7 +25,11 @@ let userSchema = Schema({
 	},
   recommended: {
 		type: [],
-  }
+  },
+	follower:{
+		type:[],
+		required: true
+	}
 });
 
 module.exports = mongoose.model("User", userSchema);
