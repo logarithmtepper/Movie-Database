@@ -6,8 +6,8 @@ const Person = require("./models/personModel");
 const Genre = require("./models/genreModel");
 
 //create and save movies and people
-//let movieData = require("./movie-data.json");
-let movieData = require("./movie-data-short.json");
+let movieData = require("./movie-data.json");
+//let movieData = require("./movie-data-short.json");
 
 let movies = []; //Stores all of the movies, key=z
 let z = 0;

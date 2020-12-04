@@ -104,7 +104,6 @@ router.post('/add', function(req, res, next){
 })
 
 router.get('/addbyurl', function(req, res){
-	console.log("GETADDBYURL");
 	if (req.user === undefined){
 		res.redirect("/users/login");
 	}
@@ -119,7 +118,6 @@ router.get('/addbyurl', function(req, res){
 });
 
 router.post('/addByUrl', function(req, res, next){
-	console.log("POSTADDBYURL");
 	let url = req.body.murl;
 	fetch(url)
     .then(res => res.text())
@@ -368,8 +366,6 @@ router.post('/addByUrl', function(req, res, next){
         movieLanguage = "N/A";
       }
 
-			console.log(newMovie);
-
 			var people = directorList.concat(actorList, writerList)
 			var uniquePeople = people.filter((v, i, a) => a.indexOf(v) === i)
 
@@ -395,7 +391,11 @@ router.post('/addByUrl', function(req, res, next){
 
 					if (colab.length!==uniquePeople.length){
 						let peopleString = "";
-						uniquePeople.forEach(person => {peopleString += person + ", "});
+						uniquePeople.forEach(person => {
+							if(person != "N/A"){
+								peopleString += person + ", "
+							}
+						});
 						return res.render("addMovieByUrl",{
 							error:"People must be in database to add new movie. Try adding these to the database: " + peopleString
 						});
@@ -406,9 +406,15 @@ router.post('/addByUrl', function(req, res, next){
 							return;
 						}
 					})
-					addPersonToMovie(directorList,"director", colab, newMovie)
-					addPersonToMovie(writerList,"writer", colab, newMovie)
-					addPersonToMovie(actorList,"actor", colab, newMovie)
+					if(directorList[0] != "N/A"){
+						addPersonToMovie(directorList,"director", colab, newMovie)
+					}
+					if(writerList[0] != "N/A"){
+						addPersonToMovie(writerList,"writer", colab, newMovie)
+					}
+					if(actorList[0] != "N/A"){
+						addPersonToMovie(actorList,"actor", colab, newMovie)
+					}
 					res.redirect("/movies");
 				});
 				}
@@ -417,7 +423,6 @@ router.post('/addByUrl', function(req, res, next){
 })
 
 router.get('/edit/:id', ensureAuthenticated, function(req, res){
-	console.log("SIGMA");
 	if (req.user.contributing !== "y"){
 		res.redirect("/users/profile");
 	}
