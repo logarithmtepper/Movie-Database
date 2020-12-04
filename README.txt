@@ -5,6 +5,12 @@ Running instructions (type these commands in cmd):
 	node database-generator
 	node server
 
+Most movies on IMDB are already in the database. Here are some new release urls to test the web scraper:
+https://www.imdb.com/title/tt10833270/?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=&pf_rd_r=15FRR1SVS705V6XMRVPV&pf_rd_s=center-3&pf_rd_t=60601&pf_rd_i=&ref_=il_tl_li_tt
+https://www.imdb.com/title/tt10054316/?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=&pf_rd_r=15FRR1SVS705V6XMRVPV&pf_rd_s=center-3&pf_rd_t=60601&pf_rd_i=&ref_=il_tl_li_tt
+https://www.imdb.com/title/tt4353270/?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=&pf_rd_r=15FRR1SVS705V6XMRVPV&pf_rd_s=center-3&pf_rd_t=60601&pf_rd_i=&ref_=il_tl_li_tt
+
+
 Files:
     js files:
         server.js - file to start node.js server
