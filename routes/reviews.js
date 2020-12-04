@@ -97,6 +97,7 @@ router.post('/add/:id', ensureAuthenticated, function(req, res){
                     return;
                 }
             });
+            sendNotification(user.follower,user.username,movie.title);
             res.redirect('/movies/' + movie.id);
         }
     })
@@ -204,6 +205,29 @@ function ensureAuthenticated(req, res, next) {
   res.redirect('/users/login');
 }
 
-
+function sendNotification(follower, username, movie) { 
+    for (const id of follower){
+      User.findById({_id:id}, function(err,user){
+        if(err){
+          console.log(err);
+          return;
+        }
+        transporter.sendMail({
+          from: 'noreplay_database_test@outlook.com',
+          to: user.email,
+          subject: username+' followed a new user',
+          text: 	"Hello "+user.username+
+                  ",\n\n"+username+' added a new to '+movie+' in our database, check it out!'+
+                  "\n\nMovie Database Team"
+        }, function(err){
+          if(err){
+            console.log(err);
+            return
+          }
+          console.log('Message sent');
+        });
+      })
+    } 
+}
 
 module.exports = router;

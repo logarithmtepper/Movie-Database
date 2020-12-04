@@ -10,6 +10,10 @@ const passport = require('passport');
 
 const app = express();
 
+
+
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views/pages'));
 app.set('view engine', 'pug');
@@ -73,10 +77,6 @@ app.get('/', (req, res, next) => {
   });
 });
 
-app.get('/forgotPassword', (req, res, next) => {
-  res.render('forgotPassword.pug')
-})
-
 mongoose.connect('mongodb://localhost/database', {useNewUrlParser: true, useUnifiedTopology: true});
 
 let db = mongoose.connection;
@@ -88,3 +88,5 @@ db.once('open', function() {
 app.listen(3000, function(){
   console.log('Server started on port 3000...');
 });
+
+

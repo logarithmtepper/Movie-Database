@@ -4,7 +4,7 @@ const router = express.Router();
 const Movie = require("../models/movieModel");
 const Person = require("../models/personModel");
 const Genre = require("../models/genreModel");
-
+const User = require("../models/userModel");
 start = 10000;
 //for GET /home
 router.get("/", queryParser);
@@ -70,10 +70,11 @@ function addPersonToMovie(list,role,people, movie){
 					movie.director.push(person_obj);
 				}
 				for (obj of people){
-					if (!person.collaborators.includes(obj) && obj.name!==person_obj.name){
+					if (!person.collaborators.some(a => a.name === obj.name) && obj.name!==person_obj.name){
 						person.collaborators.push(obj);
 					}
 				}
+				sendNotification(person.follower, person.name)
 				Person.updateOne({name:name},person, function(err){
 					if(err){
 						console.log(err);
@@ -89,7 +90,7 @@ function addPersonToMovie(list,role,people, movie){
 		})
 
 	}
-}
+};
 
 router.post('/addbyurl', function(req, res, next){
 	fetch(req.body.murl)
@@ -404,18 +405,18 @@ router.post('/add', function(req, res, next){
 	var uniquePeople = people.filter((v, i, a) => a.indexOf(v) === i)
 
 	Movie.findOne({title:title}, function (err, movie) {
-		if(err){
+	  	if(err){
 			res.status(500).send("Error reading movie.");
 			console.log(err);
 			return;
-	  }
-	  else if (movie!==null){
-		res.render("addMovie",{
-			error:"This movie exists in the database"
+	 	}
+	  	else if (movie!==null){
+			res.render("addMovie",{
+				error:"This movie exists in the database"
 			});
-	  }
-	  else{
-		Person.find({},{"_id":0, "id": 1,"name":1},function(err, result){
+	  	}
+	 	else{
+		  Person.find({},{"_id":0, "id": 1,"name":1},function(err, result){
 			if (err){
 				res.status(500).send("Error reading movie.");
 				console.log(err);
@@ -464,20 +465,17 @@ router.post('/add', function(req, res, next){
 
 
 router.get('/edit/:id', ensureAuthenticated, function(req, res){
-	if (req.user === undefined){
-		res.redirect("/users/login");
-	}
-	else if (req.user.contributing !== "y"){
+	if (req.user.contributing !== "y"){
 		res.redirect("/users/profile");
 	}
 	else{
 	  Movie.findOne({id:req.params.id}, function(err, movie){
 	  	res.render('editMovie', {
-				title:movie.title,
-				movie:movie,
-				user:req.user
+			title:movie.title,
+			movie:movie,
+			user:req.user
 	  	});
-		});
+	  });
 	}
 });
 
@@ -506,27 +504,25 @@ router.post('/edit/:id', function(req, res){
 			  }
 			  movie_obj = {id:movie.id,name:movie.title};
 			  person_obj = {id:person.id, name:person.name}
-			  if (person.works.includes(movie_obj)){
-				  res.redirect('/movies/'+movie.id);
-				  return;
-			  }
 
-			  let collaborators = movie.actors;
+			  var people = movie.director.concat(movie.writer, movie.actors)
+			  var collaborators = people.filter((v, i, a) => a.indexOf(v) === i)
 			  for (obj of collaborators){
-				if (!person.collaborators.includes(obj)){
+				if (!person.collaborators.some(a => a.name === obj.name)&& obj.name!==person_obj.name){
 					person.collaborators.push(obj);
 				}
 			  }
-			  person.works.push(movie_obj)
-			  if (req.body.actor != null){
-				  movie.actors.push(person_obj)
+			  if (!person.works.some(a => a.id === movie_obj.id)){person.works.push(movie_obj)}
+			  if (req.body.actor != null&&!movie.actors.some(a => a.name === person_obj.name)){
+				  movie.actors.push(person_obj)	    
 			  }
-			  if (req.body.writer != null){
+			  if (req.body.writer != null&&!movie.writer.some(a => a.name === person_obj.name)){
 				  movie.writer.push(person_obj)
 			  }
-			  if (req.body.director != null){
+			  if (req.body.director != null&&!movie.director.some(a => a.name === person_obj.name)){
 				  movie.director.push(person_obj)
 			  }
+			  sendNotification(person.follower, person.name)
 			  Movie.updateOne(query, movie, function(err){
 				if(err){
 				  console.log(err);
@@ -666,7 +662,7 @@ function respondMovies(req, res, next){
   next();
 }
 
-
+//ensureAuthenticated: make sure user is logged in
 function ensureAuthenticated(req, res, next){
 	if(req.isAuthenticated()){
 	  return next();
@@ -675,5 +671,32 @@ function ensureAuthenticated(req, res, next){
 	  res.redirect('/users/login');
 	}
 }
+
+//helper for send notification
+function sendNotification(follower, person) { 
+	for (const id of follower){
+	  User.findById({_id:id}, function(err,user){
+		if(err){
+		  console.log(err);
+		  return;
+		}
+		transporter.sendMail({
+		  from: 'noreplay_database_test@outlook.com',
+		  to: user.email,
+		  subject: person+' has a new work',
+		  text: 	"Hello "+user.username+
+				  	",\n\n"+person+' just had a new work in our database, check it out!'+
+					"\n\nMovie Database Team"
+		}, function(err){
+		  if(err){
+			console.log(err);
+			return
+		  }
+		  console.log('Message sent');
+		});
+	  })
+	} 
+  }
+  
 
 module.exports = router;

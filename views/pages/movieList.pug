@@ -1,4 +1,5 @@
 include ../partials/header
+
 form
   .form-group.row.mx-sm-5.text-center
       each movie in movies
@@ -8,7 +9,7 @@ form
           a(style="font-weight:bold;font-style:italic;color:black" href="http://localhost:3000/movies/" + id) #{movie.title}
             br
             br
-            img(src=img width="150" height="200")
+            img(src=img style="max-width:100%;height:auto;")
           br
           br
           br

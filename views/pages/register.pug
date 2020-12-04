@@ -9,6 +9,10 @@ form(method='POST', action='/users/register')
   .form-group.row.mx-sm-5.text-center
     .col-sm-4
     .col-sm-4
+      label(for='email')
+        b Email
+      input#emailInput.form-control(type='text', placeholder='Enter E-mail address', name='email')
+
       label(for='username')
         b Username
       input#unameInput.form-control(type='text', placeholder='Enter Username', name='username')

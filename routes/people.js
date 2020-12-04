@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Person = require("../models/personModel");
 let User = require("../models/userModel");
-const Movie = require("../models/movieModel");
+
 start = 100000;
 
 router.get("/", queryParser);
@@ -22,7 +22,8 @@ function addPerson(name){
 		id: id,
 		works: [],
 		collaborators:[],
-		name:name
+		name:name,
+		follower: []
 	})
 	newPerson.save(function(err){
 		if(err){
@@ -92,6 +93,13 @@ router.get('/follow/:id', ensureAuthenticated, function (req, res, next) {
 		  res.send("You have followed this person");
 		}else{
 		  user.followedPeople.push(person_obj)
+		  person_follow.follower.push(user_id)
+		  Person.updateOne({id:follow_id}, person_follow, function(err){
+			if(err){
+			  console.log(err);
+			  return;
+			}
+		  });
 		  User.updateOne({_id:user_id}, user, function(err){
 			if(err){
 			  console.log(err);
@@ -139,6 +147,17 @@ router.get('/unfollow/:id', ensureAuthenticated, function (req, res, next) {
 			  user.followedPeople.splice(i,1);
 			}
 		  }
+		  for (i in person_follow.follower){
+			if (person_follow.follower[i].equals(user_id)){
+				person_follow.follower.splice(i,1);
+			}
+		  }
+		  Person.updateOne({id:follow_id}, person_follow, function(err){
+			if(err){
+			  console.log(err);
+			  return;
+			}
+		  });
 		  User.updateOne({_id:user_id}, user, function(err){
 			if(err){
 			  console.log(err);

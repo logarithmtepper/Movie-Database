@@ -153,6 +153,7 @@ for(let i = 0; i < people.length; i++){
   p.name = people[i].name;
   p.works = people[i].works;
   p.collaborators = people[i].collaborators;
+  p.follower = [];
 	schemaPeople.push(p);
 }
 

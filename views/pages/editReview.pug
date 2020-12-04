@@ -1,5 +1,5 @@
 include ../partials/header
-form
+
   .form-group.row.mx-sm-5.text-left
     .col
       h2 Edit your review for #{review.movie.title}
@@ -23,4 +23,4 @@ form
           textarea(name="full", value=review.full cols="40", rows="10" required='')
               |#{review.full}
           br
-          button.btn.btn-primary(type='submit') Add Review
+        button.btn.btn-primary(type='submit') Add Review

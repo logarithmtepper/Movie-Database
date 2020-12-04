@@ -4,7 +4,7 @@ form
     .col
       br
       - var img = movie.poster
-      img(src=img width="210" height="280")
+      img(src=img style="max-width:100%;height:auto;")
       br
       br
       b
@@ -65,7 +65,12 @@ form
       b
         |Reviews:
       br
+      -var total = 0
+      -var count = 0
       each review in movie.ratings
+        if !isNaN(review.Value)&&review.Value<=10
+          -total = total + parseInt(review.Value)
+          -count = count + 1
         b
           |Source: 
         |#{review.Source} 
@@ -73,6 +78,13 @@ form
           |Value: 
         |#{review.Value} 
         br
+      
+      if count >0
+        b
+          |Database users ratings: 
+        -var avg = total/count
+        |#{avg}/10
+        |(#{count})
       .form-group.row.mx-sm-2
       if user
         if user.contributing == "y"

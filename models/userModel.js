@@ -10,6 +10,11 @@ let userSchema = Schema({
 		type: String,
 		required: true
 	},
+	email:
+	{
+		type: String,
+		required: true
+	},
   contributing: {
 		type: String,
 		required: true
@@ -25,7 +30,11 @@ let userSchema = Schema({
 	},
   recommended: {
 		type: [],
-  }
+  },
+	follower:{
+		type:[],
+		required: true
+	}
 });
 
 module.exports = mongoose.model("User", userSchema);

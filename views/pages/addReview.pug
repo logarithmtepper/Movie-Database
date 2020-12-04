@@ -1,5 +1,5 @@
 include ../partials/header
-form
+
   .form-group.row.mx-sm-5.text-left
     .col
       h2 Add review to #{title}
@@ -14,12 +14,11 @@ form
         #form-group
           label(for='rating')
             b Rating (0 to 10):   
-          input#titleInput(type='text' placeholder='Enter rating' name='rating' required='')
+          input#titleInput(type='number' min='0' max='10' placeholder='Enter rating' name='rating' required='')
         #form-group
           label(for='body')
             b Full Review:
           br   
           | &nbsp; 
           textarea(name="full", cols="40", rows="10" required='')
-        
         button.btn.btn-primary(type='submit') Add Review

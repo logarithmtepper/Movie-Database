@@ -16,6 +16,9 @@ let personSchema = Schema({
 	},
   collaborators: {
 		type: [],
+	},
+	follower:{
+		type:[]
 	}
 });
 
