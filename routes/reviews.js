@@ -12,9 +12,9 @@ router.get('/add/:id', ensureAuthenticated, function(req, res){
     let id = req.params.id;
     let user = req.user;
     Movie.findOne({id:id}, function (err, result) {
-        if(err){
-			res.status(500).send("Error reading movies.");
-			console.log(err);
+      if(err){
+			   res.status(500).send("Error reading movies.");
+         console.log(err);
 			return;
         }
         else{
@@ -35,7 +35,7 @@ router.get('/add/:id', ensureAuthenticated, function(req, res){
                         review: review,
                         error: ""
                     });
-                    return 
+                    return
                 })
             }else{
                 return res.render('addReview',{
@@ -43,7 +43,7 @@ router.get('/add/:id', ensureAuthenticated, function(req, res){
                     movie: result,
                     title: result.title
                 });
-            } 
+            }
         }
     })
 
@@ -56,9 +56,9 @@ router.post('/add/:id', ensureAuthenticated, function(req, res){
     const full = req.body.full;
     const rating = req.body.rating;
     Movie.findOne({id:id}, function (err, movie) {
-        if(err){
-			res.status(500).send("Error reading movies.");
-			console.log(err);
+      if(err){
+			     res.status(500).send("Error reading movies.");
+			     console.log(err);
 			return;
         }
         else{
@@ -129,7 +129,7 @@ router.post('/edit/:id', ensureAuthenticated, function(req, res){
 			    return;
             }
             else{
-                user_obj = {_id:user._id,name:user.username} 
+                user_obj = {_id:user._id,name:user.username}
                 Review.updateOne({_id:review_id}, review, function(err){
                     if(err){
                         res.status(500).send("Error reading reviews.");
@@ -144,7 +144,6 @@ router.post('/edit/:id', ensureAuthenticated, function(req, res){
                         movie.ratings[i]=movieReview;
                     }
                 }
-                //.map(a=>{if(a.Source===user.username)a=movieReview;console.log(a)});
                 console.log(movie.ratings)
                 user.reviews.map(x=>{if(x._id===review_obj._id)x=review_obj});
                 Movie.updateOne({title:movie.title}, movie, function(err){
@@ -159,7 +158,7 @@ router.post('/edit/:id', ensureAuthenticated, function(req, res){
                       return;
                     }
                 });
-            }               
+            }
             res.redirect('/movies/' + movie.id);
         })
     })
@@ -205,7 +204,7 @@ function ensureAuthenticated(req, res, next) {
   res.redirect('/users/login');
 }
 
-function sendNotification(follower, username, movie) { 
+function sendNotification(follower, username, movie) {
     for (const id of follower){
       User.findById({_id:id}, function(err,user){
         if(err){
@@ -227,7 +226,7 @@ function sendNotification(follower, username, movie) {
           console.log('Message sent');
         });
       })
-    } 
+    }
 }
 
 module.exports = router;

@@ -88,7 +88,6 @@ function addPersonToMovie(list,role,people, movie){
 				});
 			}
 		})
-
 	}
 };
 
@@ -514,7 +513,7 @@ router.post('/edit/:id', function(req, res){
 			  }
 			  if (!person.works.some(a => a.id === movie_obj.id)){person.works.push(movie_obj)}
 			  if (req.body.actor != null&&!movie.actors.some(a => a.name === person_obj.name)){
-				  movie.actors.push(person_obj)	    
+				  movie.actors.push(person_obj)
 			  }
 			  if (req.body.writer != null&&!movie.writer.some(a => a.name === person_obj.name)){
 				  movie.writer.push(person_obj)
@@ -673,7 +672,7 @@ function ensureAuthenticated(req, res, next){
 }
 
 //helper for send notification
-function sendNotification(follower, person) { 
+function sendNotification(follower, person) {
 	for (const id of follower){
 	  User.findById({_id:id}, function(err,user){
 		if(err){
@@ -695,8 +694,8 @@ function sendNotification(follower, person) {
 		  console.log('Message sent');
 		});
 	  })
-	} 
+	}
   }
-  
+
 
 module.exports = router;
