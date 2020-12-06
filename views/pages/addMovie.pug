@@ -21,9 +21,9 @@ include ../partials/header
         input#ratedInput(type='text' placeholder='Enter Rated' name='rated' required='')  
     
       #form-group
-        label(for='released')
-          b Released Year:  
-        input#releasedInput(type='text' placeholder='Enter The Released Year' name='released' required='') 
+        label(for='year')
+          b Year Released:  
+        input#releasedInput(type='text' placeholder='Enter The Released Year' name='year' required='') 
     
       #form-group
         label(for='language')
@@ -58,6 +58,16 @@ include ../partials/header
         label(for='runtime')
           b Runtime:  
         input#anameInput(type='text' placeholder='Enter Runtime' name='runtime' required='')
+
+      #form-group
+        label(for='metascore')
+          b Metascore:  
+        input#anameInput(type='text' placeholder='Enter Metascore' name='metascore')
+            
+      #form-group
+        label(for='imdb')
+          b IMDB Rating:  
+        input#anameInput(type='text' placeholder='Enter IMDB Rating' name='imdb')                 
     
       #form-group
         label(for='plot')

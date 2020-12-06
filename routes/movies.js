@@ -38,8 +38,12 @@ router.post('/add', function(req, res, next){
 	const writerList = req.body.wname.trim().split(/\s*,\s*/);
 	const actorList = req.body.aname.trim().split(/\s*,\s*/);
 	const poster = req.body.poster;
+	const metascore = req.body.metascore;
+	const imdb = req.body.imdb;
+	const similar = [];
 
-	const id = start++;
+	const id = start;
+	start++;
 
 	var people = directorList.concat(writerList, actorList)
 	var uniquePeople = people.filter((v, i, a) => a.indexOf(v) === i)
@@ -58,7 +62,7 @@ router.post('/add', function(req, res, next){
 	 	else{
 		  Person.find({},{"_id":0, "id": 1,"name":1},function(err, result){
 			if (err){
-				res.status(500).send("Error reading movie.");
+				res.status(500).send("Error reading people.");
 				console.log(err);
 				return;
 			}
@@ -72,32 +76,70 @@ router.post('/add', function(req, res, next){
 				});
 			}
 
-			let newMovie = new Movie({
-				id: id,
-				title:title,
-				rated: rated,
-				released: released,
-				runtime: runtime,
-				genre: genreList,
-				director: [],
-				writer: [],
-				actors: [],
-				plot: plot,
-				language: language,
-				ratings:  [],
-				similar: [],
-				poster: poster
+			let j = 0;
+			genreList.forEach(loopGenre => {
+				let str = loopGenre;
+				let caps = str.charAt(0).toUpperCase() + str.slice(1);
+				genreList[j] = caps;
 			})
-			newMovie.save(function(err){
+
+			Genre.find()
+			.exec(function(err, results){
 				if(err){
-				  console.log(err);
-				  return;
+					res.status(500).send("Error reading genres.");
+					console.log(err);
+					return;
 				}
+				for(i=0; i < results.length; i++) {
+			    if(genreList.includes(results[i].name)){
+			      let temp = results[i].movies
+			      for (x=0; x < 2; x++){
+			        let y = Math.floor(Math.random() * temp.length);
+			        if(temp[y].id != id && temp[y] && !containsObjectId(temp[y], similar)){
+			          similar.push(temp[y]);
+			        }
+			      }
+			    }
+			  }
+
+				let ratings = [];
+				if(imdb){
+					ratings.push({Source:"IMDB", Value:imdb});
+				}
+				if(metascore){
+					ratings.push({Source:"Metacritic", Value:metascore});
+				}
+
+				let newMovie = new Movie({
+					id: id,
+					title:title,
+					rated: rated,
+					released: released,
+					runtime: runtime,
+					genre: genreList,
+					director: [],
+					writer: [],
+					actors: [],
+					plot: plot,
+					language: language,
+					ratings:  ratings,
+					poster: poster,
+					similar: similar
+				})
+				newMovie.save(function(err){
+					if(err){
+						console.log(err);
+						return;
+					}
+				})
+				addPersonToMovie(directorList,"director", colab, newMovie)
+				addPersonToMovie(writerList,"writer", colab, newMovie)
+				addPersonToMovie(actorList,"actor", colab, newMovie)
+				res.redirect("/movies");
+
+				next();
+				return;
 			})
-			addPersonToMovie(directorList,"director", colab, newMovie)
-			addPersonToMovie(writerList,"writer", colab, newMovie)
-			addPersonToMovie(actorList,"actor", colab, newMovie)
-			res.redirect("/movies");
 		});
 	  }
 	})
@@ -206,6 +248,12 @@ router.post('/addByUrl', function(req, res, next){
           movieGenres.push(rawHtml.substring(genre['index']+21, genre['index']+movieGenreEnd['index']));
         };
         movieGenres = movieGenres.splice(0, Math.floor(movieGenres.length / 2));
+				let j = 0;
+				movieGenres.forEach(loopGenre => {
+					let str = loopGenre;
+					let caps = str.charAt(0).toUpperCase() + str.slice(1);
+					movieGenres[j] = caps;
+				})
         newMovie.genre = movieGenres;
 
         movieGenres, rawMovieGenres, movieGenreEnd = undefined;
@@ -366,6 +414,28 @@ router.post('/addByUrl', function(req, res, next){
         movieLanguage = "N/A";
       }
 
+			Genre.find()
+			.exec(function(err, results){
+				if(err){
+					res.status(500).send("Error reading genres.");
+					console.log(err);
+					return;
+				}
+				for(i=0; i < results.length; i++) {
+					if(newMovie.genre.includes(results[i].name)){
+						let temp = results[i].movies
+						for (x=0; x < 2; x++){
+							let y = Math.floor(Math.random() * temp.length);
+							if(temp[y].id != id && temp[y] && !containsObjectId(temp[y], newMovie.similar)){
+								newMovie.similar.push(temp[y]);
+							}
+						}
+					}
+				}
+			})
+
+			console.log(newMovie);
+
 			var people = directorList.concat(actorList, writerList)
 			var uniquePeople = people.filter((v, i, a) => a.indexOf(v) === i)
 
@@ -456,7 +526,7 @@ router.post('/edit/:id', function(req, res){
 		  }
 		  Movie.findOne(query, function(err, movie){
 			  if(err){
-				  res.status(500).send("Error reading people.");
+				  res.status(500).send("Error reading movie.");
 				  console.log(err);
 				  return;
 			  }
@@ -602,7 +672,7 @@ function loadGenres(req, res, next){
 	Genre.find()
 	.exec(function(err, results){
 		if(err){
-			res.status(500).send("Error reading movies.");
+			res.status(500).send("Error reading genres.");
 			console.log(err);
 			return;
 		}
@@ -727,7 +797,15 @@ function sendNotification(follower, person) {
 		});
 	  })
 	}
-  }
+}
 
+function containsObjectId(obj, list) {
+    for (k = 0; k < list.length; k++) {
+        if (list[k].id === obj.id) {
+            return true;
+        }
+    }
+    return false;
+}
 
 module.exports = router;
