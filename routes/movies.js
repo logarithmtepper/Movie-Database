@@ -434,8 +434,6 @@ router.post('/addByUrl', function(req, res, next){
 				}
 			})
 
-			console.log(newMovie);
-
 			var people = directorList.concat(actorList, writerList)
 			var uniquePeople = people.filter((v, i, a) => a.indexOf(v) === i)
 

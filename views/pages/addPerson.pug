@@ -4,8 +4,6 @@ include ../partials/header
     .col
       h2 Add People
       #addPersonDIV.container
-      | #{error}
-      br
       form(method='POST', action='/people/add')
         #form-group
           label(for='name')
