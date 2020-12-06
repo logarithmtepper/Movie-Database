@@ -1,5 +1,4 @@
 Contributing Users
--Error picking collaborators properly with newly added people
 -Error displaying similar movie on moviepage when adding new movie
 
 Project Report

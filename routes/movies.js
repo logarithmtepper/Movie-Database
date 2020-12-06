@@ -465,6 +465,7 @@ router.post('/edit/:id', function(req, res){
 
 			  var people = movie.director.concat(movie.writer, movie.actors)
 			  var collaborators = people.filter((v, i, a) => a.indexOf(v) === i)
+			  addOneCollaborator(person_obj,collaborators)
 			  for (obj of collaborators){
 				if (!person.collaborators.some(a => a.name === obj.name)&& obj.name!==person_obj.name){
 					person.collaborators.push(obj);
@@ -680,6 +681,27 @@ function addPersonToMovie(list,role,people, movie){
 		})
 	}
 };
+
+function addOneCollaborator(person_obj,collaborators){
+	for (obj of collaborators){
+		const query = {name:obj.name};
+		Person.findOne(query, function(err, person){
+			if (err){
+				console.log(err);
+		  		return;
+			}
+			if (!person.collaborators.some(obj => obj.name === person_obj.name)&& obj.name!==person_obj.name){
+				person.collaborators.push(person_obj);
+				Person.updateOne(query, person, function(err){
+					if (err){
+						console.log(err);
+						return;
+					}
+				})
+			}
+		})
+	}
+}
 
 //helper for send notification
 function sendNotification(follower, person) {
