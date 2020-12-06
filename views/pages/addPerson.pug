@@ -9,7 +9,9 @@ include ../partials/header
       form(method='POST', action='/people/add')
         #form-group
           label(for='name')
-            b Name: 
+            b Name:
+            br 
           input#nameInput(type='text' placeholder='Enter Name' name='name' required='')
+            br
       
         button.btn.btn-primary(type='submit') Add
