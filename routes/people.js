@@ -66,7 +66,7 @@ router.post('/add', ensureAuthenticated, function(req, res, next){
 	  return;
 	}
 	if (result!==null){
-	  res.send('This person is exist in the database');
+	  res.redirect('/people/add');
 	}else{
 	  addPerson(name)
 	  res.redirect('/people/add');
@@ -80,8 +80,8 @@ router.get('/follow/:id', ensureAuthenticated, function (req, res, next) {
 	const user_id = req.user._id;
 	User.findById(user_id, function(err, user){
 	  if(err){
-		console.log(err);
-		return;
+			console.log(err);
+			return;
 	  }
 	  Person.findOne({id:follow_id}, function(err, person_follow){
 		if(err){
@@ -105,7 +105,6 @@ router.get('/follow/:id', ensureAuthenticated, function (req, res, next) {
 			  console.log(err);
 			  return;
 			} else {
-			  //res.flash("You have followed this user");
 			  res.redirect('/users/profile');
 			}
 		  });
@@ -116,22 +115,21 @@ router.get('/follow/:id', ensureAuthenticated, function (req, res, next) {
 
 function containsObjectId(obj, list) {
 	for (k = 0; k < list.length; k++) {
-		//console.log(obj._id);
 		if (list[k].id===obj.id) {
 			return true;
 		}
 	}
 	return false;
   }
-  
-  
+
+
 router.get('/unfollow/:id', ensureAuthenticated, function (req, res, next) {
 	const follow_id = req.params.id;
 	const user_id = req.user._id;
 	User.findById(user_id, function(err, user){
 	  if(err){
-		console.log(err);
-		return;
+			console.log(err);
+			return;
 	  }
 	  Person.findOne({id:follow_id}, function(err, person_follow){
 		if(err){
@@ -171,7 +169,7 @@ router.get('/unfollow/:id', ensureAuthenticated, function (req, res, next) {
 	  });
 	});
 });
-  
+
 router.get("/:id", getPerson);
 router.get("/:id", sendPerson);
 
